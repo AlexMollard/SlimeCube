@@ -1,0 +1,3 @@
+﻿  Scene.cpp
+C:\Users\alexm\source\repos\SlimeCube\Scene.cpp(54,23): warning C4312: 'type cast': conversion from 'unsigned int' to 'void *' of greater size
+  SlimeCube.vcxproj -> C:\Users\alexm\source\repos\SlimeCube\x64\Debug\SlimeCube.exe

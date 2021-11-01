@@ -1,0 +1,38 @@
+﻿  Camera.cpp
+  Input.cpp
+C:\Users\alexm\source\repos\SlimeCube\Input.cpp(101,19): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  SlimeCube.cpp
+  Window.cpp
+  Generating Code...
+Input.obj : error LNK2019: unresolved external symbol _glfwGetWindowSize referenced in function "public: void __thiscall Input::Update(void)" (?Update@Input@@QAEXXZ)
+Input.obj : error LNK2019: unresolved external symbol _glfwSetWindowFocusCallback referenced in function "private: __thiscall Input::Input(void)" (??0Input@@AAE@XZ)
+Input.obj : error LNK2019: unresolved external symbol _glfwGetKey referenced in function "public: static bool __cdecl Input::GetKeyPress(enum Keycode)" (?GetKeyPress@Input@@SA_NW4Keycode@@@Z)
+Window.obj : error LNK2001: unresolved external symbol _glfwGetKey
+Input.obj : error LNK2019: unresolved external symbol _glfwGetMouseButton referenced in function "public: static bool __cdecl Input::GetMouseDown(int)" (?GetMouseDown@Input@@SA_NH@Z)
+Input.obj : error LNK2019: unresolved external symbol _glfwGetCursorPos referenced in function "public: void __thiscall Input::Update(void)" (?Update@Input@@QAEXXZ)
+Input.obj : error LNK2019: unresolved external symbol _glfwSetScrollCallback referenced in function "private: __thiscall Input::Input(void)" (??0Input@@AAE@XZ)
+Input.obj : error LNK2019: unresolved external symbol _glfwGetCurrentContext referenced in function "private: __thiscall Input::Input(void)" (??0Input@@AAE@XZ)
+SlimeCube.obj : error LNK2019: unresolved external symbol "struct ImGuiContext * __cdecl ImGui::CreateContext(struct ImFontAtlas *)" (?CreateContext@ImGui@@YAPAUImGuiContext@@PAUImFontAtlas@@@Z) referenced in function _main
+SlimeCube.obj : error LNK2019: unresolved external symbol "struct ImGuiIO & __cdecl ImGui::GetIO(void)" (?GetIO@ImGui@@YAAAUImGuiIO@@XZ) referenced in function _main
+SlimeCube.obj : error LNK2019: unresolved external symbol "void __cdecl ImGui::StyleColorsDark(struct ImGuiStyle *)" (?StyleColorsDark@ImGui@@YAXPAUImGuiStyle@@@Z) referenced in function _main
+SlimeCube.obj : error LNK2019: unresolved external symbol "bool __cdecl ImGui::DebugCheckVersionAndDataLayout(char const *,unsigned int,unsigned int,unsigned int,unsigned int,unsigned int,unsigned int)" (?DebugCheckVersionAndDataLayout@ImGui@@YA_NPBDIIIIII@Z) referenced in function _main
+SlimeCube.obj : error LNK2019: unresolved external symbol "bool __cdecl ImGui_ImplGlfw_InitForOpenGL(struct GLFWwindow *,bool)" (?ImGui_ImplGlfw_InitForOpenGL@@YA_NPAUGLFWwindow@@_N@Z) referenced in function _main
+SlimeCube.obj : error LNK2019: unresolved external symbol "bool __cdecl ImGui_ImplOpenGL3_Init(char const *)" (?ImGui_ImplOpenGL3_Init@@YA_NPBD@Z) referenced in function _main
+Window.obj : error LNK2019: unresolved external symbol __imp__glewInit@0 referenced in function "public: int __thiscall Window::Window_intit(int,int,char *)" (?Window_intit@Window@@QAEHHHPAD@Z)
+Window.obj : error LNK2019: unresolved external symbol _glfwInit referenced in function "public: int __thiscall Window::Window_intit(int,int,char *)" (?Window_intit@Window@@QAEHHHPAD@Z)
+Window.obj : error LNK2019: unresolved external symbol _glfwTerminate referenced in function "public: void __thiscall Window::Window_destroy(void)" (?Window_destroy@Window@@QAEXXZ)
+Window.obj : error LNK2019: unresolved external symbol _glfwWindowHint referenced in function "public: int __thiscall Window::Window_intit(int,int,char *)" (?Window_intit@Window@@QAEHHHPAD@Z)
+Window.obj : error LNK2019: unresolved external symbol _glfwCreateWindow referenced in function "public: int __thiscall Window::Window_intit(int,int,char *)" (?Window_intit@Window@@QAEHHHPAD@Z)
+Window.obj : error LNK2019: unresolved external symbol _glfwDestroyWindow referenced in function "public: void __thiscall Window::Window_destroy(void)" (?Window_destroy@Window@@QAEXXZ)
+Window.obj : error LNK2019: unresolved external symbol _glfwWindowShouldClose referenced in function "public: int __thiscall Window::Window_shouldClose(void)" (?Window_shouldClose@Window@@QAEHXZ)
+Window.obj : error LNK2019: unresolved external symbol _glfwSetWindowShouldClose referenced in function "public: void __thiscall Window::Update_Window(void)" (?Update_Window@Window@@QAEXXZ)
+Window.obj : error LNK2019: unresolved external symbol _glfwSetFramebufferSizeCallback referenced in function "public: int __thiscall Window::Window_intit(int,int,char *)" (?Window_intit@Window@@QAEHHHPAD@Z)
+Window.obj : error LNK2019: unresolved external symbol _glfwPollEvents referenced in function "public: void __thiscall Window::Update_Window(void)" (?Update_Window@Window@@QAEXXZ)
+Window.obj : error LNK2019: unresolved external symbol _glfwGetTime referenced in function "public: void __thiscall Window::Update_Window(void)" (?Update_Window@Window@@QAEXXZ)
+Window.obj : error LNK2019: unresolved external symbol _glfwMakeContextCurrent referenced in function "public: int __thiscall Window::Window_intit(int,int,char *)" (?Window_intit@Window@@QAEHHHPAD@Z)
+Window.obj : error LNK2019: unresolved external symbol _glfwSwapBuffers referenced in function "public: void __thiscall Window::Update_Window(void)" (?Update_Window@Window@@QAEXXZ)
+Window.obj : error LNK2019: unresolved external symbol _glfwSwapInterval referenced in function "public: int __thiscall Window::Window_intit(int,int,char *)" (?Window_intit@Window@@QAEHHHPAD@Z)
+Window.obj : error LNK2019: unresolved external symbol __imp__glewExperimental referenced in function "public: int __thiscall Window::Window_intit(int,int,char *)" (?Window_intit@Window@@QAEHHHPAD@Z)
+C:\Users\alexm\source\repos\SlimeCube\Dependencies\glfw\glfw3.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+C:\Users\alexm\source\repos\SlimeCube\Dependencies\glew\glew32.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+C:\Users\alexm\source\repos\SlimeCube\Debug\SlimeCube.exe : fatal error LNK1120: 28 unresolved externals
