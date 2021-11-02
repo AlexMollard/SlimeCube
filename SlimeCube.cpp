@@ -2,11 +2,16 @@
 #include "Input.h"
 #include "EditorGUI.h"
 #include "Scene.h"
+#include "entt.hpp"
+
 Input* Input::instance = 0;
 
 void ProcessMovement(float deltaTime, Camera* camera, Input* inputManager);
 int main()
 {
+	entt::registry registry;
+
+
 	Window* app = new Window(1920, 1080, (char*)"SlimeCore2D");
 	Input* inputManager = Input::GetInstance();
 	Camera* camera = new Camera(glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f));

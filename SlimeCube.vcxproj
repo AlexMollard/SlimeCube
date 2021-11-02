@@ -88,7 +88,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glew\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\imgui;$(SolutionDir)Dependencies\stb</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glew\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\imgui;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\entt</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -105,7 +106,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glew\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\imgui;$(SolutionDir)Dependencies\stb</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glew\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\imgui;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\entt</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,7 +124,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glew\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\imgui;$(SolutionDir)Dependencies\stb</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glew\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\imgui;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\entt</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,7 +142,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glew\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\imgui;$(SolutionDir)Dependencies\stb</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glew\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\imgui;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\entt</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
