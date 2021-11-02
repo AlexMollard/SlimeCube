@@ -20,7 +20,7 @@ int main()
 		inputManager->Update();
 		app->Update_Window();
 		scene->Render(app->GetDeltaTime());
-		//gui->Render();
+		gui->Render();
 	}
 
 	delete app;
@@ -42,25 +42,40 @@ int main()
 
 void ProcessMovement(float deltaTime, Camera* camera, Input* inputManager)
 {
-	if (inputManager->GetKeyPress(Keycode::W))
-		camera->ProcessKeyboard(Camera_FORWARD, deltaTime);
-	if (inputManager->GetKeyPress(Keycode::S))
-		camera->ProcessKeyboard(Camera_BACKWARD, deltaTime);
-	if (inputManager->GetKeyPress(Keycode::A))
-		camera->ProcessKeyboard(Camera_LEFT, deltaTime);
-	if (inputManager->GetKeyPress(Keycode::D))
-		camera->ProcessKeyboard(Camera_RIGHT, deltaTime);
-	if (inputManager->GetKeyPress(Keycode::SPACE))
-		camera->ProcessKeyboard(Camera_UP, deltaTime);
-	if (inputManager->GetKeyPress(Keycode::LEFT_CONTROL))
-		camera->ProcessKeyboard(Camera_DOWN, deltaTime);
+	if (inputManager->GetMouseDown(1))
+	{
+		glfwSetInputMode(inputManager->GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	if (inputManager->GetKeyPress(Keycode::LEFT_SHIFT))
-		camera->MovementSpeed = 20.5f;
-	else
-		camera->MovementSpeed = 10.5f;
+		if (inputManager->GetKeyPress(Keycode::W))
+			camera->ProcessKeyboard(Camera_FORWARD, deltaTime);
+		if (inputManager->GetKeyPress(Keycode::S))
+			camera->ProcessKeyboard(Camera_BACKWARD, deltaTime);
+		if (inputManager->GetKeyPress(Keycode::A))
+			camera->ProcessKeyboard(Camera_LEFT, deltaTime);
+		if (inputManager->GetKeyPress(Keycode::D))
+			camera->ProcessKeyboard(Camera_RIGHT, deltaTime);
+		if (inputManager->GetKeyPress(Keycode::SPACE))
+			camera->ProcessKeyboard(Camera_UP, deltaTime);
+		if (inputManager->GetKeyPress(Keycode::LEFT_CONTROL))
+			camera->ProcessKeyboard(Camera_DOWN, deltaTime);
 
-	camera->ProcessMouseMovement(-inputManager->GetDeltaMouse().x, -inputManager->GetDeltaMouse().y);
+		if (inputManager->GetScroll() < 0)
+			camera->ProcessKeyboard(Camera_BACKWARD, deltaTime * 4.0f);
+		if (inputManager->GetScroll() > 0)
+			camera->ProcessKeyboard(Camera_FORWARD, deltaTime * 4.0f);
+
+
+		if (inputManager->GetKeyPress(Keycode::LEFT_SHIFT))
+			camera->MovementSpeed = 20.5f;
+		else
+			camera->MovementSpeed = 10.5f;
+
+		camera->ProcessMouseMovement(-inputManager->GetDeltaMouse().x, -inputManager->GetDeltaMouse().y);
 	
-	camera->UpdateProjectionViewMatrix();
+		camera->UpdateProjectionViewMatrix();
+	}
+	else
+	{
+		glfwSetInputMode(inputManager->GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
 }

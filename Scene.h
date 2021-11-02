@@ -1,9 +1,7 @@
 #pragma once
-#include "Shader.h"
-#include "Texture.h"
-#include "Mesh.h"
-#include "Material.h"
+#include "Skybox.h"
 #include "Camera.h"
+#include "SceneObject.h"
 
 class Scene
 {
@@ -14,10 +12,13 @@ public:
 	void* Render(float deltaTime);
 
 private:
+	SceneObject* obj = nullptr;
 	Shader* mainShader = nullptr;
+	Shader* skyboxShader = nullptr;
 	unsigned int VBO, VAO, EBO;
 	unsigned int texture;
 	Texture* tex = nullptr;
+	Skybox* skyBox = nullptr;
 	Mesh* mesh = nullptr;
 	Material* mat = nullptr;
 	Camera* cam = nullptr;

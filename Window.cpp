@@ -45,7 +45,7 @@ int Window::Window_intit(int width, int height, char* name)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glfwSwapInterval(1); // V-Sync
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 	// Initializing Glew
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)

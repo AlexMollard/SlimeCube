@@ -183,14 +183,14 @@ void main()
 	// add to outgoing radiance Lo
 	vec3 dirLightResult = (kD * albedo / PI + specular) * radiance * NdotL;
 
-	//Lo += dirLightResult;
+	Lo += dirLightResult;
 
 	for (int i = 0; i < pointLightTotal; ++i)
 	{
 		Lo += CalculatespotLight(pointLights[i], V, N, F0, roughness, metallic, albedo);
 	}
 
-	vec3 ambient = vec3(0.1) * albedo * ao; // * F;
+	vec3 ambient = vec3(0.1) * albedo * ao; //* F;
 
 	vec3 color = ambient + Lo;
 
@@ -199,6 +199,6 @@ void main()
 	// gamma correct
 	color = pow(color, vec3(1.0 / 2.2));
 
-	//FragColor = vec4(color, 1);
-	FragColor = texture(diffuseTexture, TexCoord);
+	FragColor = vec4(albedo, 1);
+	//FragColor = texture(diffuseTexture, TexCoord);
 }

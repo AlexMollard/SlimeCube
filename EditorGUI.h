@@ -12,6 +12,12 @@ public:
 	void Render();
 	void StartFrame();
 	void EndFrame();
+
+	void Hierarchy();
+	void Properties();
+	void Menu();
+	void FileExplorer();
+	void FileViewer();
 private:
 	ImGuiWindowFlags mainFlags =
 	{
@@ -24,4 +30,5 @@ private:
 	};
 
 	ImVec2 screenSize;
+	float columnWidth, rowHeight;
 };

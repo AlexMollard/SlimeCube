@@ -1,6 +1,8 @@
 #include "Texture.h"
 #define STB_IMAGE_IMPLEMENTATION
+#include <iostream>
 #include "stb_image.h"
+
 
 Texture::Texture(std::string name, std::string dir)
 {
