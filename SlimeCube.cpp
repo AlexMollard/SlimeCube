@@ -1,31 +1,33 @@
 #include "Window.h"
 #include "Input.h"
 #include "EditorGUI.h"
-#include "Scene.h"
+#include "SceneObject.h"
 #include "entt.hpp"
+#include "Components.h"
 
 Input* Input::instance = 0;
 
 void ProcessMovement(float deltaTime, Camera* camera, Input* inputManager);
 int main()
 {
-	entt::registry registry;
-
-
 	Window* app = new Window(1920, 1080, (char*)"SlimeCore2D");
 	Input* inputManager = Input::GetInstance();
 	Camera* camera = new Camera(glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f));
 	Input::GetInstance()->SetCamera(camera);
 	EditorGUI* gui = new EditorGUI();
 	Scene* scene = new Scene(camera);
-
+	SceneObject* obj = scene->CreateEntity("Slime Cube");
+	static float newPos = 0.0f;
 	while (!app->Window_shouldClose())
 	{
+		newPos += app->GetDeltaTime();
+
 		ProcessMovement(app->GetDeltaTime(), camera, inputManager);
 		inputManager->Update();
 		app->Update_Window();
 		scene->Render(app->GetDeltaTime());
 		gui->Render();
+		obj->GetComponent<TransformComponent>() = TransformComponent(glm::vec3(glm::cos(newPos), glm::sin(-newPos), 0.0f));
 	}
 
 	delete app;

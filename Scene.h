@@ -1,7 +1,12 @@
 #pragma once
 #include "Skybox.h"
 #include "Camera.h"
-#include "SceneObject.h"
+#include "entt.hpp"
+
+class SceneObject;
+class Material;
+class Shader;
+class Mesh;
 
 class Scene
 {
@@ -11,15 +16,25 @@ public:
 
 	void* Render(float deltaTime);
 
-private:
-	SceneObject* obj = nullptr;
+	SceneObject* CreateEntity(const std::string& name);
+	void DestroyEntity(SceneObject entity);
+
+	entt::registry registry;
+
 	Shader* mainShader = nullptr;
+	Material* mat = nullptr;
+	Mesh* mesh = nullptr;
+
+private:
+	template<typename T>
+	void OnComponentAdded(SceneObject entity, T& component);
+
 	Shader* skyboxShader = nullptr;
-	unsigned int VBO, VAO, EBO;
-	unsigned int texture;
+	unsigned int texture = 0;
 	Texture* tex = nullptr;
 	Skybox* skyBox = nullptr;
-	Mesh* mesh = nullptr;
-	Material* mat = nullptr;
 	Camera* cam = nullptr;
+
+	Scene* scene = nullptr;
+	friend class SceneObject;
 };

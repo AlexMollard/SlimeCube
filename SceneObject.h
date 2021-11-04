@@ -1,51 +1,61 @@
 #pragma once
-#include "Material.h"
-#include "Shader.h"
-#include "Mesh.h"
+#include "Scene.h"
+#include "entt.hpp"
+#include <iostream>
 
 class SceneObject
 {
 public:
-	SceneObject(Mesh* newMesh, Shader* newShader, Material* newMaterial);
-	~SceneObject();
+	SceneObject() = default;
+	SceneObject(entt::entity handle, Scene* scene);
+	SceneObject(const SceneObject& other) = default;
 
-	// Mesh
-	void SetMesh(Mesh* newMesh);
-	Mesh* mesh();
-	
-	// Shader
-	void SetShader(Shader* newShader);
-	Shader* shader();
-	
-	// Material
-	void SetMaterial(Material* newMaterial);
-	Material* material();
+	template<typename T, typename... Args>
+	T& AddComponant(Args&&... args)
+	{
+		if (HasComponent<T>()) { std::cout << "Object already has componant" << std::endl; }
 
-	//Position
-	void SetPosition(glm::vec3 newPosition);
-	glm::vec3 GetPosition();
+		T& componant = scene->registry.emplace<T>(entityHandle, std::forward<Args>(args)...);
+		scene->OnComponentAdded<T>(*this, componant);
+		return componant;
+	}
 
-	// Rotation
-	void SetRotation(glm::vec3 newRotation);
-	glm::vec3 GetRotation();
-	
-	// Scale
-	void SetScale(glm::vec3 newScale);
-	glm::vec3 GetScale();
+	template<typename T>
+	T& GetComponent()
+	{
+		if (!HasComponent<T>()) { std::cout << "Entity does not have component!" << std::endl; }
+		return scene->registry.get<T>(entityHandle);
+	}
 
-	// Transform
-	glm::mat4 GetTransform();
+	template<typename T>
+	bool HasComponent()
+	{
+	//	std::cout << entityHandle << std::endl;
+		return scene->registry.has<T>(entityHandle);
+	}
+
+	template<typename T>
+	void RemoveComponent()
+	{
+		scene->registry.remove<T>(entityHandle);
+	}
+
+	operator bool() const { return entityHandle != entt::null; }
+	operator entt::entity() const { return entityHandle; }
+	operator uint32_t() const { return (uint32_t)entityHandle; }
+
+	bool operator==(const SceneObject& other) const
+	{
+		return entityHandle == other.entityHandle && scene == other.scene;
+	}
+
+	bool operator!=(const SceneObject& other) const
+	{
+		return !(*this == other);
+	}
+
 private:
-	void UpdateTransform();
-
-	glm::vec3 position = glm::vec3(0.0f);
-	glm::vec3 rotation = glm::vec3(0.0f);
-	glm::vec3 scale = glm::vec3(0.0f);
-
-	glm::mat4 transform = glm::mat4(1.0f);
-
-	Mesh* meshRef = nullptr;
-	Shader* shaderRef = nullptr;
-	Material* materialRef = nullptr;
+	entt::entity entityHandle{ entt::null };
+	Scene* scene = nullptr;
 };
 

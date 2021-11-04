@@ -1,2 +1,6 @@
-﻿  SlimeCube.cpp
+﻿  Scene.cpp
+C:\Users\alexm\source\repos\SlimeCube\Scene.cpp(71,23): warning C4312: 'type cast': conversion from 'unsigned int' to 'void *' of greater size
+  SlimeCube.cpp
+  Generating Code...
+C:\Users\alexm\source\repos\SlimeCube\Scene.cpp(86): warning C4172: returning address of local variable or temporary: entity
   SlimeCube.vcxproj -> C:\Users\alexm\source\repos\SlimeCube\x64\Debug\SlimeCube.exe

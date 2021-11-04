@@ -1,5 +1,7 @@
 #include "Scene.h"
 #include "Input.h"
+#include "SceneObject.h"
+#include "Components.h"
 
 Scene::Scene(Camera* cam)
 {
@@ -10,7 +12,7 @@ Scene::Scene(Camera* cam)
 	mesh = new Mesh("Cube");
 	mesh->create();
 	mat = new Material("main", tex);
-	obj = new SceneObject(mesh,mainShader,mat);
+
 	this->cam = cam;
 }
 
@@ -33,9 +35,6 @@ Scene::~Scene()
 
 	delete skyboxShader;
 	skyboxShader = nullptr;
-
-	delete obj;
-	obj = nullptr;
 }
 
 void* Scene::Render(float deltaTime)
@@ -51,33 +50,49 @@ void* Scene::Render(float deltaTime)
 	mesh->draw();
 	glDepthMask(GL_TRUE);
 
-	obj->SetShader(mainShader);
-	obj->shader()->Use();
-	// get matrix's uniform location and set matrix
-	obj->shader()->setFloat("diffuseStrength", 1.0f);
-	obj->shader()->setInt("diffuseTexture", 0);
-	obj->shader()->setMat4("ProjectionView", cam->GetProjectionViewMatrix());
-
-	obj->material()->GetAlbedo()->Bind();
-	for (int x = 0; x < 15; x++)
-	for (int y = 0; y < 15; y++)
+	auto view = registry.view<TransformComponent, MeshComponent, ShaderComponent, MaterialComponent>();
+	for (auto entity : view)
 	{
-		{
-			if (x > 5)
-				obj->material()->GetAlbedo()->SetID(skyBox->GetID());
-			else
-				obj->material()->GetAlbedo()->SetID(tex->GetID());
+		TransformComponent &transform = view.get<TransformComponent>(entity);
+		MeshComponent &newMesh = view.get<MeshComponent>(entity);
+		ShaderComponent &shader = view.get<ShaderComponent>(entity);
+		MaterialComponent &material = view.get<MaterialComponent>(entity);
+		
+		shader.shader->Use();
+		shader.shader->setFloat("diffuseStrength", 1.0f);
+		shader.shader->setInt("diffuseTexture", 0);
+		shader.shader->setMat4("ProjectionView", cam->GetProjectionViewMatrix());
+		material.material->GetAlbedo()->Bind();
 
-			obj->SetPosition( glm::vec3(x * 2.5f, 0.0f, y * 2.5f));
-			obj->SetRotation(glm::vec3(0.0f, 2.0f * (float)glfwGetTime() + (x * y), 1.0f * (float)glfwGetTime() - (x * y)));
-
-			obj->shader()->setMat4("Model", obj->GetTransform());
-
-			obj->mesh()->draw();
-		}
+		shader.shader->setMat4("Model", transform.GetTransform());
+		newMesh.mesh->draw();
 	}
 
-
-
 	return (void*)texture;
+}
+
+SceneObject* Scene::CreateEntity(const std::string& name)
+{
+	SceneObject entity = { registry.create(), this };
+	entity.AddComponant<TransformComponent>();
+	auto& tag = entity.AddComponant<TagComponent>();
+	tag.Tag = name.empty() ? "Entity" : name;
+
+	entity.AddComponant<MeshComponent>(mesh);
+	entity.AddComponant<MaterialComponent>(mat);
+	entity.AddComponant<ShaderComponent>(mainShader);
+
+
+	return &entity;
+}
+
+void Scene::DestroyEntity(SceneObject entity)
+{
+	registry.destroy(entity);
+}
+
+template<typename T>
+void Scene::OnComponentAdded(SceneObject entity, T& component)
+{
+	static_assert(false);
 }
