@@ -1,7 +1,7 @@
 #include "SceneObject.h"
 
-SceneObject::SceneObject(entt::entity handle, Scene* scene)
-    : entityHandle(handle), scene(scene)
+SceneObject::SceneObject(entt::entity handle, Scene* tempScene)
+    : entityHandle(handle), scene(tempScene)
 {
 
 }

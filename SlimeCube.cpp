@@ -16,18 +16,29 @@ int main()
 	Input::GetInstance()->SetCamera(camera);
 	EditorGUI* gui = new EditorGUI();
 	Scene* scene = new Scene(camera);
-	SceneObject* obj = scene->CreateEntity("Slime Cube");
-	static float newPos = 0.0f;
+	for (int x = 0; x < 10; x++)
+	{
+		scene->CreateEntity("Slime Cube");
+	}
+
+	auto view = scene->registry.view<TransformComponent>();
 	while (!app->Window_shouldClose())
 	{
-		newPos += app->GetDeltaTime();
+		static float time = 0.0f;
+		int i = 0;
+		time += app->GetDeltaTime();
+		for (auto entity : view)
+		{
+			auto& transform = view.get<TransformComponent>(entity);
+			transform.SetPosition(glm::vec3(glm::cos(time),glm::sin(-time),i * 3.0f));
+			i++;
+		}
 
 		ProcessMovement(app->GetDeltaTime(), camera, inputManager);
 		inputManager->Update();
 		app->Update_Window();
 		scene->Render(app->GetDeltaTime());
 		gui->Render();
-		obj->GetComponent<TransformComponent>() = TransformComponent(glm::vec3(glm::cos(newPos), glm::sin(-newPos), 0.0f));
 	}
 
 	delete app;

@@ -5,6 +5,7 @@
 
 Scene::Scene(Camera* cam)
 {
+	scene = this;
 	mainShader = new Shader("main", "Shaders/litVertex.shader", "Shaders/litFragment.shader");
 	skyboxShader = new Shader("skybox", "Shaders/SkyBoxVertex.shader", "Shaders/SkyBoxFragment.shader");
 	tex = new Texture("missingTex", "Images/missingTex.png");
@@ -82,6 +83,7 @@ SceneObject* Scene::CreateEntity(const std::string& name)
 	entity.AddComponant<MaterialComponent>(mat);
 	entity.AddComponant<ShaderComponent>(mainShader);
 
+	std::cout << "Registry Size: " << registry.size() << std::endl;
 
 	return &entity;
 }
@@ -94,5 +96,6 @@ void Scene::DestroyEntity(SceneObject entity)
 template<typename T>
 void Scene::OnComponentAdded(SceneObject entity, T& component)
 {
-	static_assert(false);
+	std::cout << "Component Added to : " << (int)entity.entityHandle << std::endl;
+	//static_assert(false);
 }

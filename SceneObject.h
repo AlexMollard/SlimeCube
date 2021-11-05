@@ -7,23 +7,41 @@ class SceneObject
 {
 public:
 	SceneObject() = default;
-	SceneObject(entt::entity handle, Scene* scene);
+	SceneObject(entt::entity handle, Scene* tempScene);
 	SceneObject(const SceneObject& other) = default;
 
 	template<typename T, typename... Args>
 	T& AddComponant(Args&&... args)
 	{
-		if (HasComponent<T>()) { std::cout << "Object already has componant" << std::endl; }
+		if (HasComponent<T>()) 
+		{
+			std::cout << "Object already has componant" << std::endl;
+			return scene->registry.get<T>(entityHandle);
+		}
 
 		T& componant = scene->registry.emplace<T>(entityHandle, std::forward<Args>(args)...);
 		scene->OnComponentAdded<T>(*this, componant);
 		return componant;
 	}
 
+	template<typename T, typename... Args>
+	T& AddOrReplaceComponent(Args&&... args)
+	{
+		T& component = scene->registry.emplace_or_replace<T>(entityHandle, std::forward<Args>(args)...);
+		scene->OnComponentAdded<T>(*this, component);
+		return component;
+	}
+
 	template<typename T>
 	T& GetComponent()
 	{
-		if (!HasComponent<T>()) { std::cout << "Entity does not have component!" << std::endl; }
+		if (!HasComponent<T>()) 
+		{
+			std::cout << "Entity does not have component!" << std::endl;
+			//return T{};
+		}
+
+		std::cout << scene->name << std::endl;
 		return scene->registry.get<T>(entityHandle);
 	}
 
@@ -31,7 +49,7 @@ public:
 	bool HasComponent()
 	{
 	//	std::cout << entityHandle << std::endl;
-		return scene->registry.has<T>(entityHandle);
+		return scene->registry.all_of<T>(entityHandle);
 	}
 
 	template<typename T>
@@ -54,8 +72,8 @@ public:
 		return !(*this == other);
 	}
 
-private:
-	entt::entity entityHandle{ entt::null };
 	Scene* scene = nullptr;
+	entt::entity entityHandle{ entt::null };
+private:
 };
 

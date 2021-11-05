@@ -25,6 +25,7 @@ public:
 	Material* mat = nullptr;
 	Mesh* mesh = nullptr;
 
+	std::string name = "Main Scene";
 private:
 	template<typename T>
 	void OnComponentAdded(SceneObject entity, T& component);
