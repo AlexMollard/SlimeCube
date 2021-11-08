@@ -2,6 +2,7 @@
 #include "Input.h"
 #include "SceneObject.h"
 #include "Components.h"
+#include <memory>
 
 Scene::Scene(Camera* cam)
 {
@@ -9,12 +10,23 @@ Scene::Scene(Camera* cam)
 	mainShader = new Shader("main", "Shaders/litVertex.shader", "Shaders/litFragment.shader");
 	skyboxShader = new Shader("skybox", "Shaders/SkyBoxVertex.shader", "Shaders/SkyBoxFragment.shader");
 	tex = new Texture("missingTex", "Images/missingTex.png");
-	skyBox = new Skybox("Images/SkyBox/");
+	skyBoxTex = new Skybox("Images/SkyBox/");
 	mesh = new Mesh("Cube");
-	mesh->create();
+	mesh->create(Primitives::Cube);
 	mat = new Material("main", tex);
+	skyBoxMat = new Material("skyboxmaterial", skyBoxTex);
 
 	this->cam = cam;
+	cam->Position = glm::vec3(0.0f,5.0f,15.0f);
+	
+	SceneObject skyBox = CreateEntity("SkyBox");
+	skyBox.AddComponent<SkyBoxComponent>(cam);
+	skyBox.GetComponent<MaterialComponent>().material = skyBoxMat;
+	skyBox.GetComponent<ShaderComponent>().shader = skyboxShader;
+
+	CreateEntity("Testing Cube");
+
+	cam->UpdateProjectionViewMatrix();
 }
 
 Scene::~Scene()
@@ -25,8 +37,11 @@ Scene::~Scene()
 	delete tex;
 	tex = nullptr;
 
-	delete skyBox;
-	skyBox = nullptr;
+	delete skyBoxMat;
+	skyBoxMat = nullptr;
+
+	delete skyBoxTex;
+	skyBoxTex = nullptr;
 
 	delete mesh;
 	mesh = nullptr;
@@ -38,54 +53,37 @@ Scene::~Scene()
 	skyboxShader = nullptr;
 }
 
-void* Scene::Render(float deltaTime)
+void Scene::Render(float deltaTime)
 {
-	skyboxShader->Use();
-	skyboxShader->setMat4("ProjectionView", cam->GetProjectionViewMatrix());
-	skyboxShader->setMat4("Model", glm::translate(glm::mat4(1.0f), cam->Position));
-
-	glDepthMask(GL_FALSE);
-	glActiveTexture(GL_TEXTURE0 + (int)0); // Texture unit 1
-	glBindTexture(GL_TEXTURE_CUBE_MAP, skyBox->GetID());
-	skyBox->Bind();
-	mesh->draw();
-	glDepthMask(GL_TRUE);
-
-	auto view = registry.view<TransformComponent, MeshComponent, ShaderComponent, MaterialComponent>();
-	for (auto entity : view)
+	auto view = registry.view<SkyBoxComponent>();
+	for (auto entityID : view)
 	{
-		TransformComponent &transform = view.get<TransformComponent>(entity);
-		MeshComponent &newMesh = view.get<MeshComponent>(entity);
-		ShaderComponent &shader = view.get<ShaderComponent>(entity);
-		MaterialComponent &material = view.get<MaterialComponent>(entity);
-		
-		shader.shader->Use();
-		shader.shader->setFloat("diffuseStrength", 1.0f);
-		shader.shader->setInt("diffuseTexture", 0);
-		shader.shader->setMat4("ProjectionView", cam->GetProjectionViewMatrix());
-		material.material->GetAlbedo()->Bind();
-
-		shader.shader->setMat4("Model", transform.GetTransform());
-		newMesh.mesh->draw();
+		SceneObject entity{ entityID , this };
+		RenderObject(entity);
 	}
 
-	return (void*)texture;
+	registry.each([&](auto entityID)
+	{
+		SceneObject entity{ entityID , this };
+		if (entity.HasComponent<TagComponent>() && !entity.HasComponent<SkyBoxComponent>())
+		{
+			RenderObject(entity);
+		}
+	});
 }
 
-SceneObject* Scene::CreateEntity(const std::string& name)
+SceneObject Scene::CreateEntity(const std::string& name)
 {
-	SceneObject entity = { registry.create(), this };
-	entity.AddComponant<TransformComponent>();
-	auto& tag = entity.AddComponant<TagComponent>();
+	SceneObject entity = SceneObject{ registry.create(), this };
+	entity.AddComponent<TransformComponent>();
+	auto& tag = entity.AddComponent<TagComponent>();
 	tag.Tag = name.empty() ? "Entity" : name;
 
-	entity.AddComponant<MeshComponent>(mesh);
-	entity.AddComponant<MaterialComponent>(mat);
-	entity.AddComponant<ShaderComponent>(mainShader);
+	entity.AddComponent<MeshComponent>(mesh);
+	entity.AddComponent<MaterialComponent>(mat);
+	entity.AddComponent<ShaderComponent>(mainShader);
 
-	std::cout << "Registry Size: " << registry.size() << std::endl;
-
-	return &entity;
+	return entity;
 }
 
 void Scene::DestroyEntity(SceneObject entity)
@@ -93,9 +91,40 @@ void Scene::DestroyEntity(SceneObject entity)
 	registry.destroy(entity);
 }
 
+void Scene::RenderObject(SceneObject entity)
+{
+	TransformComponent& transform = entity.GetComponent<TransformComponent>();
+	MeshComponent& newMesh = entity.GetComponent<MeshComponent>();
+	ShaderComponent& shader = entity.GetComponent<ShaderComponent>();
+	MaterialComponent& material = entity.GetComponent<MaterialComponent>();
+
+	shader.shader->Use();
+	shader.shader->setFloat("diffuseStrength", 1.0f);
+	shader.shader->setInt("diffuseTexture", 0);
+	shader.shader->setMat4("ProjectionView", cam->GetProjectionViewMatrix());
+	material.material->GetAlbedo()->Bind();
+
+
+	if (entity.HasComponent<SkyBoxComponent>())
+	{
+		glDepthMask(GL_FALSE);
+		glCullFace(GL_FRONT);
+		SkyBoxComponent& camera = entity.GetComponent<SkyBoxComponent>();
+		transform.SetPosition(camera.cam->Position);
+		shader.shader->setMat4("Model", transform.GetTransform());
+		newMesh.mesh->draw();
+		glCullFace(GL_BACK);
+		glDepthMask(GL_TRUE);
+		return;
+	}
+
+	shader.shader->setMat4("Model", transform.GetTransform());
+	newMesh.mesh->draw();
+}
+
 template<typename T>
 void Scene::OnComponentAdded(SceneObject entity, T& component)
 {
-	std::cout << "Component Added to : " << (int)entity.entityHandle << std::endl;
+	//std::cout << "Component Added to : " << (int)entity.entityHandle << std::endl;
 	//static_assert(false);
 }

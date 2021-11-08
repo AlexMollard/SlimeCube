@@ -38,9 +38,9 @@ int Window::Window_intit(int width, int height, char* name)
 
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-	glClearColor(0.16f, 0.30f, 0.5f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

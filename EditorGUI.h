@@ -2,22 +2,31 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "SceneObject.h"
+
 
 class EditorGUI
 {
 public:
-	EditorGUI();
+	EditorGUI(Scene* scene);
 	~EditorGUI();
+
+	void OnAttach();
 
 	void Render();
 	void StartFrame();
 	void EndFrame();
 
 	void Hierarchy();
-	void Properties();
+	void DrawEntityNode(SceneObject entity);
+
+	void Properties(SceneObject entity);
+	void DrawProperties(SceneObject entity);
 	void Menu();
 	void FileExplorer();
 	void FileViewer();
+
+	void SetDarkThemeColors();
 private:
 	ImGuiWindowFlags mainFlags =
 	{
@@ -31,4 +40,6 @@ private:
 
 	ImVec2 screenSize;
 	float columnWidth, rowHeight;
+	Scene* scene = nullptr;
+	SceneObject selectionContext;
 };

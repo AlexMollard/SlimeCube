@@ -11,7 +11,7 @@ public:
 	SceneObject(const SceneObject& other) = default;
 
 	template<typename T, typename... Args>
-	T& AddComponant(Args&&... args)
+	T& AddComponent(Args&&... args)
 	{
 		if (HasComponent<T>()) 
 		{
@@ -41,7 +41,6 @@ public:
 			//return T{};
 		}
 
-		std::cout << scene->name << std::endl;
 		return scene->registry.get<T>(entityHandle);
 	}
 

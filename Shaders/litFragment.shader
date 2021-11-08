@@ -138,7 +138,7 @@ vec3 CalculatespotLight(PointLight light, vec3 V, vec3 N, vec3 F0, float roughne
 void main()
 {
 	vec3 albedo = pow(texture(diffuseTexture, TexCoord).rgb, vec3(2.2)) * diffuseStrength;
-	float metallic = texture(specularTexture, TexCoord).r * specularStrength;
+	float metallic =a texture(specularTexture, TexCoord).r * specularStrength;
 	float ao = texture(ambientTexture, TexCoord).r * ambientStrength;
 	float roughness = texture(roughTexture, TexCoord).r * roughStrength;
 

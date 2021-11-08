@@ -10,6 +10,7 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "Material.h"
+#include "Camera.h"
 
 struct TagComponent
 {
@@ -23,6 +24,8 @@ struct TagComponent
 
 struct TransformComponent
 {
+	std::string name = "Transform";
+
 	glm::vec3 Translation = { 0.0f, 0.0f, 0.0f };
 	glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
 	glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
@@ -46,6 +49,7 @@ struct TransformComponent
 
 struct MeshComponent
 {
+	std::string name = "Mesh";
 	Mesh* mesh;
 
 	MeshComponent() = default;
@@ -56,6 +60,7 @@ struct MeshComponent
 
 struct ShaderComponent
 {
+	std::string name = "Shader";
 	Shader* shader;
 
 	ShaderComponent() = default;
@@ -66,6 +71,7 @@ struct ShaderComponent
 
 struct MaterialComponent
 {
+	std::string name = "Material";
 	Material* material;
 
 	MaterialComponent() = default;
@@ -73,3 +79,25 @@ struct MaterialComponent
 	MaterialComponent(Material* Material)
 		: material(Material) {}
 };
+
+struct SkyBoxComponent
+{
+	Camera* cam;
+	bool Primary = true; // TODO: think about moving to Scene
+	bool FixedAspectRatio = false;
+
+	SkyBoxComponent() = default;
+	SkyBoxComponent(Camera* camera) { cam = camera; };
+	SkyBoxComponent(const SkyBoxComponent&) = default;
+};
+
+template<typename... Component>
+struct ComponentGroup {};
+using AllComponents = ComponentGroup
+<
+	TransformComponent,
+	MeshComponent,
+	ShaderComponent,
+	SkyBoxComponent,
+	MaterialComponent
+>;

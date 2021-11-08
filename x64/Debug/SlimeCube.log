@@ -1,2 +1,5 @@
-﻿  SlimeCube.cpp
+﻿  EditorGUI.cpp
+  Scene.cpp
+  Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   SlimeCube.vcxproj -> C:\Users\alexm\source\repos\SlimeCube\x64\Debug\SlimeCube.exe

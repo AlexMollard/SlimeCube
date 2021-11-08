@@ -14,26 +14,11 @@ int main()
 	Input* inputManager = Input::GetInstance();
 	Camera* camera = new Camera(glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f));
 	Input::GetInstance()->SetCamera(camera);
-	EditorGUI* gui = new EditorGUI();
 	Scene* scene = new Scene(camera);
-	for (int x = 0; x < 10; x++)
-	{
-		scene->CreateEntity("Slime Cube");
-	}
+	EditorGUI* gui = new EditorGUI(scene);
 
-	auto view = scene->registry.view<TransformComponent>();
 	while (!app->Window_shouldClose())
 	{
-		static float time = 0.0f;
-		int i = 0;
-		time += app->GetDeltaTime();
-		for (auto entity : view)
-		{
-			auto& transform = view.get<TransformComponent>(entity);
-			transform.SetPosition(glm::vec3(glm::cos(time),glm::sin(-time),i * 3.0f));
-			i++;
-		}
-
 		ProcessMovement(app->GetDeltaTime(), camera, inputManager);
 		inputManager->Update();
 		app->Update_Window();
