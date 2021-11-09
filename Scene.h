@@ -3,7 +3,7 @@
 #include "Camera.h"
 #include "entt.hpp"
 
-class SceneObject;
+class Entity;
 class Material;
 class Shader;
 class Mesh;
@@ -16,8 +16,8 @@ public:
 
 	void Render(float deltaTime);
 
-	SceneObject CreateEntity(const std::string& name);
-	void DestroyEntity(SceneObject entity);
+	Entity CreateEntity(const std::string& name);
+	void DestroyEntity(Entity entity);
 
 	entt::registry registry;
 
@@ -27,13 +27,9 @@ public:
 	Mesh* mesh = nullptr;
 
 	std::string name = "Main Scene";
-	SceneObject* firstObject;
+	Entity* firstObject;
 
-	void RenderObject(SceneObject entity);
 private:
-	template<typename T>
-	void OnComponentAdded(SceneObject entity, T& component);
-
 	Shader* skyboxShader = nullptr;
 	unsigned int texture = 0;
 	Texture* tex = nullptr;
@@ -41,6 +37,5 @@ private:
 	Camera* cam = nullptr;
 
 	Scene* scene = nullptr;
-	friend class SceneObject;
-
+	friend class Entity;
 };

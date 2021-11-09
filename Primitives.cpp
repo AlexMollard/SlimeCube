@@ -192,7 +192,7 @@ Sphere::Sphere(float radius, float sectorCount, int stackCount)
 
 	for (int i = 0; i <= stackCount; ++i)
 	{
-		stackAngle = PI / 2 - i * stackStep;        // starting from pi/2 to -pi/2
+		stackAngle = PI / 2.0f - i * stackStep;        // starting from pi/2 to -pi/2
 		xy = radius * cosf(stackAngle);             // r * cos(u)
 		z = radius * sinf(stackAngle);              // r * sin(u)
 

@@ -1,11 +1,12 @@
 #include "Window.h"
 #include "Input.h"
-#include "EditorGUI.h"
-#include "SceneObject.h"
+#include "ImGuiLayer.h"
+#include "Entity.h"
 #include "entt.hpp"
 #include "Components.h"
 
-Input* Input::instance = 0;
+Input* Input::instance = nullptr;
+ImGuiLayer* ImGuiLayer::instance = nullptr;
 
 void ProcessMovement(float deltaTime, Camera* camera, Input* inputManager);
 int main()
@@ -15,7 +16,7 @@ int main()
 	Camera* camera = new Camera(glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f));
 	Input::GetInstance()->SetCamera(camera);
 	Scene* scene = new Scene(camera);
-	EditorGUI* gui = new EditorGUI(scene);
+	ImGuiLayer::SetScene(scene);
 
 	while (!app->Window_shouldClose())
 	{
@@ -23,7 +24,7 @@ int main()
 		inputManager->Update();
 		app->Update_Window();
 		scene->Render(app->GetDeltaTime());
-		gui->Render();
+		ImGuiLayer::Render();
 	}
 
 	delete app;
@@ -35,8 +36,8 @@ int main()
 	delete scene;
 	scene = nullptr;
 
-	delete gui;
-	gui = nullptr;
+	ImGuiLayer::DeleteInstance();
+	
 
 	delete Input::GetInstance();
 

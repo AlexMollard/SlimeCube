@@ -83,12 +83,21 @@ struct MaterialComponent
 struct SkyBoxComponent
 {
 	Camera* cam;
-	bool Primary = true; // TODO: think about moving to Scene
-	bool FixedAspectRatio = false;
 
 	SkyBoxComponent() = default;
 	SkyBoxComponent(Camera* camera) { cam = camera; };
 	SkyBoxComponent(const SkyBoxComponent&) = default;
+};
+
+struct CameraComponent
+{
+	Camera* cam;
+	bool Primary = true;
+	bool FixedAspectRatio = false;
+
+	CameraComponent() = default;
+	CameraComponent(Camera* camera) { cam = camera; };
+	CameraComponent(const CameraComponent&) = default;
 };
 
 template<typename... Component>
@@ -98,6 +107,6 @@ using AllComponents = ComponentGroup
 	TransformComponent,
 	MeshComponent,
 	ShaderComponent,
-	SkyBoxComponent,
+	CameraComponent,
 	MaterialComponent
 >;
