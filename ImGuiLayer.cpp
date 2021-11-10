@@ -62,23 +62,20 @@ void ImGuiLayer::OnAttach()
 	ImGuiStyle& style = ImGui::GetStyle();
 }
 
-void ImGuiLayer::Render()
+void ImGuiLayer::Render(void* renderTex)
 {
 	GetInstance()->screenSize.x = Input::GetInstance()->GetWindowSize().x;
 	GetInstance()->screenSize.y = Input::GetInstance()->GetWindowSize().y;
 	GetInstance()->columnWidth = GetInstance()->screenSize.x * 0.20f;
-	GetInstance()->rowHeight = GetInstance()->screenSize.x * 0.20f;
-	
-	GetInstance()->StartFrame();
+	GetInstance()->rowHeight = GetInstance()->screenSize.y * 0.20f;
 
 	GetInstance()->Hierarchy();
 	GetInstance()->Properties(GetInstance()->selectionContext);
 	GetInstance()->Menu();
 	GetInstance()->FileExplorer();
 	GetInstance()->FileViewer();
+	GetInstance()->DrawViewPort(renderTex);
 	GetInstance()->DrawGizmos(GetInstance()->selectionContext);
-
-	GetInstance()->EndFrame();
 }
 
 void ImGuiLayer::StartFrame()
@@ -94,6 +91,11 @@ void ImGuiLayer::EndFrame()
 {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+ImVec2 ImGuiLayer::GetViewPortSize()
+{
+	return GetInstance()->viewPortSize;
 }
 
 void ImGuiLayer::Hierarchy()
@@ -423,6 +425,32 @@ void ImGuiLayer::DrawGizmos(Entity entity)
 {
 	ImGuizmo::SetOrthographic(false);
 	ImGuizmo::SetDrawlist();
+}
+
+void ImGuiLayer::DrawViewPort(void* renderTex)
+{
+	ImGui::SetNextWindowPos(ImVec2(0.0f,0.0f));
+	ImVec2 windowSize = ImVec2(screenSize.x - columnWidth, screenSize.y - rowHeight);
+	ImGui::SetNextWindowSize(windowSize);
+	//ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+	ImGui::Begin("Viewport", nullptr, mainFlags);
+	viewPortSize = ImGui::GetContentRegionAvail();
+	auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+	auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+	auto viewportOffset = ImGui::GetWindowPos();
+	m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
+	m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
+
+	bool viewportFocused = ImGui::IsWindowFocused();
+	bool viewportHovered = ImGui::IsWindowHovered();
+	//Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
+
+	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+	windowSize = { viewportPanelSize.x, viewportPanelSize.y };
+	
+	//uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
+	ImGui::Image(reinterpret_cast<void*>(renderTex), windowSize, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+	ImGui::End();
 }
 
 void ImGuiLayer::SetDarkThemeColors()

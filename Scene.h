@@ -14,7 +14,7 @@ public:
 	Scene(Camera* cam);
 	~Scene();
 
-	void Render(float deltaTime);
+	void* Render(float deltaTime);
 
 	Entity CreateEntity(const std::string& name);
 	void DestroyEntity(Entity entity);
@@ -38,4 +38,12 @@ private:
 
 	Scene* scene = nullptr;
 	friend class Entity;
+
+	// Texture Stuff
+	GLuint FramebufferName = 0;
+	GLuint renderedTexture;
+	GLuint depthrenderbuffer;
+	GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
+
+
 };

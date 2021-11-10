@@ -15,16 +15,18 @@ public:
 	ImGuiLayer& operator=(const ImGuiLayer&) = delete;
 	ImGuiLayer& operator=(ImGuiLayer&&) = delete;
 
-	static void Render();
+	static void Render(void* renderTex);
 	static void SetScene(Scene* scene);
 	static void DeleteInstance();
+
+	static void StartFrame();
+	static void EndFrame();
+	static ImVec2 GetViewPortSize();
 private:
 	ImGuiLayer();
 	~ImGuiLayer();
 
 	void OnAttach();
-	void StartFrame();
-	void EndFrame();
 
 	void Hierarchy();
 	void DrawEntityNode(Entity entity);
@@ -35,6 +37,7 @@ private:
 	void FileExplorer();
 	void FileViewer();
 	void DrawGizmos(Entity entity);
+	void DrawViewPort(void* renderTex);
 
 	void SetDarkThemeColors();
 
@@ -53,4 +56,6 @@ private:
 	float columnWidth, rowHeight;
 	Scene* scene = nullptr;
 	Entity selectionContext;
+	glm::vec2 m_ViewportBounds[2];
+	ImVec2 viewPortSize;
 };

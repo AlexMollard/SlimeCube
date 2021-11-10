@@ -25,8 +25,11 @@ int main()
 		ProcessMovement(app->GetDeltaTime(), camera, inputManager);
 		inputManager->Update();
 		app->Update_Window();
-		scene->Render(app->GetDeltaTime());
-		ImGuiLayer::Render();
+
+		// Rendering
+		ImGuiLayer::StartFrame();
+		ImGuiLayer::Render(scene->Render(app->GetDeltaTime()));
+		ImGuiLayer::EndFrame();
 	}
 
 	delete app;
