@@ -9,7 +9,7 @@ Renderer* Renderer::GetInstance()
 	if (!instance)
 	{
 		instance = new Renderer();
-		std::cout << "Renderer Instance Created" << std::endl;
+		Log::Info(__func__ + std::string(" Instance Created"));
 	}
 
 	return instance;

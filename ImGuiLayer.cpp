@@ -21,7 +21,7 @@ ImGuiLayer* ImGuiLayer::GetInstance()
 
 ImGuiLayer::ImGuiLayer()
 {
-	std::cout << "EditorGui Instance Created" << std::endl;
+	Log::Info(__func__ + std::string(" Instance Created"));
 	OnAttach();
 }
 

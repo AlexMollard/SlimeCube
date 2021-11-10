@@ -11,3 +11,5 @@
 #include <sstream>
 
 #include <windows.h>
+
+#include "Log.h"

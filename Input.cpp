@@ -12,7 +12,7 @@ Input::Input()
 	window = glfwGetCurrentContext();
 	glfwSetWindowFocusCallback(window, window_focus_callback);
 	glfwSetScrollCallback(window, scroll_callback);
-	std::cout << "Input Instance Created" << std::endl;
+	Log::Info(__func__ + std::string(" Instance Created"));
 }
 
 Input::~Input()
