@@ -1,5 +1,5 @@
+#include "pch.h"
 #include "Camera.h"
-
 // Constructor with vectors
 Camera::Camera(glm::mat4 projection, glm::vec3 position, glm::vec3 up, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
 {

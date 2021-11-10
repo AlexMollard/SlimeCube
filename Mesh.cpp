@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Mesh.h"
 
 Mesh::Mesh(const char* name, const char* dir)

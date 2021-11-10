@@ -1,8 +1,6 @@
 #pragma once
 
 #include <glm.hpp>
-#include <string>
-#include <vector>
 //#include "Texture.h"
 
 // a simple triangle mesh wrapper

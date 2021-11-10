@@ -1,8 +1,8 @@
+#include "pch.h"
 #include "Scene.h"
 #include "Input.h"
 #include "Entity.h"
 #include "Components.h"
-#include <memory>
 #include "Renderer.h"
 
 Scene::Scene(Camera* cam)

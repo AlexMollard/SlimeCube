@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "OBJMesh.h"
 #include "glew/glew.h"
 

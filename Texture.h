@@ -1,9 +1,6 @@
 #pragma once
-#include <string>
 #include "glew/glew.h"
 #include "GLFW/glfw3.h"
-#include <vector>
-
 
 class Texture
 {

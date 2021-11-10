@@ -1,7 +1,7 @@
+#include "pch.h"
 #include "ImGuiLayer.h"
 #include "imgui_internal.h"
 #include "Input.h"
-#include <string>
 #include "Components.h"
 #include "glm.hpp"
 
@@ -21,7 +21,7 @@ ImGuiLayer* ImGuiLayer::GetInstance()
 
 ImGuiLayer::ImGuiLayer()
 {
-	std::cout << "EditoprGui Instance Created" << std::endl;
+	std::cout << "EditorGui Instance Created" << std::endl;
 	OnAttach();
 }
 

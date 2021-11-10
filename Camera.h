@@ -2,7 +2,6 @@
 #include "glm.hpp"
 #include "ext.hpp"
 #include <GLFW/glfw3.h>
-#include <vector>
 
 enum Camera_Movement
 {

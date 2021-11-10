@@ -1,6 +1,6 @@
+#include "pch.h"
 #include "Skybox.h"
 #include "dirent.h"
-#include <iostream>
 #include "stb_image.h"
 
 Skybox::Skybox(std::string facesDIR)

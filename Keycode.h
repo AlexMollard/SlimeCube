@@ -52,7 +52,7 @@ enum Keycode
 	TAB = 258,
 	BACKSPACE = 259,
 	INSERT = 260,
-	DELETE = 261,
+	K_DELETE = 261,
 	RIGHT = 262,
 	LEFT = 263,
 	DOWN = 264,

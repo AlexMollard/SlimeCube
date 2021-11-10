@@ -105,6 +105,9 @@
     <ClCompile Include="Dependencies\imguizmo\ImGuizmo.cpp">
       <Filter>Source Files\ImGuizmo</Filter>
     </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="Dependencies\imguizmo\ImGradient.h">
       <Filter>Source Files\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

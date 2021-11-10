@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Shader.h"
 
 Shader::Shader(std::string name, const char* vertexPath, const char* fragmentPath, const char* geometryPath)

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Renderer.h"
 #include "Components.h"
 
@@ -8,6 +9,7 @@ Renderer* Renderer::GetInstance()
 	if (!instance)
 	{
 		instance = new Renderer();
+		std::cout << "Renderer Instance Created" << std::endl;
 	}
 
 	return instance;

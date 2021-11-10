@@ -1,6 +1,5 @@
+#include "pch.h"
 #include "Input.h"
-#include <iostream>
-#include <string>
 
 void window_focus_callback(GLFWwindow* window, int focused);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -13,6 +12,7 @@ Input::Input()
 	window = glfwGetCurrentContext();
 	glfwSetWindowFocusCallback(window, window_focus_callback);
 	glfwSetScrollCallback(window, scroll_callback);
+	std::cout << "Input Instance Created" << std::endl;
 }
 
 Input::~Input()

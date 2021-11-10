@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Material.h"
 
 Material::Material(std::string name, Texture* albedo, Texture* specMap, Texture* normalMap, Texture* ambientMap, Texture* roughMap, Texture* displacementMap)
