@@ -6,8 +6,6 @@
 #include "glm.hpp"
 #include "gtx/matrix_decompose.hpp"
 
-
-
 ImGuiLayer* ImGuiLayer::GetInstance()
 {
 	if (!instance)
@@ -66,15 +64,15 @@ void ImGuiLayer::Render(void* renderTex)
 	GetInstance()->screenSize.x = Input::GetInstance()->GetWindowSize().x;
 	GetInstance()->screenSize.y = Input::GetInstance()->GetWindowSize().y;
 	GetInstance()->columnWidth = 380.0f;
-	GetInstance()->rowHeight = 250.0f;
+	GetInstance()->rowHeight = 230.0f;
 
 	GetInstance()->Hierarchy();
 	GetInstance()->Properties(GetInstance()->selectionContext);
-	GetInstance()->Menu();
 	GetInstance()->FileExplorer();
 	GetInstance()->FileViewer();
 	GetInstance()->DrawViewPort(renderTex);
 	GetInstance()->DrawGizmos(GetInstance()->selectionContext);
+	GetInstance()->DrawMenuBar();
 }
 
 void ImGuiLayer::StartFrame()
@@ -104,8 +102,8 @@ ImVec2 ImGuiLayer::GetViewPortSize()
 
 void ImGuiLayer::Hierarchy()
 {
-	ImGui::SetNextWindowPos(ImVec2(screenSize.x - columnWidth, 0.0f));
-	ImGui::SetNextWindowSize(ImVec2(columnWidth, screenSize.y * 0.50f));
+	ImGui::SetNextWindowPos(ImVec2(screenSize.x - columnWidth, 23.0f));
+	ImGui::SetNextWindowSize(ImVec2(columnWidth, screenSize.y * 0.50f - 23.0f));
 	ImGui::Begin("Scene Hierarchy", nullptr, mainFlags);
 
 	scene->registry.each([&](auto entityID)
@@ -166,6 +164,53 @@ void ImGuiLayer::DrawEntityNode(Entity entity)
 	}
 }
 
+void ImGuiLayer::DrawMenuBar()
+{
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("Project"))
+		{
+			if (ImGui::MenuItem("New", "Ctrl+N")) {}
+
+			if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+
+			if (ImGui::MenuItem("Save", "Ctrl+S")) {}
+
+			if (ImGui::MenuItem("Save As", "Ctrl+Shift+S")) {}
+
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Scene"))
+		{
+			if (ImGui::MenuItem("New")) {}
+			
+			if (ImGui::MenuItem("Open")) {}
+			
+			if (ImGui::MenuItem("Save")) {}
+
+			if (ImGui::MenuItem("Save As")) {}
+		
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Create Entity"))
+		{
+			if (ImGui::MenuItem("Cube")) {}
+
+			if (ImGui::MenuItem("Quad")) {}
+
+			if (ImGui::MenuItem("Plane")) {}
+
+			if (ImGui::MenuItem("Torus")) {}
+
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMainMenuBar();
+	}
+}
+
 void ImGuiLayer::Properties(Entity entity)
 {
 	ImGui::SetNextWindowPos(ImVec2(screenSize.x - columnWidth, screenSize.y * 0.50f));
@@ -175,6 +220,10 @@ void ImGuiLayer::Properties(Entity entity)
 
 	if (entity)
 		DrawProperties(entity);
+	// Second one is to just fill up properties panel for testing
+	if (entity)
+		DrawProperties(entity);
+	
 	ImGui::End();
 }
 
@@ -396,19 +445,6 @@ void ImGuiLayer::DrawProperties(Entity entity)
 	}
 }
 
-
-
-void ImGuiLayer::Menu()
-{
-	ImGui::SetNextWindowPos(ImVec2((screenSize.x - columnWidth) - 95.0f, screenSize.y * 0.80f - 50.0f));
-	ImGui::SetNextWindowSize(ImVec2(95.0f, 50.0f));
-	ImGui::Begin("Play and Pause", nullptr, mainFlags);
-	ImGui::ColorButton("Play", ImVec4(0.3f, 0.9f, 0.3f, 1.0f), ImGuiColorEditFlags_NoTooltip | ImGuiColorEditFlags_NoDragDrop, ImVec2(35.0f, 35.0f));
-	ImGui::SameLine();
-	ImGui::ColorButton("Stop", ImVec4(0.9f, 0.3f, 0.3f, 1.0f), ImGuiColorEditFlags_NoTooltip | ImGuiColorEditFlags_NoDragDrop, ImVec2(35.0f, 35.0f));
-	ImGui::End();
-}
-
 void ImGuiLayer::FileExplorer()
 {
 	ImGui::SetNextWindowPos(ImVec2(0.0f, screenSize.y - rowHeight));
@@ -475,8 +511,8 @@ void ImGuiLayer::DrawGizmos(Entity entity)
 
 void ImGuiLayer::DrawViewPort(void* renderTex)
 {
-	ImGui::SetNextWindowPos(ImVec2(0.0f,0.0f));
-	ImVec2 windowSize = ImVec2(screenSize.x - columnWidth, screenSize.y - rowHeight);
+	ImGui::SetNextWindowPos(ImVec2(0.0f,23.0f));
+	ImVec2 windowSize = ImVec2(screenSize.x - columnWidth, screenSize.y - rowHeight - 23.0f);
 	ImGui::SetNextWindowSize(windowSize);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 	ImGui::Begin("Viewport", nullptr, mainFlags | ImGuiWindowFlags_NoDecoration);

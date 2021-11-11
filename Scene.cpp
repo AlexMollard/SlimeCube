@@ -9,7 +9,6 @@
 
 Scene::Scene(Camera* cam)
 {
-	scene = this;
 	mainShader = new Shader("main", "Shaders/litVertex.shader", "Shaders/litFragment.shader");
 	skyboxShader = new Shader("sky box", "Shaders/SkyBoxVertex.shader", "Shaders/SkyBoxFragment.shader");
 	tex = new Texture("missingTex", "Images/missingTex.png");
@@ -23,15 +22,15 @@ Scene::Scene(Camera* cam)
 	// Move most of this into the Skybox class
 	Entity skyBox = CreateEntity("SkyBox");
 	skyBoxTex = new Skybox("Images/SkyBox/");
-	skyBoxMat = new Material("skyboxmaterial", skyBoxTex);
+	skyBoxMat = new Material("Skybox Material", skyBoxTex);
 	skyBox.AddComponent<SkyBoxComponent>(cam);
 	skyBox.GetComponent<MaterialComponent>().material = skyBoxMat;
 	skyBox.GetComponent<ShaderComponent>().shader = skyboxShader;
 	
-	int cubeCount = 10;
-	for (int i = 0; i < cubeCount; i++)
+	int cubeCount = 4;
+	for (int i = -cubeCount; i < cubeCount; i++)
 	{
-		CreateEntity("Testing Cube").GetComponent<TransformComponent>().SetPosition(glm::vec3((i * 3.0f) - (cubeCount * 1.5f),0.0f,0.0f));
+		CreateEntity("Testing Cube").GetComponent<TransformComponent>().SetPosition(glm::vec3((i * 3.0f) + 1.5f,0.0f,0.0f));
 	}
 	
 	cam->UpdateProjectionViewMatrix();
@@ -167,8 +166,4 @@ void Scene::UpdateAndBindRenderTexture()
 	glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
 	glViewport(0, 0, renderSize.x, renderSize.y); // Render on the whole frame buffer, complete from the lower left corner to the upper right
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Always check that our frame buffer is ok
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		Log::Error("THE TEXTURE IS COOKED");
 }

@@ -40,7 +40,6 @@ private:
 	Skybox* skyBoxTex = nullptr;
 	Camera* cam = nullptr;
 
-	Scene* scene = nullptr;
 	friend class Entity;
 
 	// Texture Stuff

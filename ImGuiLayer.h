@@ -34,9 +34,9 @@ private:
 	void Hierarchy();
 	void DrawEntityNode(Entity entity);
 
+	void DrawMenuBar();
 	void Properties(Entity entity);
 	void DrawProperties(Entity entity);
-	void Menu();
 	void FileExplorer();
 	void FileViewer();
 	void DrawGizmos(Entity entity);
