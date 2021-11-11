@@ -38,7 +38,8 @@ glm::mat4 Camera::GetProjectionMatrix()
 
 void Camera::UpdateProjectionViewMatrix()
 {
-	ProjectionViewMat = Projection * GetViewMatrix();
+	float aspectRatio = (Input::GetAspectRatio() > 0 ? Input::GetAspectRatio() : 1.777f);
+	ProjectionViewMat = glm::perspective(glm::radians(60.0f), aspectRatio, 0.1f, 1000.0f) * GetViewMatrix();
 }
 
 glm::mat4 Camera::GetProjectionViewMatrix()

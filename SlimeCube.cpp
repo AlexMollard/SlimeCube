@@ -1,40 +1,38 @@
 #include "pch.h"
-#include "Window.h"
-#include "Input.h"
-#include "ImGuiLayer.h"
-#include "Entity.h"
-#include "entt.hpp"
-#include "Components.h"
+#include "SlimeCube.h"
 
 Input* Input::instance = nullptr;
 ImGuiLayer* ImGuiLayer::instance = nullptr;
 
-void ProcessMovement(float deltaTime, Camera* camera, Input* inputManager);
 int main()
 {
 	Log::Init();
 	Window* app = new Window(1920, 1080, (char*)"SlimeCore2D");
-	Input* inputManager = Input::GetInstance();
-	Camera* camera = new Camera(glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f));
-	Input::GetInstance()->SetCamera(camera);
-	Scene* scene = new Scene(camera);
-	ImGuiLayer::SetScene(scene);
+	SlimeCube core;
 
 	while (!app->Window_shouldClose())
 	{
-		ProcessMovement(app->GetDeltaTime(), camera, inputManager);
-		inputManager->Update();
 		app->Update_Window();
-
-		// Rendering
-		ImGuiLayer::StartFrame();
-		ImGuiLayer::Render(scene->Render(app->GetDeltaTime()));
-		ImGuiLayer::EndFrame();
+		core.Update(app->GetDeltaTime());
 	}
 
 	delete app;
 	app = nullptr;
 
+	return 0;
+}
+
+SlimeCube::SlimeCube()
+{
+	inputManager = Input::GetInstance();
+	camera = new Camera(glm::perspective(glm::radians(60.0f), 1920.0f / 1080.0f, 0.1f, 100.0f));
+	Input::GetInstance()->SetCamera(camera);
+	scene = new Scene(camera);
+	ImGuiLayer::SetScene(scene);
+}
+
+SlimeCube::~SlimeCube()
+{
 	delete camera;
 	camera = nullptr;
 
@@ -42,15 +40,29 @@ int main()
 	scene = nullptr;
 
 	ImGuiLayer::DeleteInstance();
-	
 
 	delete Input::GetInstance();
-
-	return 0;
 }
 
-void ProcessMovement(float deltaTime, Camera* camera, Input* inputManager)
+void SlimeCube::Update(float deltaTime)
 {
+	ProcessMovement(deltaTime);
+	inputManager->Update();
+
+	// Rendering
+	ImGuiLayer::StartFrame();
+	ImGuiLayer::Render(scene->Render(deltaTime));
+	ImGuiLayer::EndFrame();
+}
+
+void SlimeCube::ProcessMovement(float deltaTime)
+{
+	if (windowSize != Input::GetWindowSize())
+	{
+		windowSize = Input::GetWindowSize();
+		camera->UpdateProjectionViewMatrix();
+	}
+
 	if (inputManager->GetMouseDown(1))
 	{
 		glfwSetInputMode(inputManager->GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -86,5 +98,16 @@ void ProcessMovement(float deltaTime, Camera* camera, Input* inputManager)
 	else
 	{
 		glfwSetInputMode(inputManager->GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
+		if (inputManager->GetKeyPress(Keycode::E))
+			ImGuiLayer::SetGizmoState(ImGuizmo::OPERATION::TRANSLATE);
+		
+		if (inputManager->GetKeyPress(Keycode::R))
+			ImGuiLayer::SetGizmoState(ImGuizmo::OPERATION::ROTATE);
+
+		if (inputManager->GetKeyPress(Keycode::T))
+			ImGuiLayer::SetGizmoState(ImGuizmo::OPERATION::SCALE);
 	}
 }
+
+

@@ -13,14 +13,14 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\imgui">
-      <UniqueIdentifier>{2adeadd9-dd8a-4263-8631-e4caeda9f9f2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{05a427d5-6f63-4385-b024-45ca5ddefa86}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\ImGuizmo">
+    <Filter Include="Resource Files\ImGuizmo">
       <UniqueIdentifier>{81a2203e-8255-4daf-9f8e-5abb342a3c6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\imgui">
+      <UniqueIdentifier>{2adeadd9-dd8a-4263-8631-e4caeda9f9f2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,25 +37,25 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\imgui\imgui.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\imgui\imgui_demo.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\imgui\imgui_draw.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\imgui\imgui_impl_glfw.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\imgui\imgui_impl_opengl3.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\imgui\imgui_tables.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\imgui\imgui_widgets.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="ImGuiLayer.cpp">
       <Filter>Source Files</Filter>
@@ -91,19 +91,19 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\imguizmo\ImSequencer.cpp">
-      <Filter>Source Files\ImGuizmo</Filter>
+      <Filter>Resource Files\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\imguizmo\GraphEditor.cpp">
-      <Filter>Source Files\ImGuizmo</Filter>
+      <Filter>Resource Files\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\imguizmo\ImCurveEdit.cpp">
-      <Filter>Source Files\ImGuizmo</Filter>
+      <Filter>Resource Files\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\imguizmo\ImGradient.cpp">
-      <Filter>Source Files\ImGuizmo</Filter>
+      <Filter>Resource Files\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\imguizmo\ImGuizmo.cpp">
-      <Filter>Source Files\ImGuizmo</Filter>
+      <Filter>Resource Files\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
@@ -126,31 +126,31 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\imgui\imstb_rectpack.h">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\imgui\imstb_textedit.h">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\imgui\imstb_truetype.h">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\imgui\imconfig.h">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\imgui\imgui.h">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\imgui\imgui_impl_glfw.h">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\imgui\imgui_impl_opengl3.h">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\imgui\imgui_impl_opengl3_loader.h">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\imgui\imgui_internal.h">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="ImGuiLayer.h">
       <Filter>Header Files</Filter>
@@ -195,27 +195,30 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\imguizmo\ImGuizmo.h">
-      <Filter>Source Files\ImGuizmo</Filter>
+      <Filter>Resource Files\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\imguizmo\ImSequencer.h">
-      <Filter>Source Files\ImGuizmo</Filter>
+      <Filter>Resource Files\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\imguizmo\ImZoomSlider.h">
-      <Filter>Source Files\ImGuizmo</Filter>
+      <Filter>Resource Files\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\imguizmo\GraphEditor.h">
-      <Filter>Source Files\ImGuizmo</Filter>
+      <Filter>Resource Files\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\imguizmo\ImCurveEdit.h">
-      <Filter>Source Files\ImGuizmo</Filter>
+      <Filter>Resource Files\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\imguizmo\ImGradient.h">
-      <Filter>Source Files\ImGuizmo</Filter>
+      <Filter>Resource Files\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SlimeCube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

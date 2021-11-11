@@ -12,4 +12,5 @@
 
 #include <windows.h>
 
+#include "Input.h"
 #include "Log.h"

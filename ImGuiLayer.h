@@ -3,6 +3,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "Entity.h"
+#include "ImGuizmo.h"
 
 
 class ImGuiLayer
@@ -21,7 +22,9 @@ public:
 
 	static void StartFrame();
 	static void EndFrame();
+	static void SetGizmoState(ImGuizmo::OPERATION newState);
 	static ImVec2 GetViewPortSize();
+	bool DecomposeTransform(const glm::mat4& transform, glm::vec3& translation, glm::vec3& rotation, glm::vec3& scale);
 private:
 	ImGuiLayer();
 	~ImGuiLayer();
@@ -44,11 +47,8 @@ private:
 	ImGuiWindowFlags mainFlags =
 	{
 		ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoScrollbar |
 		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoCollapse |
-		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoDecoration
+		ImGuiWindowFlags_NoCollapse
 	};
 
 	static ImGuiLayer* instance;
@@ -58,4 +58,5 @@ private:
 	Entity selectionContext;
 	glm::vec2 m_ViewportBounds[2];
 	ImVec2 viewPortSize;
+	ImGuizmo::OPERATION gizmoType = ImGuizmo::OPERATION::TRANSLATE;
 };

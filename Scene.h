@@ -29,7 +29,11 @@ public:
 	std::string name = "Main Scene";
 	Entity* firstObject;
 
+	Camera* GetMainCamera();
+
 private:
+	void GenerateRenderTexture();
+	void UpdateAndBindRenderTexture();
 	Shader* skyboxShader = nullptr;
 	unsigned int texture = 0;
 	Texture* tex = nullptr;

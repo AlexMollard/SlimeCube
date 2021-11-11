@@ -22,8 +22,8 @@ public:
 	static glm::vec2 GetMousePos();
 	glm::vec2 GetDeltaMouse();
 
-	glm::vec2 GetWindowSize();
-	glm::vec2 GetAspectRatio();
+	static glm::vec2 GetWindowSize();
+	static float GetAspectRatio();
 	static bool GetMouseDown(int button);
 
 	void SetCamera(Camera* cam);

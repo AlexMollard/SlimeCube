@@ -50,12 +50,12 @@ glm::vec2 Input::GetDeltaMouse()
 
 glm::vec2 Input::GetWindowSize()
 {
-	return glm::vec2(winWidth, winHeight);
+	return glm::vec2((float)GetInstance()->winWidth, (float)GetInstance()->winHeight);
 }
 
-glm::vec2 Input::GetAspectRatio()
+float Input::GetAspectRatio()
 {
-	return glm::vec2(aspectX, aspectY);
+	return (float)GetInstance()->winWidth / (float)GetInstance()->winHeight;
 }
 
 bool Input::GetMouseDown(int button)

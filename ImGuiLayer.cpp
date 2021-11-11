@@ -4,8 +4,7 @@
 #include "Input.h"
 #include "Components.h"
 #include "glm.hpp"
-
-#include "ImGuizmo.h"
+#include "gtx/matrix_decompose.hpp"
 
 
 
@@ -66,8 +65,8 @@ void ImGuiLayer::Render(void* renderTex)
 {
 	GetInstance()->screenSize.x = Input::GetInstance()->GetWindowSize().x;
 	GetInstance()->screenSize.y = Input::GetInstance()->GetWindowSize().y;
-	GetInstance()->columnWidth = GetInstance()->screenSize.x * 0.20f;
-	GetInstance()->rowHeight = GetInstance()->screenSize.y * 0.20f;
+	GetInstance()->columnWidth = 380.0f;
+	GetInstance()->rowHeight = 250.0f;
 
 	GetInstance()->Hierarchy();
 	GetInstance()->Properties(GetInstance()->selectionContext);
@@ -91,6 +90,11 @@ void ImGuiLayer::EndFrame()
 {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void ImGuiLayer::SetGizmoState(ImGuizmo::OPERATION newState)
+{
+	GetInstance()->gizmoType = newState;
 }
 
 ImVec2 ImGuiLayer::GetViewPortSize()
@@ -407,7 +411,7 @@ void ImGuiLayer::Menu()
 
 void ImGuiLayer::FileExplorer()
 {
-	ImGui::SetNextWindowPos(ImVec2(0.0f, screenSize.y * 0.80f));
+	ImGui::SetNextWindowPos(ImVec2(0.0f, screenSize.y - rowHeight));
 	ImGui::SetNextWindowSize(ImVec2((screenSize.x - (columnWidth * 2.0f)), rowHeight + 1.0f));
 	ImGui::Begin("File Explorer", nullptr, mainFlags);
 	ImGui::End();
@@ -415,7 +419,7 @@ void ImGuiLayer::FileExplorer()
 
 void ImGuiLayer::FileViewer()
 {
-	ImGui::SetNextWindowPos(ImVec2((screenSize.x - (columnWidth * 2.0f)), screenSize.y * 0.80f));
+	ImGui::SetNextWindowPos(ImVec2((screenSize.x - (columnWidth * 2.0f)), screenSize.y - rowHeight));
 	ImGui::SetNextWindowSize(ImVec2(columnWidth, rowHeight + 1.0f));
 	ImGui::Begin("File Viewer", nullptr, mainFlags);
 	ImGui::End();
@@ -423,8 +427,50 @@ void ImGuiLayer::FileViewer()
 
 void ImGuiLayer::DrawGizmos(Entity entity)
 {
+	if (!entity)
+	{
+		ImGui::End();
+		ImGui::PopStyleVar();
+		return;
+	}
 	ImGuizmo::SetOrthographic(false);
 	ImGuizmo::SetDrawlist();
+	ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
+
+	// Editor camera
+	const glm::mat4& cameraProjection = scene->GetMainCamera()->GetProjectionMatrix();
+	glm::mat4 cameraView = scene->GetMainCamera()->GetViewMatrix();
+
+	// Entity transform
+	auto& tc = entity.GetComponent<TransformComponent>();
+	glm::mat4 transform = tc.GetTransform();
+
+	// Snapping
+	bool snap = Input::GetKeyPress(LEFT_CONTROL);
+	float snapValue = 0.5f; // Snap to 0.5m for translation/scale
+	// Snap to 45 degrees for rotation
+	if (gizmoType == ImGuizmo::OPERATION::ROTATE)
+		snapValue = 45.0f;
+
+	float snapValues[3] = { snapValue, snapValue, snapValue };
+
+	ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+		(ImGuizmo::OPERATION)gizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+		nullptr, snap ? snapValues : nullptr);
+
+	if (ImGuizmo::IsUsing())
+	{
+		glm::vec3 translation, rotation, scale;
+		DecomposeTransform(transform, translation, rotation, scale);
+
+		glm::vec3 deltaRotation = rotation - tc.Rotation;
+		tc.Translation = translation;
+		tc.Rotation += deltaRotation;
+		tc.Scale = scale;
+	}
+
+	ImGui::End();
+	ImGui::PopStyleVar();
 }
 
 void ImGuiLayer::DrawViewPort(void* renderTex)
@@ -432,8 +478,8 @@ void ImGuiLayer::DrawViewPort(void* renderTex)
 	ImGui::SetNextWindowPos(ImVec2(0.0f,0.0f));
 	ImVec2 windowSize = ImVec2(screenSize.x - columnWidth, screenSize.y - rowHeight);
 	ImGui::SetNextWindowSize(windowSize);
-	//ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-	ImGui::Begin("Viewport", nullptr, mainFlags);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+	ImGui::Begin("Viewport", nullptr, mainFlags | ImGuiWindowFlags_NoDecoration);
 	viewPortSize = ImGui::GetContentRegionAvail();
 	auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
 	auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
@@ -443,14 +489,12 @@ void ImGuiLayer::DrawViewPort(void* renderTex)
 
 	bool viewportFocused = ImGui::IsWindowFocused();
 	bool viewportHovered = ImGui::IsWindowHovered();
-	//Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
 
 	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 	windowSize = { viewportPanelSize.x, viewportPanelSize.y };
 	
-	//uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 	ImGui::Image(reinterpret_cast<void*>(renderTex), windowSize, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-	ImGui::End();
+
 }
 
 void ImGuiLayer::SetDarkThemeColors()
@@ -484,4 +528,76 @@ void ImGuiLayer::SetDarkThemeColors()
 	colors[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 	colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 	colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+}
+
+bool ImGuiLayer::DecomposeTransform(const glm::mat4& transform, glm::vec3& translation, glm::vec3& rotation, glm::vec3& scale)
+{
+	// From glm::decompose in matrix_decompose.inl
+
+	using namespace glm;
+	using T = float;
+
+	mat4 LocalMatrix(transform);
+
+	// Normalize the matrix.
+	if (epsilonEqual(LocalMatrix[3][3], static_cast<float>(0), epsilon<T>()))
+		return false;
+
+	// First, isolate perspective.  This is the messiest.
+	if (
+		epsilonNotEqual(LocalMatrix[0][3], static_cast<T>(0), epsilon<T>()) ||
+		epsilonNotEqual(LocalMatrix[1][3], static_cast<T>(0), epsilon<T>()) ||
+		epsilonNotEqual(LocalMatrix[2][3], static_cast<T>(0), epsilon<T>()))
+	{
+		// Clear the perspective partition
+		LocalMatrix[0][3] = LocalMatrix[1][3] = LocalMatrix[2][3] = static_cast<T>(0);
+		LocalMatrix[3][3] = static_cast<T>(1);
+	}
+
+	// Next take care of translation (easy).
+	translation = vec3(LocalMatrix[3]);
+	LocalMatrix[3] = vec4(0, 0, 0, LocalMatrix[3].w);
+
+	vec3 Row[3], Pdum3;
+
+	// Now get scale and shear.
+	for (length_t i = 0; i < 3; ++i)
+		for (length_t j = 0; j < 3; ++j)
+			Row[i][j] = LocalMatrix[i][j];
+
+	// Compute X scale factor and normalize first row.
+	scale.x = length(Row[0]);
+	Row[0] = detail::scale(Row[0], static_cast<T>(1));
+	scale.y = length(Row[1]);
+	Row[1] = detail::scale(Row[1], static_cast<T>(1));
+	scale.z = length(Row[2]);
+	Row[2] = detail::scale(Row[2], static_cast<T>(1));
+
+	// At this point, the matrix (in rows[]) is orthonormal.
+	// Check for a coordinate system flip.  If the determinant
+	// is -1, then negate the matrix and the scaling factors.
+#if 0
+	Pdum3 = cross(Row[1], Row[2]); // v3Cross(row[1], row[2], Pdum3);
+	if (dot(Row[0], Pdum3) < 0)
+	{
+		for (length_t i = 0; i < 3; i++)
+		{
+			scale[i] *= static_cast<T>(-1);
+			Row[i] *= static_cast<T>(-1);
+		}
+	}
+#endif
+
+	rotation.y = asin(-Row[0][2]);
+	if (cos(rotation.y) != 0) {
+		rotation.x = atan2(Row[1][2], Row[2][2]);
+		rotation.z = atan2(Row[0][1], Row[0][0]);
+	}
+	else {
+		rotation.x = atan2(-Row[2][0], Row[1][1]);
+		rotation.z = 0;
+	}
+
+
+	return true;
 }
