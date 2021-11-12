@@ -21,6 +21,7 @@ Texture::Texture(std::string name, std::string dir)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	// Load Image and generate mipmaps
+	stbi_set_flip_vertically_on_load(1);
 	int width, height, nrChannels;
 	unsigned char* data = stbi_load(dir.c_str(), &width, &height, &nrChannels, 0);
 
@@ -74,6 +75,7 @@ void Texture::load(std::string dir)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	// Load Image and generate mipmaps
+	stbi_set_flip_vertically_on_load(1);
 	int width, height, nrChannels;
 	unsigned char* data = stbi_load(dir.c_str(), &width, &height, &nrChannels, 0);
 
@@ -86,4 +88,9 @@ void Texture::load(std::string dir)
 		printf("Failed to load texture: %c\n", dir.c_str());
 	}
 	stbi_image_free(data);
+}
+
+std::shared_ptr<Texture> Texture::Create(std::string dir)
+{
+	return std::make_shared<Texture>("temp", dir);
 }

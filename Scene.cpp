@@ -9,9 +9,9 @@
 
 Scene::Scene(Camera* cam)
 {
-	mainShader = new Shader("main", "Shaders/litVertex.shader", "Shaders/litFragment.shader");
-	skyboxShader = new Shader("sky box", "Shaders/SkyBoxVertex.shader", "Shaders/SkyBoxFragment.shader");
-	tex = new Texture("missingTex", "Images/missingTex.png");
+	mainShader = new Shader("main", "Assets/Shaders/litVertex.shader", "Assets/Shaders/litFragment.shader");
+	skyboxShader = new Shader("sky box", "Assets/Shaders/SkyBoxVertex.shader", "Assets/Shaders/SkyBoxFragment.shader");
+	tex = new Texture("missingTex", "Assets/Images/missingTex.png");
 	mesh = new Mesh("Cube");
 	mesh->create(Primitives::Cube);
 	mat = new Material("main", tex);
@@ -21,7 +21,7 @@ Scene::Scene(Camera* cam)
 	
 	// Move most of this into the Skybox class
 	Entity skyBox = CreateEntity("SkyBox");
-	skyBoxTex = new Skybox("Images/SkyBox/");
+	skyBoxTex = new Skybox("Assets/Images/SkyBox/");
 	skyBoxMat = new Material("Skybox Material", skyBoxTex);
 	skyBox.AddComponent<SkyBoxComponent>(cam);
 	skyBox.GetComponent<MaterialComponent>().material = skyBoxMat;

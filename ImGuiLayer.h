@@ -4,6 +4,7 @@
 #include "imgui_impl_opengl3.h"
 #include "Entity.h"
 #include "ImGuizmo.h"
+#include "ContentBrowser.h"
 
 
 class ImGuiLayer
@@ -24,7 +25,6 @@ public:
 	static void EndFrame();
 	static void SetGizmoState(ImGuizmo::OPERATION newState);
 	static ImVec2 GetViewPortSize();
-	bool DecomposeTransform(const glm::mat4& transform, glm::vec3& translation, glm::vec3& rotation, glm::vec3& scale);
 private:
 	ImGuiLayer();
 	~ImGuiLayer();
@@ -38,7 +38,6 @@ private:
 	void Properties(Entity entity);
 	void DrawProperties(Entity entity);
 	void FileExplorer();
-	void FileViewer();
 	void DrawGizmos(Entity entity);
 	void DrawViewPort(void* renderTex);
 
@@ -59,4 +58,6 @@ private:
 	glm::vec2 m_ViewportBounds[2];
 	ImVec2 viewPortSize;
 	ImGuizmo::OPERATION gizmoType = ImGuizmo::OPERATION::TRANSLATE;
+
+	ContentBrowser contentBrowser;
 };

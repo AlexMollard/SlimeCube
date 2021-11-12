@@ -164,6 +164,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ContentBrowser.cpp" />
     <ClCompile Include="Dependencies\imguizmo\GraphEditor.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -275,6 +276,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Components.h" />
+    <ClInclude Include="ContentBrowser.h" />
     <ClInclude Include="Dependencies\imguizmo\GraphEditor.h" />
     <ClInclude Include="Dependencies\imguizmo\ImCurveEdit.h" />
     <ClInclude Include="Dependencies\imguizmo\ImGradient.h" />
@@ -296,6 +298,7 @@
     <ClInclude Include="Keycode.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="Math.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="objLoader.h" />
     <ClInclude Include="OBJMesh.h" />

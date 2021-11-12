@@ -19,7 +19,10 @@ public:
 	std::string GetName() { return name; };
 	const char* GetNameC() { return name.c_str(); };
 
+	static std::shared_ptr<Texture> Create(std::string dir);
+
 protected:
 	std::string name = "Default Name";
-	unsigned int textureID = 0;
+	uint32_t textureID;
 };
+
