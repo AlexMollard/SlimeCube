@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ContentBrowser.h"
 
-
 static const std::filesystem::path assetsPath = "Assets";
 
 ContentBrowser::ContentBrowser()
@@ -12,6 +11,12 @@ ContentBrowser::ContentBrowser()
 	pngIcon = Texture::Create("Assets/Images/Icons/PNG File.png");
 	prevFrameDirectory = "False Directory";
 }
+
+void ContentBrowser::AddTexture(std::string const& path)
+{
+	imagesInDir.push_back(Texture::Create(path));
+}
+
 
 void ContentBrowser::OnRender(ImVec2 panelPos, ImVec2 panelSize, ImGuiWindowFlags flags)
 {
@@ -52,7 +57,7 @@ void ContentBrowser::OnRender(ImVec2 panelPos, ImVec2 panelSize, ImGuiWindowFlag
 		ImGui::PushID(fileNameString.c_str());
 		
 		std::shared_ptr<Texture> icon = nullptr;
-		if (path.extension() == ".png")
+		if (path.extension() == ".png" || path.extension() == ".jpg")
 		{
 			if (!updateImages)
 			{
@@ -63,7 +68,14 @@ void ContentBrowser::OnRender(ImVec2 panelPos, ImVec2 panelSize, ImGuiWindowFlag
 			}
 			else
 			{
-				imagesInDir.push_back(Texture::Create(path.string()));
+				//std::thread t1(&ContentBrowser::AddTexture,this, path.string());
+				//t1.detach();
+				//
+				//if (imagesInDir.size() < 1)
+				//	icon = pngIcon;
+				//else
+				//	icon = imagesInDir.back();
+				AddTexture(path.string());
 				icon = imagesInDir.back();
 				id++;
 			}

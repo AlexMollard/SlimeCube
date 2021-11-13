@@ -8,9 +8,11 @@ class ContentBrowser
 public:
 	ContentBrowser();
 	~ContentBrowser() = default;
+	void AddTexture(std::string const& path);
 	void OnRender(ImVec2 panelPos, ImVec2 panelSize, ImGuiWindowFlags flags);
 
 private:
+
 	std::filesystem::path currentDirectory;
 	std::filesystem::path prevFrameDirectory;
 

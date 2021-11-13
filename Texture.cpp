@@ -28,10 +28,11 @@ Texture::Texture(std::string name, std::string dir)
 	if (data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, nrChannels != 4 ? GL_RGB : GL_RGBA, width, height, 0, nrChannels != 4 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, data);
+		Log::Trace("Texture " + std::to_string(textureID) + ": " + dir);
 	}
 	else
 	{
-		printf("Failed to load texture\n");
+		Log::Error("Failed to load texture: " + dir);
 	}
 	stbi_image_free(data);
 }
@@ -85,12 +86,12 @@ void Texture::load(std::string dir)
 	}
 	else
 	{
-		printf("Failed to load texture: %c\n", dir.c_str());
+		Log::Error("Failed to load texture: " + dir);
 	}
 	stbi_image_free(data);
 }
 
-std::shared_ptr<Texture> Texture::Create(std::string dir)
+std::shared_ptr<Texture> Texture::Create(std::string const& dir)
 {
 	return std::make_shared<Texture>("temp", dir);
 }
