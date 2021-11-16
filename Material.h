@@ -2,7 +2,7 @@
 #include "glm.hpp"
 #include "Texture.h"
 
-class Material
+class Material : Resource
 {
 public:
 
@@ -11,6 +11,7 @@ public:
 	Material(std::string name, Texture* albedo, Texture* specMap, Texture* normalMap, Texture* ambientMap, Texture* roughMap, Texture* displacementMap);
 	Material(std::string name, Texture* albedo, float diffuseStrength, Texture* specMap, float specularStrength, Texture* normalMap, float normalStrength, Texture* ambientMap, float ambientStrength, Texture* roughMap, float roughStrength, Texture* displacementMap, float displacementStrength);
 	Material(std::string name, Texture* albedo);
+	Material(std::string dir, void* args) {};
 
 	virtual ~Material();
 

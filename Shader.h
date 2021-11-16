@@ -3,12 +3,15 @@
 #include "ext.hpp"
 #include "glew/glew.h"
 #include "GLFW/glfw3.h"
+#include "Resource.h"
 
-class Shader
+class Shader : public Resource
 {
 public:
 	Shader(std::string name, const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr);
 	Shader(std::string name);
+	Shader(std::string dir, void* args) {};
+
 	~Shader();
 
 	unsigned int CompileShader(unsigned int type, const std::string& source);

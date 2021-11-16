@@ -2,7 +2,7 @@
 #include "ContentBrowser.h"
 
 static const std::filesystem::path assetsPath = "Assets";
-
+std::shared_ptr<Texture> tempTexture;
 ContentBrowser::ContentBrowser()
 {
 	currentDirectory = assetsPath.c_str();
@@ -12,9 +12,38 @@ ContentBrowser::ContentBrowser()
 	prevFrameDirectory = "False Directory";
 }
 
-void ContentBrowser::AddTexture(std::string const& path)
+void ContentBrowser::LoadTexture(const std::string& path, GLFWwindow* window)
 {
-	imagesInDir.push_back(Texture::Create(path));
+	glfwMakeContextCurrent(window);
+
+	tempTexture->load(path);
+	
+	glfwMakeContextCurrent(nullptr);
+}
+
+void ContentBrowser::AddTextures()
+{
+	for (auto& dirEntry : std::filesystem::directory_iterator(currentDirectory))
+	{
+		const std::string& path = dirEntry.path().string();
+	
+		if (!(dirEntry.path().extension() == ".png" || dirEntry.path().extension() == ".jpg"))
+			continue;
+		
+		tempTexture = std::make_shared<Texture>(path);
+		//temp->load(path);
+
+		GLFWwindow* window = glfwGetCurrentContext();
+		glfwMakeContextCurrent(nullptr);
+
+		std::thread t1(&ContentBrowser::LoadTexture, this, path, window);		// This needs to be all changed maybe learn more on threads or find a new approach
+		t1.join();
+		
+		glfwMakeContextCurrent(window);
+		
+		imagesInDir.push_back(tempTexture);
+	}
+
 }
 
 
@@ -41,12 +70,18 @@ void ContentBrowser::OnRender(ImVec2 panelPos, ImVec2 panelSize, ImGuiWindowFlag
 		{
 			currentDirectory = currentDirectory.parent_path();
 			updateImages = true;
-			imagesInDir.clear();
 		}
 	}
 
 	ImGui::Columns(coloumnCount, nullptr, false);
 	int id = 0;
+
+	if (updateImages)
+	{
+		imagesInDir.clear();
+		AddTextures();
+		updateImages = false;
+	}
 
 	for (auto& dirEntry : std::filesystem::directory_iterator(currentDirectory))
 	{
@@ -68,16 +103,7 @@ void ContentBrowser::OnRender(ImVec2 panelPos, ImVec2 panelSize, ImGuiWindowFlag
 			}
 			else
 			{
-				//std::thread t1(&ContentBrowser::AddTexture,this, path.string());
-				//t1.detach();
-				//
-				//if (imagesInDir.size() < 1)
-				//	icon = pngIcon;
-				//else
-				//	icon = imagesInDir.back();
-				AddTexture(path.string());
-				icon = imagesInDir.back();
-				id++;
+				icon = pngIcon;
 			}
 		}
 		else if (dirEntry.is_directory())
@@ -93,6 +119,8 @@ void ContentBrowser::OnRender(ImVec2 panelPos, ImVec2 panelSize, ImGuiWindowFlag
 		{
 			const wchar_t* itemPath = relativePath.c_str();
 			ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+			ImGui::ImageButton((ImTextureID)icon->GetID(), { thumbnailSize * 0.75f, thumbnailSize * 0.75f }, { 0, 1 }, { 1, 0 });
+			ImGui::Text(fileNameString.c_str());
 			ImGui::EndDragDropSource();
 		}
 
@@ -103,7 +131,6 @@ void ContentBrowser::OnRender(ImVec2 panelPos, ImVec2 panelSize, ImGuiWindowFlag
 			{
 				id = 0;
 				updateImages = true;
-				imagesInDir.clear();
 				currentDirectory /= path.filename();
 
 				ImGui::TextWrapped(fileNameString.c_str());
@@ -118,9 +145,6 @@ void ContentBrowser::OnRender(ImVec2 panelPos, ImVec2 panelSize, ImGuiWindowFlag
 		ImGui::NextColumn();
 		ImGui::PopID();
 	}
-
-	if (id == imagesInDir.size() && id != 0)
-		updateImages = false;
 
 	ImGui::Columns(1);
 

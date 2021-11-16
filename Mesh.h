@@ -18,10 +18,11 @@ struct Vertex {
 	glm::vec3 bitangent;	// added to attrib location 4
 };
 
-class Mesh
+class Mesh : Resource
 {
 public:
 	Mesh(const char* name, const char* dir = nullptr);
+	Mesh(std::string dir, void* args) {};
 	~Mesh();
 
 	void create(Primitives::TYPE type = Primitives::TYPE::Cube, float radius = 0.5f, float halfLength = 0.5f, int slices = 10);

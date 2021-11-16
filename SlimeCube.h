@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "entt.hpp"
 #include "Components.h"
+#include "ResourceManager.h"
 
 class SlimeCube 
 {
@@ -16,8 +17,9 @@ private:
 	void ProcessMovement(float deltaTime); 
 
 	Input* inputManager = nullptr;
-	Camera* camera = nullptr;
-	Scene* scene = nullptr;
+	std::unique_ptr<Camera> camera;
+	std::unique_ptr<Scene> scene;
+	ResourceManager<Texture> TextureManager;
 
 	glm::vec2 windowSize = glm::vec2(1920, 1080);
 };

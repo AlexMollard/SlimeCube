@@ -90,9 +90,6 @@
     <ClCompile Include="Dependencies\imguizmo\ImGuizmo.cpp">
       <Filter>Resource Files\ImGuizmo</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
@@ -127,6 +124,9 @@
       <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="ContentBrowser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -247,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="Math.h">
       <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -414,6 +414,8 @@ void ImGuiLayer::DrawProperties(Entity entity)
 	{
 		DrawComponent<ShaderComponent>("Shader", entity, [](auto& component) 
 		{
+
+
 				ImGui::LabelText("Shader Crap", "");
 		});
 	}
@@ -431,6 +433,25 @@ void ImGuiLayer::DrawProperties(Entity entity)
 		DrawComponent<MaterialComponent>("Material", entity, [](auto& component) 
 			{
 				ImGui::LabelText("Material Crap", "");
+				if (ImGui::ImageButton((ImTextureID)component.material->GetAlbedo()->GetID(), { 300,300 }))
+				{
+				}
+
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+					{
+						// Your wchar_t*
+						std::wstring ws((const wchar_t*)payload->Data);
+						// your new String
+						std::string str(ws.begin(), ws.end());
+						Texture* tempTex = new Texture("temp", "Assets\\" + str);	//MEMORY LEAK Needs to be std::shared_pointer (But need a texture manager or some sort of storing system)
+						component.material->SetAlbedo(tempTex);
+					}
+
+					ImGui::EndDragDropTarget();
+				}
+			
 			});
 	}
 

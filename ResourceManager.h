@@ -3,19 +3,73 @@
 #include "Shader.h"
 #include "Mesh.h"
 
+template <class T>
 class ResourceManager
 {
-public:
-	static ResourceManager* GetInstance();
-
-	ResourceManager(const ResourceManager&) = delete;
-	ResourceManager(ResourceManager&&) = delete;
-	ResourceManager& operator=(const ResourceManager&) = delete;
-	ResourceManager& operator=(ResourceManager&&) = delete;
 private:
-	ResourceManager();
-	~ResourceManager();
+	std::unordered_map<std::string, std::shared_ptr<T>> Map;
+	std::string Name;
+	
+	ResourceManager(const ResourceManager&) {};
+	ResourceManager& operator = (const ResourceManager&) { return *this; };
 
-	static ResourceManager* instance;
+	void ReleaseAll()
+	{
+		Map.clear();
+	}
+
+public:
+	std::shared_ptr<T> Load(const std::string& filename, void* args)
+	{
+		if (filename.empty())
+			Log::Warn("Filename cannot be null");
+
+		auto it = Map.find(filename);
+
+		if (it != Map.end())
+		{
+			return (*it).second;
+		}
+
+		std::shared_ptr<T> resource = std::make_shared<T>(filename, args);
+
+		Map.insert(std::pair<std::string, std::shared_ptr<T>>(filename, resource));
+
+		return resource;
+	}
+
+	bool Unload(const std::string& filename)
+	{
+		if (filename.empty())
+			Log::Error("filename cannot be null");
+
+		std::string FileName = filename;
+
+		auto it = Map.find(FileName);
+
+		if (it != Map.end())
+		{
+			Map.erase(it);
+			return true;
+		}
+
+		Log::Error("cannot find " + FileName);
+
+		return false;
+	}
+
+	void Initialise(const std::string& name) 
+	{
+		if (name.empty())
+			Log::Error("Null name is not allowed");
+
+		Name = name;
+	}
+
+	const std::string& GetName() const { return Name; }
+	const int Size() const { return Map.size(); }
+
+	ResourceManager() {}
+	~ResourceManager() { ReleaseAll(); }
 };
 

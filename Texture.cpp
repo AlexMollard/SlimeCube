@@ -8,17 +8,7 @@ Texture::Texture(std::string name, std::string dir)
 {
 	this->name = name;
 
-	// Create and bind texture ID
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_2D, textureID);
-
-	// Set Wrapping mode
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	// Set texture filtering
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	SetUpTextureID();
 
 	// Load Image and generate mipmaps
 	stbi_set_flip_vertically_on_load(1);
@@ -54,6 +44,20 @@ Texture::Texture(std::string name)
 	this->name = name;
 }
 
+
+Texture::Texture()
+{
+	name = "NA";
+
+	SetUpTextureID();
+}
+
+
+Texture::Texture(std::string dir, void* args)
+{
+	Texture(dir, dir);
+}
+
 Texture::~Texture()
 {
 	if (textureID != 0)
@@ -61,7 +65,7 @@ Texture::~Texture()
 	textureID = 0;
 }
 
-void Texture::load(std::string dir)
+void Texture::SetUpTextureID()
 {
 	// Create and bind texture ID
 	glGenTextures(1, &textureID);
@@ -74,6 +78,13 @@ void Texture::load(std::string dir)
 	// Set texture filtering
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
+
+void Texture::load(std::string dir)
+{
+	this->name = dir;
+
+	SetUpTextureID();
 
 	// Load Image and generate mipmaps
 	stbi_set_flip_vertically_on_load(1);
@@ -93,5 +104,5 @@ void Texture::load(std::string dir)
 
 std::shared_ptr<Texture> Texture::Create(std::string const& dir)
 {
-	return std::make_shared<Texture>("temp", dir);
+	return std::make_shared<Texture>(dir, dir);
 }

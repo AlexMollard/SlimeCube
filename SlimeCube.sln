@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SlimeCube", "SlimeCube.vcxproj", "{574E7D89-5AE0-4893-9F88-575E47FE7348}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "Game\Game.vcxproj", "{3EB1F437-A1D3-4698-BF7A-2FB8916B0783}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{574E7D89-5AE0-4893-9F88-575E47FE7348}.Release|x64.Build.0 = Release|x64
 		{574E7D89-5AE0-4893-9F88-575E47FE7348}.Release|x86.ActiveCfg = Release|Win32
 		{574E7D89-5AE0-4893-9F88-575E47FE7348}.Release|x86.Build.0 = Release|Win32
+		{3EB1F437-A1D3-4698-BF7A-2FB8916B0783}.Debug|x64.ActiveCfg = Debug|x64
+		{3EB1F437-A1D3-4698-BF7A-2FB8916B0783}.Debug|x64.Build.0 = Debug|x64
+		{3EB1F437-A1D3-4698-BF7A-2FB8916B0783}.Debug|x86.ActiveCfg = Debug|Win32
+		{3EB1F437-A1D3-4698-BF7A-2FB8916B0783}.Debug|x86.Build.0 = Debug|Win32
+		{3EB1F437-A1D3-4698-BF7A-2FB8916B0783}.Release|x64.ActiveCfg = Release|x64
+		{3EB1F437-A1D3-4698-BF7A-2FB8916B0783}.Release|x64.Build.0 = Release|x64
+		{3EB1F437-A1D3-4698-BF7A-2FB8916B0783}.Release|x86.ActiveCfg = Release|Win32
+		{3EB1F437-A1D3-4698-BF7A-2FB8916B0783}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

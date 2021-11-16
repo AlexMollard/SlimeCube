@@ -1,17 +1,20 @@
 #pragma once
 #include "glew/glew.h"
 #include "GLFW/glfw3.h"
+#include "Resource.h"
 
-class Texture
+class Texture : Resource
 {
 public:
 	Texture(std::string name, std::string dir);
 	Texture(std::string name, unsigned int id);
 	Texture(std::string name, unsigned int* id);
+	Texture(std::string dir, void* args);
 	Texture(std::string name);
-	Texture() {};
+	Texture();
 	~Texture();
 
+	void SetUpTextureID();
 	void load(std::string dir);
 	void Bind() { glBindTexture(GL_TEXTURE_2D, textureID); };
 	unsigned int GetID() { return textureID; };

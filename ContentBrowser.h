@@ -8,7 +8,8 @@ class ContentBrowser
 public:
 	ContentBrowser();
 	~ContentBrowser() = default;
-	void AddTexture(std::string const& path);
+	void LoadTexture(const std::string& path, GLFWwindow* window);
+	void AddTextures();
 	void OnRender(ImVec2 panelPos, ImVec2 panelSize, ImGuiWindowFlags flags);
 
 private:
