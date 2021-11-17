@@ -15,12 +15,20 @@ public:
 
 	virtual ~Resource() { }
 
+	// Misc Functions
+	//------------------
+	void SetName(const std::string& newName) { name = newName; }
+	const std::string& GetName() { return name; }
+
 protected:
 	Resource(const Resource& object) { }
 	Resource& operator=(const Resource& object) { return *this; }
 
 	// resource filename 
 	std::string ResourceFileName;
+
+	// resource filename 
+	std::string name;
 
 	Resource() {}
 };

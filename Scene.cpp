@@ -7,22 +7,26 @@
 #include "imgui_internal.h"
 #include "ImGuiLayer.h"
 
-Scene::Scene(Camera* cam)
+Scene::Scene(Camera* cam, std::shared_ptr<ResourceHub> resHub)
 {
-	mainShader = new Shader("main", "Assets/Shaders/litVertex.shader", "Assets/Shaders/litFragment.shader");
-	skyboxShader = new Shader("sky box", "Assets/Shaders/SkyBoxVertex.shader", "Assets/Shaders/SkyBoxFragment.shader");
-	tex = new Texture("missingTex", "Assets/Images/missingTex.png");
-	mesh = new Mesh("Cube");
+	resourceHub = resHub;
+	mainShader = resourceHub->GetShaderManager()->Load("Assets/Shaders/litVertex.shader", (void*)"Assets/Shaders/litFragment.shader");
+	skyboxShader = resourceHub->GetShaderManager()->Load("Assets/Shaders/SkyBoxVertex.shader", (void*)"Assets/Shaders/SkyBoxFragment.shader");
+
+	tex = resourceHub->GetTextureManager()->Load("Assets/Images/missingTex.png");
+	mesh = resourceHub->GetMeshManager()->Load(std::make_shared<Mesh>("Cube"));
 	mesh->create(Primitives::Cube);
-	mat = new Material("main", tex);
+
+	mat = resourceHub->GetMaterialManager()->Load(std::make_shared<Material>("Basic Material", tex));
+
 
 	this->cam = cam;
 	cam->Position = glm::vec3(0.0f,5.0f,15.0f);
 	
 	// Move most of this into the Skybox class
 	Entity skyBox = CreateEntity("SkyBox");
-	skyBoxTex = new Skybox("Assets/Images/SkyBox/");
-	skyBoxMat = new Material("Skybox Material", skyBoxTex);
+	skyBoxTex = std::make_shared<Skybox>("Assets/Images/SkyBox/");
+	skyBoxMat = std::make_shared<Material>("Skybox Material", skyBoxTex);
 	skyBox.AddComponent<SkyBoxComponent>(cam);
 	skyBox.GetComponent<MaterialComponent>().material = skyBoxMat;
 	skyBox.GetComponent<ShaderComponent>().shader = skyboxShader;
@@ -40,26 +44,6 @@ Scene::Scene(Camera* cam)
 
 Scene::~Scene()
 {
-	delete mainShader;
-	mainShader = nullptr;
-
-	delete tex;
-	tex = nullptr;
-
-	delete skyBoxMat;
-	skyBoxMat = nullptr;
-
-	delete skyBoxTex;
-	skyBoxTex = nullptr;
-
-	delete mesh;
-	mesh = nullptr;
-
-	delete mat;
-	mat = nullptr;
-
-	delete skyboxShader;
-	skyboxShader = nullptr;
 }
 
 void* Scene::Render(float deltaTime)

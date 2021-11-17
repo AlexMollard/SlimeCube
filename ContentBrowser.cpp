@@ -2,7 +2,6 @@
 #include "ContentBrowser.h"
 
 static const std::filesystem::path assetsPath = "Assets";
-std::shared_ptr<Texture> tempTexture;
 ContentBrowser::ContentBrowser()
 {
 	currentDirectory = assetsPath.c_str();
@@ -12,16 +11,7 @@ ContentBrowser::ContentBrowser()
 	prevFrameDirectory = "False Directory";
 }
 
-void ContentBrowser::LoadTexture(const std::string& path, GLFWwindow* window)
-{
-	glfwMakeContextCurrent(window);
-
-	tempTexture->load(path);
-	
-	glfwMakeContextCurrent(nullptr);
-}
-
-void ContentBrowser::AddTextures()
+void ContentBrowser::AddTextures(std::shared_ptr<ResourceHub> resHub)
 {
 	for (auto& dirEntry : std::filesystem::directory_iterator(currentDirectory))
 	{
@@ -30,24 +20,13 @@ void ContentBrowser::AddTextures()
 		if (!(dirEntry.path().extension() == ".png" || dirEntry.path().extension() == ".jpg"))
 			continue;
 		
-		tempTexture = std::make_shared<Texture>(path);
-		//temp->load(path);
-
-		GLFWwindow* window = glfwGetCurrentContext();
-		glfwMakeContextCurrent(nullptr);
-
-		std::thread t1(&ContentBrowser::LoadTexture, this, path, window);		// This needs to be all changed maybe learn more on threads or find a new approach
-		t1.join();
-		
-		glfwMakeContextCurrent(window);
-		
-		imagesInDir.push_back(tempTexture);
+		imagesInDir.push_back(resHub->GetTextureManager()->Load(path));
 	}
 
 }
 
 
-void ContentBrowser::OnRender(ImVec2 panelPos, ImVec2 panelSize, ImGuiWindowFlags flags)
+void ContentBrowser::OnRender(std::shared_ptr<ResourceHub> resHub, ImVec2 panelPos, ImVec2 panelSize, ImGuiWindowFlags flags)
 {
 	ImGui::SetNextWindowPos(panelPos);
 	ImGui::SetNextWindowSize(panelSize);
@@ -78,8 +57,20 @@ void ContentBrowser::OnRender(ImVec2 panelPos, ImVec2 panelSize, ImGuiWindowFlag
 
 	if (updateImages)
 	{
+// True (1) then will remove textures if not used in scene to free memory
+// this will mean you will have to reload each texture each time you load them
+#if 0
+		for (auto i : imagesInDir)
+		{
+			if (i.use_count() <= 3)
+			{
+				resHub->GetTextureManager()->Unload(i->GetName());
+			}
+		}
+#endif
+
 		imagesInDir.clear();
-		AddTextures();
+		AddTextures(resHub);
 		updateImages = false;
 	}
 

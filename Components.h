@@ -48,33 +48,33 @@ struct TransformComponent
 struct MeshComponent
 {
 	std::string name = "Mesh";
-	Mesh* mesh;
+	std::shared_ptr < Mesh> mesh = nullptr;
 
 	MeshComponent() = default;
 	MeshComponent(const MeshComponent&) = default;
-	MeshComponent(Mesh* Mesh)
+	MeshComponent(std::shared_ptr < Mesh> Mesh)
 		: mesh(Mesh) {}
 };
 
 struct ShaderComponent
 {
 	std::string name = "Shader";
-	Shader* shader;
+	std::shared_ptr < Shader> shader = nullptr;
 
 	ShaderComponent() = default;
 	ShaderComponent(const ShaderComponent&) = default;
-	ShaderComponent(Shader* Shader)
+	ShaderComponent(std::shared_ptr < Shader> Shader)
 		: shader(Shader) {}
 };
 
 struct MaterialComponent
 {
 	std::string name = "Material";
-	Material* material;
+	std::shared_ptr<Material> material = nullptr;
 
 	MaterialComponent() = default;
 	MaterialComponent(const MaterialComponent&) = default;
-	MaterialComponent(Material* Material)
+	MaterialComponent(std::shared_ptr < Material> Material)
 		: material(Material) {}
 };
 

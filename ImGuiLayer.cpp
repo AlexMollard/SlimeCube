@@ -20,6 +20,7 @@ ImGuiLayer::ImGuiLayer()
 {
 	Log::Info(__func__ + std::string(" Instance Created"));
 	OnAttach();
+	resourceManager = std::make_shared<ResourceManager<Texture>>();
 }
 
 ImGuiLayer::~ImGuiLayer()
@@ -97,6 +98,11 @@ void ImGuiLayer::SetGizmoState(ImGuizmo::OPERATION newState)
 ImVec2 ImGuiLayer::GetViewPortSize()
 {
 	return GetInstance()->viewPortSize;
+}
+
+void ImGuiLayer::SetTextureManager(std::shared_ptr<ResourceManager<Texture>> manager)
+{
+	resourceManager = manager;
 }
 
 void ImGuiLayer::Hierarchy()
@@ -217,9 +223,6 @@ void ImGuiLayer::Properties(Entity entity)
 
 	ImGui::Begin("Properties", nullptr, mainFlags);
 
-	if (entity)
-		DrawProperties(entity);
-	// Second one is to just fill up properties panel for testing
 	if (entity)
 		DrawProperties(entity);
 	
@@ -410,15 +413,13 @@ void ImGuiLayer::DrawProperties(Entity entity)
 			}
 	});
 
-	if (entity.HasComponent<ShaderComponent>())
-	{
-		DrawComponent<ShaderComponent>("Shader", entity, [](auto& component) 
-		{
-
-
-				ImGui::LabelText("Shader Crap", "");
-		});
-	}
+	//if (entity.HasComponent<ShaderComponent>())
+	//{
+	//	DrawComponent<ShaderComponent>("Shader", entity, [](auto& component) 
+	//	{
+	//			ImGui::LabelText("Shader Crap", "");
+	//	});
+	//}
 
 	if (entity.HasComponent<MeshComponent>())
 	{
@@ -432,26 +433,7 @@ void ImGuiLayer::DrawProperties(Entity entity)
 	{
 		DrawComponent<MaterialComponent>("Material", entity, [](auto& component) 
 			{
-				ImGui::LabelText("Material Crap", "");
-				if (ImGui::ImageButton((ImTextureID)component.material->GetAlbedo()->GetID(), { 300,300 }))
-				{
-				}
-
-				if (ImGui::BeginDragDropTarget())
-				{
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
-					{
-						// Your wchar_t*
-						std::wstring ws((const wchar_t*)payload->Data);
-						// your new String
-						std::string str(ws.begin(), ws.end());
-						Texture* tempTex = new Texture("temp", "Assets\\" + str);	//MEMORY LEAK Needs to be std::shared_pointer (But need a texture manager or some sort of storing system)
-						component.material->SetAlbedo(tempTex);
-					}
-
-					ImGui::EndDragDropTarget();
-				}
-			
+				GetInstance()->materialComponentPanel.OnRender(GetInstance()->scene->GetResourceHub(), component, GetInstance()->mainFlags);
 			});
 	}
 
@@ -467,7 +449,7 @@ void ImGuiLayer::DrawProperties(Entity entity)
 
 void ImGuiLayer::FileExplorer()
 {
-	contentBrowser.OnRender(ImVec2(0.0f, screenSize.y - rowHeight), ImVec2((screenSize.x - (columnWidth)), rowHeight + 1.0f),mainFlags);
+	contentBrowser.OnRender(GetInstance()->scene->GetResourceHub(), ImVec2(0.0f, screenSize.y - rowHeight), ImVec2((screenSize.x - (columnWidth)), rowHeight + 1.0f),mainFlags);
 }
 
 void ImGuiLayer::DrawGizmos(Entity entity)

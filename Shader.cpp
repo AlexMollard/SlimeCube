@@ -3,6 +3,23 @@
 
 Shader::Shader(std::string name, const char* vertexPath, const char* fragmentPath, const char* geometryPath)
 {
+	Create(name, vertexPath, fragmentPath, geometryPath);
+}
+
+Shader::Shader(std::string name)
+{
+	this->name = name;
+}
+
+
+Shader::Shader(std::string dir, void* args)
+{
+	Create(dir, dir.c_str(), (const char*)args, nullptr);
+}
+
+
+void* Shader::Create(std::string name, const char* vertexPath, const char* fragmentPath, const char* geometryPath)
+{
 	this->name = name;
 	// 1. retrieve the vertex/fragment source code from filePath
 	std::string vertexCode;
@@ -81,11 +98,8 @@ Shader::Shader(std::string name, const char* vertexPath, const char* fragmentPat
 	glDeleteShader(fragment);
 	if (geometryPath != nullptr)
 		glDeleteShader(geometry);
-}
 
-Shader::Shader(std::string name)
-{
-	this->name = name;
+	return this;
 }
 
 Shader::~Shader()

@@ -39,8 +39,8 @@ public:
 	class MeshMaterial
 	{
 	public:
-		MeshMaterial() {};
-		~MeshMaterial() {};
+		MeshMaterial() = default;
+		~MeshMaterial() = default;
 
 		glm::vec3 ambient;
 		glm::vec3 albedo;

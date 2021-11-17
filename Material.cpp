@@ -1,7 +1,13 @@
 #include "pch.h"
 #include "Material.h"
 
-Material::Material(std::string name, Texture* albedo, Texture* specMap, Texture* normalMap, Texture* ambientMap, Texture* roughMap, Texture* displacementMap)
+Material::Material(const std::string& name,
+	std::shared_ptr<Texture> albedo,
+	std::shared_ptr<Texture> specMap,
+	std::shared_ptr<Texture> normalMap,
+	std::shared_ptr<Texture> ambientMap,
+	std::shared_ptr<Texture> roughMap, 
+	std::shared_ptr<Texture> displacementMap)
 {
 	this->name = name;
 
@@ -28,7 +34,13 @@ Material::Material(std::string name, Texture* albedo, Texture* specMap, Texture*
 	this->displacementMap = displacementMap;
 }
 
-Material::Material(std::string name, Texture* albedo, float diffuseStrength, Texture* specMap, float specularStrength, Texture* normalMap, float normalStrength, Texture* ambientMap, float ambientStrength, Texture* roughMap, float roughStrength, Texture* displacementMap, float displacementStrength)
+Material::Material(const std::string& name,
+	std::shared_ptr<Texture> albedo, float diffuseStrength,
+	std::shared_ptr<Texture> specMap, float specularStrength,
+	std::shared_ptr<Texture> normalMap, float normalStrength,
+	std::shared_ptr<Texture> ambientMap, float ambientStrength,
+	std::shared_ptr<Texture> roughMap, float roughStrength,
+	std::shared_ptr<Texture> displacementMap, float displacementStrength)
 {
 	this->name = name;
 
@@ -62,7 +74,7 @@ Material::Material(std::string name, Texture* albedo, float diffuseStrength, Tex
 	this->displacementStrength = displacementStrength;
 }
 
-Material::Material(std::string name, Texture* albedo)
+Material::Material(const std::string& name, std::shared_ptr<Texture> albedo)
 {
 	this->name = name;
 
@@ -73,11 +85,27 @@ Material::Material(std::string name, Texture* albedo)
 	this->roughMap = nullptr;
 }
 
+Material::Material(std::string dir, void* args)
+{
+	Create();
+}
+
+void* Material::Create()
+{
+	// Open material file
+	// Read File
+	// Get all dir of textures
+	// Load/check all textures
+	// Set all textures
+	SetAll();
+	return this;
+}
+
 Material::~Material()
 {
 }
 
-Texture* Material::GetAlbedo()
+std::shared_ptr<Texture> Material::GetAlbedo()
 {
 	if (albedo != nullptr)
 		return albedo;
@@ -85,7 +113,7 @@ Texture* Material::GetAlbedo()
 	return nullptr;
 }
 
-Texture* Material::GetSpecMap()
+std::shared_ptr<Texture> Material::GetSpecMap()
 {
 	if (specMap != nullptr)
 		return specMap;
@@ -93,7 +121,7 @@ Texture* Material::GetSpecMap()
 	return nullptr;
 }
 
-Texture* Material::GetNormalMap()
+std::shared_ptr<Texture> Material::GetNormalMap()
 {
 	if (normalMap != nullptr)
 		return normalMap;
@@ -101,7 +129,7 @@ Texture* Material::GetNormalMap()
 	return nullptr;
 }
 
-Texture* Material::GetAmbientMap()
+std::shared_ptr<Texture> Material::GetAmbientMap()
 {
 	if (ambientMap != nullptr)
 		return ambientMap;
@@ -109,7 +137,7 @@ Texture* Material::GetAmbientMap()
 	return nullptr;
 }
 
-Texture* Material::GetRoughMap()
+std::shared_ptr<Texture> Material::GetRoughMap()
 {
 	if (roughMap != nullptr)
 		return roughMap;
@@ -117,7 +145,7 @@ Texture* Material::GetRoughMap()
 	return nullptr;
 }
 
-Texture* Material::GetDisplacementMap()
+std::shared_ptr<Texture> Material::GetDisplacementMap()
 {
 	if (displacementMap != nullptr)
 		return displacementMap;
@@ -125,7 +153,7 @@ Texture* Material::GetDisplacementMap()
 	return nullptr;
 }
 
-void Material::SetAll(Texture* albedo, Texture* specular, Texture* normal, Texture* ambient, Texture* rough, Texture* displacement, float diffuseStr, float specularStr, float normalStr, float ambientStr, float roughStr, float displacementStr)
+void Material::SetAll(std::shared_ptr<Texture> albedo, std::shared_ptr<Texture> specular, std::shared_ptr<Texture> normal, std::shared_ptr<Texture> ambient, std::shared_ptr<Texture> rough, std::shared_ptr<Texture> displacement, float diffuseStr, float specularStr, float normalStr, float ambientStr, float roughStr, float displacementStr)
 {
 	SetAlbedo(albedo);
 	SetAlbedoStrength(diffuseStr);
@@ -146,32 +174,32 @@ void Material::SetAll(Texture* albedo, Texture* specular, Texture* normal, Textu
 	SetDisplacementStrength(displacementStr);
 }
 
-void Material::SetAlbedo(Texture* newAlbedo)
+void Material::SetAlbedo(std::shared_ptr<Texture> newAlbedo)
 {
 	albedo = newAlbedo;
 }
 
-void Material::SetSpecMap(Texture* newSpecular)
+void Material::SetSpecMap(std::shared_ptr<Texture> newSpecular)
 {
 	specMap = newSpecular;
 }
 
-void Material::SetNormalMap(Texture* newNormal)
+void Material::SetNormalMap(std::shared_ptr<Texture> newNormal)
 {
 	normalMap = newNormal;
 }
 
-void Material::SetAmbientMap(Texture* newAmbient)
+void Material::SetAmbientMap(std::shared_ptr<Texture> newAmbient)
 {
 	ambientMap = newAmbient;
 }
 
-void Material::SetRoughMap(Texture* newRough)
+void Material::SetRoughMap(std::shared_ptr<Texture> newRough)
 {
 	roughMap = newRough;
 }
 
-void Material::SetDisplacementMap(Texture* newDisplacement)
+void Material::SetDisplacementMap(std::shared_ptr<Texture> newDisplacement)
 {
 	displacementMap = newDisplacement;
 }

@@ -137,7 +137,7 @@ Cylinder::Cylinder(float radius, float halfLength, int slices)
 
 	for (int i = 0; i < slices; i++)
 	{
-		float theta = TWOPI * ((float)i / slices);
+		float theta = (float)TWOPI * ((float)i / slices);
 
 		vertices.push_back(glm::vec3(radius * glm::cos(theta), halfLength, radius * glm::sin(theta)));
 		vertices.push_back(glm::vec3(radius * glm::cos(theta), -halfLength, radius * glm::sin(theta)));
@@ -163,20 +163,20 @@ Cylinder::Cylinder(float radius, float halfLength, int slices)
 	}
 
 	indices.push_back(2);
-	indices.push_back(vertices.size() - 2);
+	indices.push_back((unsigned int)vertices.size() - 2);
 	indices.push_back(0);
 
 	indices.push_back(1);
-	indices.push_back(vertices.size() - 1);
+	indices.push_back((unsigned int)vertices.size() - 1);
 	indices.push_back(3);
 
-	indices.push_back(vertices.size() - 2);
+	indices.push_back((unsigned int)vertices.size() - 2);
 	indices.push_back(2);
-	indices.push_back(vertices.size() - 1);
+	indices.push_back((unsigned int)vertices.size() - 1);
 
 	indices.push_back(2);
 	indices.push_back(3);
-	indices.push_back(vertices.size() - 1);
+	indices.push_back((unsigned int)vertices.size() - 1);
 
 	normals = CalculateVertNormals(vertices, indices);
 }
@@ -187,13 +187,13 @@ Sphere::Sphere(float radius, float sectorCount, int stackCount)
 	float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normal
 	float s, t;                                     // vertex texCoord
 
-	float sectorStep = TWOPI / sectorCount;
-	float stackStep = PI / stackCount;
+	float sectorStep = (float)TWOPI / sectorCount;
+	float stackStep = (float)PI / stackCount;
 	float sectorAngle, stackAngle;
 
 	for (int i = 0; i <= stackCount; ++i)
 	{
-		stackAngle = PI / 2.0f - i * stackStep;        // starting from pi/2 to -pi/2
+		stackAngle = (float)PI / 2.0f - i * stackStep;        // starting from pi/2 to -pi/2
 		xy = radius * cosf(stackAngle);             // r * cos(u)
 		z = radius * sinf(stackAngle);              // r * sin(u)
 
@@ -225,8 +225,8 @@ Sphere::Sphere(float radius, float sectorCount, int stackCount)
 	int k1, k2;
 	for (int i = 0; i < stackCount; ++i)
 	{
-		k1 = i * (sectorCount + 1);     // beginning of current stack
-		k2 = k1 + sectorCount + 1;      // beginning of next stack
+		k1 = i * ((int)sectorCount + 1);     // beginning of current stack
+		k2 = k1 + (int)sectorCount + 1;      // beginning of next stack
 
 		for (int j = 0; j < sectorCount; ++j, ++k1, ++k2)
 		{
@@ -272,12 +272,12 @@ Torus::Torus(double r, double c, int rSeg, int cSeg)
 			}
 			if (j)
 			{
-				indices.push_back(vertices.size() - 4);
-				indices.push_back(vertices.size() - 2);
-				indices.push_back(vertices.size() - 3);
-				indices.push_back(vertices.size() - 3);
-				indices.push_back(vertices.size() - 2);
-				indices.push_back(vertices.size() - 1);
+				indices.push_back((unsigned int)vertices.size() - 4);
+				indices.push_back((unsigned int)vertices.size() - 2);
+				indices.push_back((unsigned int)vertices.size() - 3);
+				indices.push_back((unsigned int)vertices.size() - 3);
+				indices.push_back((unsigned int)vertices.size() - 2);
+				indices.push_back((unsigned int)vertices.size() - 1);
 			}
 		}
 	}

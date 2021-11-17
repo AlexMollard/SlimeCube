@@ -5,8 +5,8 @@
 #include "Entity.h"
 #include "ImGuizmo.h"
 #include "ContentBrowser.h"
-
-
+#include "ResourceManager.h"
+#include "MaterialComponentPanel.h"
 class ImGuiLayer
 {
 public:
@@ -25,6 +25,8 @@ public:
 	static void EndFrame();
 	static void SetGizmoState(ImGuizmo::OPERATION newState);
 	static ImVec2 GetViewPortSize();
+
+	void SetTextureManager(std::shared_ptr<ResourceManager<Texture>> manager);
 private:
 	ImGuiLayer();
 	~ImGuiLayer();
@@ -60,4 +62,6 @@ private:
 	ImGuizmo::OPERATION gizmoType = ImGuizmo::OPERATION::TRANSLATE;
 
 	ContentBrowser contentBrowser;
+	MaterialComponentPanel materialComponentPanel;
+	std::shared_ptr<ResourceManager<Texture>> resourceManager;
 };

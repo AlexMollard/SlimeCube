@@ -55,11 +55,12 @@ Texture::Texture()
 
 Texture::Texture(std::string dir, void* args)
 {
-	Texture(dir, dir);
+	load(dir);
 }
 
 Texture::~Texture()
 {
+	Log::Trace("Deleteing " + name);
 	if (textureID != 0)
 		glDeleteTextures(1, &textureID);
 	textureID = 0;
@@ -80,7 +81,7 @@ void Texture::SetUpTextureID()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-void Texture::load(std::string dir)
+void* Texture::load(std::string dir)
 {
 	this->name = dir;
 
@@ -100,6 +101,8 @@ void Texture::load(std::string dir)
 		Log::Error("Failed to load texture: " + dir);
 	}
 	stbi_image_free(data);
+
+	return this;
 }
 
 std::shared_ptr<Texture> Texture::Create(std::string const& dir)

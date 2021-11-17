@@ -129,6 +129,15 @@
     <ClCompile Include="Resource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceHub.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialComponentPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -251,18 +260,27 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceHub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialComponentPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\litVertex.shader">
+    <None Include="Assets\Shaders\litVertex.shader">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\litFragment.shader">
+    <None Include="Assets\Shaders\SkyBoxFragment.shader">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\SkyBoxVertex.shader">
+    <None Include="Assets\Shaders\SkyBoxVertex.shader">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\SkyBoxFragment.shader">
+    <None Include="Assets\Shaders\litFragment.shader">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

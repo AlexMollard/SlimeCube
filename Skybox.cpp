@@ -38,8 +38,6 @@ std::vector<std::string> Skybox::GetAllFiles(std::string dirType)
 
 void Skybox::CreateSkyBox(std::string facesDIR)
 {
-	this->name = "Sky Box";
-
 	std::vector<std::string> dirs = GetAllFiles(facesDIR);
 	std::vector<std::string> faces;
 

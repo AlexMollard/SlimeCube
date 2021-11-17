@@ -10,7 +10,9 @@ class Shader : public Resource
 public:
 	Shader(std::string name, const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr);
 	Shader(std::string name);
-	Shader(std::string dir, void* args) {};
+	Shader(std::string dir, void* args);
+
+	void* Create(std::string name, const char* vertexPath, const char* fragmentPath, const char* geometryPath);
 
 	~Shader();
 
@@ -89,5 +91,4 @@ public:
 
 protected:
 	unsigned int shader_ID = 0;
-	std::string name = "DefaultName";
 };

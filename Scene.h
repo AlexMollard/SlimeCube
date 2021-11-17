@@ -2,6 +2,7 @@
 #include "Skybox.h"
 #include "Camera.h"
 #include "entt.hpp"
+#include "ResourceHub.h"
 
 class Entity;
 class Material;
@@ -11,7 +12,7 @@ class Mesh;
 class Scene
 {
 public:
-	Scene(Camera* cam);
+	Scene(Camera* cam, std::shared_ptr<ResourceHub> resHub);
 	~Scene();
 
 	void* Render(float deltaTime);
@@ -21,23 +22,24 @@ public:
 
 	entt::registry registry;
 
-	Shader* mainShader = nullptr;
-	Material* mat = nullptr;
-	Material* skyBoxMat = nullptr;
-	Mesh* mesh = nullptr;
+	std::shared_ptr<Shader> mainShader = nullptr;
+	std::shared_ptr < Material> mat = nullptr;
+	std::shared_ptr < Material> skyBoxMat = nullptr;
+	std::shared_ptr < Mesh> mesh = nullptr;
 
 	std::string name = "Main Scene";
-	Entity* firstObject;
+	std::shared_ptr < Entity> firstObject;
 
 	Camera* GetMainCamera();
 
+	std::shared_ptr<ResourceHub> GetResourceHub() { return resourceHub; };
 private:
 	void GenerateRenderTexture();
 	void UpdateAndBindRenderTexture();
-	Shader* skyboxShader = nullptr;
+	std::shared_ptr < Shader> skyboxShader = nullptr;
 	unsigned int texture = 0;
-	Texture* tex = nullptr;
-	Skybox* skyBoxTex = nullptr;
+	std::shared_ptr < Texture> tex = nullptr;
+	std::shared_ptr < Skybox> skyBoxTex = nullptr;
 	Camera* cam = nullptr;
 
 	friend class Entity;
@@ -48,5 +50,5 @@ private:
 	GLuint depthrenderbuffer;
 	GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
 
-
+	std::shared_ptr<ResourceHub> resourceHub;
 };

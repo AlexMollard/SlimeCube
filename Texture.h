@@ -15,7 +15,7 @@ public:
 	~Texture();
 
 	void SetUpTextureID();
-	void load(std::string dir);
+	void* load(std::string dir);
 	void Bind() { glBindTexture(GL_TEXTURE_2D, textureID); };
 	unsigned int GetID() { return textureID; };
 	void SetID(unsigned int newID) { textureID = newID; };
@@ -25,7 +25,6 @@ public:
 	static std::shared_ptr<Texture> Create(std::string const& dir);
 
 protected:
-	std::string name = "Default Name";
 	uint32_t textureID;
 };
 

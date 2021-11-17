@@ -3,6 +3,7 @@
 
 Input* Input::instance = nullptr;
 ImGuiLayer* ImGuiLayer::instance = nullptr;
+std::shared_ptr<Renderer> Renderer::instance = nullptr;
 
 int main()
 {
@@ -24,25 +25,23 @@ int main()
 
 SlimeCube::SlimeCube()
 {
+	resourceHub = std::make_shared<ResourceHub>();
+
 	inputManager = Input::GetInstance();
 
 	camera = std::make_unique<Camera>(glm::perspective(glm::radians(60.0f), 1920.0f / 1080.0f, 0.1f, 100.0f));
 
 	Input::GetInstance()->SetCamera(camera.get());
 
-	scene = std::make_unique<Scene>(camera.get());
+	scene = std::make_unique<Scene>(camera.get(), resourceHub);
 	
 	ImGuiLayer::SetScene(scene.get());
-
-	TextureManager.Initialise("Texture Manager");
-	TextureManager.Load("Assets/Images/missingTex.png", nullptr);
-	TextureManager.Unload("Assets/Images/missingTex.png");
 }
 
 SlimeCube::~SlimeCube()
 {
 	ImGuiLayer::DeleteInstance();
-
+	Renderer::GetInstance().~shared_ptr();
 	delete Input::GetInstance();
 }
 

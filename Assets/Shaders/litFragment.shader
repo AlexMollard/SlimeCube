@@ -6,6 +6,7 @@ in vec3 WorldPos;
 in vec3 Normal;
 in vec3 Tangent;
 in vec3 BiTangent;
+in vec3 TerrainColor;
 
 layout(location = 0) uniform sampler2D diffuseTexture;
 layout(location = 1)uniform sampler2D specularTexture;
@@ -139,7 +140,7 @@ void main()
 {
 	vec3 albedo = pow(texture(diffuseTexture, TexCoord).rgb, vec3(2.2)) * diffuseStrength;
 	float metallic = texture(specularTexture, TexCoord).r * specularStrength;
-	float ao = texture(ambientTexture, TexCoord).r * ambientStrength;
+	float ao = texture(ambientTexture, TexCoord).r * (ambientStrength * 2.0); // I doubled strength change back later
 	float roughness = texture(roughTexture, TexCoord).r * roughStrength;
 
 	vec3 N = getNormalFromMap();
@@ -190,7 +191,7 @@ void main()
 		Lo += CalculatespotLight(pointLights[i], V, N, F0, roughness, metallic, albedo);
 	}
 
-	vec3 ambient = vec3(0.1) * albedo * ao; //* F;
+	vec3 ambient = vec3(0.1) * albedo * ao; // * F;
 
 	vec3 color = ambient + Lo;
 
@@ -199,6 +200,6 @@ void main()
 	// gamma correct
 	color = pow(color, vec3(1.0 / 2.2));
 
-	FragColor = vec4(albedo, 1);
-	//FragColor = texture(diffuseTexture, TexCoord);
+	FragColor = vec4(color, 1);
+	//FragColor = vec4(Normal, 1);
 }

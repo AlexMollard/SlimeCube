@@ -2,36 +2,52 @@
 #include "glm.hpp"
 #include "Texture.h"
 
-class Material : Resource
+class Material : public Resource
 {
 public:
 
 	// Constructors (Subject to change)
 	//-----------------
-	Material(std::string name, Texture* albedo, Texture* specMap, Texture* normalMap, Texture* ambientMap, Texture* roughMap, Texture* displacementMap);
-	Material(std::string name, Texture* albedo, float diffuseStrength, Texture* specMap, float specularStrength, Texture* normalMap, float normalStrength, Texture* ambientMap, float ambientStrength, Texture* roughMap, float roughStrength, Texture* displacementMap, float displacementStrength);
-	Material(std::string name, Texture* albedo);
-	Material(std::string dir, void* args) {};
+	Material(const std::string& name,
+		std::shared_ptr<Texture> albedo, 
+		std::shared_ptr<Texture> specMap,
+		std::shared_ptr<Texture> normalMap,
+		std::shared_ptr<Texture> ambientMap,
+		std::shared_ptr<Texture> roughMap,
+		std::shared_ptr<Texture> displacementMap);
+
+	Material(const std::string& name,
+		std::shared_ptr<Texture> albedo, float diffuseStrength,
+		std::shared_ptr<Texture> specMap, float specularStrength,
+		std::shared_ptr<Texture> normalMap, float normalStrength,
+		std::shared_ptr<Texture> ambientMap, float ambientStrength,
+		std::shared_ptr<Texture> roughMap, float roughStrength,
+		std::shared_ptr<Texture> displacementMap, float displacementStrength);
+
+	Material(const std::string& name, std::shared_ptr<Texture> albedo);
+	Material(std::string dir, void* args);
+
+	void* Create();
 
 	virtual ~Material();
 
 	// Textures
 	//----------------
 	// Set
-	void SetAlbedo(Texture* newAlbedo);
-	void SetSpecMap(Texture* newSpecular);
-	void SetNormalMap(Texture* newNormal);
-	void SetAmbientMap(Texture* newAmbient);
-	void SetRoughMap(Texture* newRough);
-	void SetDisplacementMap(Texture* newDisplacement);
+	void SetAlbedo(std::shared_ptr<Texture> newAlbedo);
+	void SetSpecMap(std::shared_ptr<Texture> newSpecular);
+	void SetNormalMap(std::shared_ptr<Texture> newNormal);
+	void SetAmbientMap(std::shared_ptr<Texture> newAmbient);
+	void SetRoughMap(std::shared_ptr<Texture> newRough);
+	void SetDisplacementMap(std::shared_ptr<Texture> newDisplacement);
 
 	// Get
-	Texture* GetAlbedo();
-	Texture* GetSpecMap();
-	Texture* GetNormalMap();
-	Texture* GetAmbientMap();
-	Texture* GetRoughMap();
-	Texture* GetDisplacementMap();
+	std::shared_ptr<Texture> GetAlbedo();
+	std::shared_ptr<Texture> GetSpecMap();
+	std::shared_ptr<Texture> GetNormalMap();
+	std::shared_ptr<Texture> GetAmbientMap();
+	std::shared_ptr<Texture> GetRoughMap();
+	std::shared_ptr<Texture> GetDisplacementMap();
 
 	// Texture Strengths
 	//----------------
@@ -42,7 +58,16 @@ public:
 	void SetAmbientStrength(float value) { ambientStrength = value; }
 	void SetRoughStrength(float value) { roughStrength = value; }
 	void SetDisplacementStrength(float value) { displacementStrength = value; }
-	void SetAll(Texture* albedo, Texture* specular, Texture* normal, Texture* ambient, Texture* rough, Texture* displacement, float diffuseStr, float specularStr, float normalStr, float ambientStr, float roughStr, float displaceStr);
+
+	void SetAll(std::shared_ptr<Texture> albedo = nullptr,
+		std::shared_ptr<Texture> specular = nullptr,
+		std::shared_ptr<Texture> normal = nullptr,
+		std::shared_ptr<Texture> ambient = nullptr,
+		std::shared_ptr<Texture> rough = nullptr,
+		std::shared_ptr<Texture> displacement = nullptr,
+		float diffuseStr = 1.0f, float specularStr = 1.0f,
+		float normalStr = 1.0f, float ambientStr = 1.0f,
+		float roughStr = 1.0f, float displaceStr = 1.0f);
 
 	// Get
 	float GetAlbedoStrength() { return diffuseStrength; }
@@ -57,15 +82,7 @@ public:
 	void setShininess(float newShininess) { shininess = newShininess; }
 	float GetShininess() { return shininess; }
 
-	// Misc Functions
-	//------------------
-	void SetName(std::string newName) { name = newName; }
-	std::string GetName() { return name.c_str(); }
-
 protected:
-	// Misc
-	std::string name = "DefaultName";
-
 	// Phong Lighting variables
 	float shininess = 1.0f;
 
@@ -85,10 +102,10 @@ protected:
 	float displacementStrength = 1.0f;
 
 	// TextureMaps
-	Texture* albedo = nullptr;
-	Texture* specMap = nullptr;
-	Texture* normalMap = nullptr;
-	Texture* ambientMap = nullptr;
-	Texture* roughMap = nullptr;
-	Texture* displacementMap = nullptr;
+	std::shared_ptr<Texture> albedo = nullptr;
+	std::shared_ptr<Texture> specMap = nullptr;
+	std::shared_ptr<Texture> normalMap = nullptr;
+	std::shared_ptr<Texture> ambientMap = nullptr;
+	std::shared_ptr<Texture> roughMap = nullptr;
+	std::shared_ptr<Texture> displacementMap = nullptr;
 };

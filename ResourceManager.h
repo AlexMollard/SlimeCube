@@ -19,7 +19,7 @@ private:
 	}
 
 public:
-	std::shared_ptr<T> Load(const std::string& filename, void* args)
+	std::shared_ptr<T> Load(const std::string& filename, void* args = nullptr)
 	{
 		if (filename.empty())
 			Log::Warn("Filename cannot be null");
@@ -33,7 +33,21 @@ public:
 
 		std::shared_ptr<T> resource = std::make_shared<T>(filename, args);
 
-		Map.insert(std::pair<std::string, std::shared_ptr<T>>(filename, resource));
+		Map.insert(std::make_pair(filename, resource));
+
+		return resource;
+	}
+
+	std::shared_ptr<T> Load(std::shared_ptr<T> resource)
+	{
+		auto it = Map.find(resource->GetName());
+
+		if (it != Map.end())
+		{
+			return (*it).second;
+		}
+
+		Map.insert(std::make_pair(resource->GetName(), resource));
 
 		return resource;
 	}

@@ -2,15 +2,15 @@
 #include "imgui.h"
 #include <filesystem>
 #include "Texture.h"
+#include "ResourceHub.h"
 
 class ContentBrowser
 {
 public:
 	ContentBrowser();
 	~ContentBrowser() = default;
-	void LoadTexture(const std::string& path, GLFWwindow* window);
-	void AddTextures();
-	void OnRender(ImVec2 panelPos, ImVec2 panelSize, ImGuiWindowFlags flags);
+	void AddTextures(std::shared_ptr<ResourceHub> resHub);
+	void OnRender(std::shared_ptr<ResourceHub> resHub, ImVec2 panelPos, ImVec2 panelSize, ImGuiWindowFlags flags);
 
 private:
 

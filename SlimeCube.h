@@ -4,7 +4,8 @@
 #include "Entity.h"
 #include "entt.hpp"
 #include "Components.h"
-#include "ResourceManager.h"
+#include "ResourceHub.h"
+#include "Renderer.h"
 
 class SlimeCube 
 {
@@ -19,7 +20,7 @@ private:
 	Input* inputManager = nullptr;
 	std::unique_ptr<Camera> camera;
 	std::unique_ptr<Scene> scene;
-	ResourceManager<Texture> TextureManager;
+	std::shared_ptr<ResourceHub> resourceHub;
 
 	glm::vec2 windowSize = glm::vec2(1920, 1080);
 };

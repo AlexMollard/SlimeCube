@@ -13,7 +13,7 @@ public:
 		SkyBox
 	};
 
-	TYPE type;
+	TYPE type = TYPE::Cube;
 	std::vector<glm::vec3> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<glm::vec3> normals;
