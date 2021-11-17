@@ -413,21 +413,22 @@ void ImGuiLayer::DrawProperties(Entity entity)
 			}
 	});
 
-	//if (entity.HasComponent<ShaderComponent>())
+	//if (entity.HasComponent<MeshComponent>())
 	//{
-	//	DrawComponent<ShaderComponent>("Shader", entity, [](auto& component) 
-	//	{
-	//			ImGui::LabelText("Shader Crap", "");
-	//	});
+	//	DrawComponent<MeshComponent>("Mesh", entity, [](auto& component) 
+	//		{
+	//			ImGui::LabelText("Mesh Crap", "");
+	//		});
 	//}
 
-	if (entity.HasComponent<MeshComponent>())
+	if (entity.HasComponent<PointLightComponent>())
 	{
-		DrawComponent<MeshComponent>("Mesh", entity, [](auto& component) 
+		DrawComponent<PointLightComponent>("PointLight", entity, [](auto& component)
 			{
-				ImGui::LabelText("Mesh Crap", "");
+				GetInstance()->pointLightComponentPanel.OnRender(GetInstance()->scene->GetResourceHub(), component, GetInstance()->mainFlags);
 			});
 	}
+
 
 	if (entity.HasComponent<MaterialComponent>())
 	{

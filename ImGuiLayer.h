@@ -7,6 +7,8 @@
 #include "ContentBrowser.h"
 #include "ResourceManager.h"
 #include "MaterialComponentPanel.h"
+#include "PointLightComponentPanel.h"
+
 class ImGuiLayer
 {
 public:
@@ -63,5 +65,7 @@ private:
 
 	ContentBrowser contentBrowser;
 	MaterialComponentPanel materialComponentPanel;
+	PointLightComponentPanel pointLightComponentPanel;
+
 	std::shared_ptr<ResourceManager<Texture>> resourceManager;
 };

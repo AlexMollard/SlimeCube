@@ -18,7 +18,7 @@ Scene::Scene(Camera* cam, std::shared_ptr<ResourceHub> resHub)
 	mesh->create(Primitives::Cube);
 
 	mat = resourceHub->GetMaterialManager()->Load(std::make_shared<Material>("Basic Material", tex));
-
+	mat->SetAmbientMap(tex);
 
 	this->cam = cam;
 	cam->Position = glm::vec3(0.0f,5.0f,15.0f);
@@ -32,6 +32,9 @@ Scene::Scene(Camera* cam, std::shared_ptr<ResourceHub> resHub)
 	skyBox.GetComponent<ShaderComponent>().shader = skyboxShader;
 	
 	int cubeCount = 4;
+
+	CreateEntity("PointLight").AddComponent<PointLightComponent>().light = std::make_shared<PointLight>();
+
 	for (int i = -cubeCount; i < cubeCount; i++)
 	{
 		CreateEntity("Testing Cube").GetComponent<TransformComponent>().SetPosition(glm::vec3((i * 3.0f) + 1.5f,0.0f,0.0f));

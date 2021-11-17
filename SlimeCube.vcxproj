@@ -263,7 +263,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="PointLightComponentPanel.cpp" />
     <ClCompile Include="Primitives.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Resource.cpp" />
@@ -308,6 +308,7 @@
     <ClInclude Include="OBJMesh.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PointLight.h" />
+    <ClInclude Include="PointLightComponentPanel.h" />
     <ClInclude Include="Primitives.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Resource.h" />

@@ -16,23 +16,25 @@ std::shared_ptr<Renderer> Renderer::GetInstance()
 	return instance;
 }
 
-void Renderer::UpdateLights(std::shared_ptr<Shader> shader)
+void Renderer::UpdateLights(std::shared_ptr<Shader> shader, Entity entity, std::shared_ptr<PointLight> light)
 {
 	// Spot Lights
+	if (light == nullptr)
+		return;
 
 	shader->setInt("pointLightTotal", 1);
 	for (int i = 0; i < 1; i++)
 	{
-		shader->setVec3("pointLights[" + std::to_string(i) + "].position", GetInstance()->pointLights[i]->pos);
-		shader->setVec3("pointLights[" + std::to_string(i) + "].ambient", GetInstance()->pointLights[i]->GetAmbient());
-		shader->setVec3("pointLights[" + std::to_string(i) + "].albedo", GetInstance()->pointLights[i]->GetAlbedo());
-		shader->setVec3("pointLights[" + std::to_string(i) + "].specular", GetInstance()->pointLights[i]->GetSpecular());
+		shader->setVec3("pointLights[" + std::to_string(i) + "].position", entity.GetComponent<TransformComponent>().Translation);
+		shader->setVec3("pointLights[" + std::to_string(i) + "].ambient", light->GetAmbient());
+		shader->setVec3("pointLights[" + std::to_string(i) + "].albedo", light->GetAlbedo());
+		shader->setVec3("pointLights[" + std::to_string(i) + "].specular", light->GetSpecular());
 
-		shader->setFloat("pointLights[" + std::to_string(i) + "].strength", GetInstance()->pointLights[i]->GetStrength());
+		shader->setFloat("pointLights[" + std::to_string(i) + "].strength", light->GetStrength());
 
-		shader->setFloat("pointLights[" + std::to_string(i) + "].constant", GetInstance()->pointLights[i]->GetConstant());
-		shader->setFloat("pointLights[" + std::to_string(i) + "].linear", GetInstance()->pointLights[i]->GetLinear());
-		shader->setFloat("pointLights[" + std::to_string(i) + "].quadratic", GetInstance()->pointLights[i]->GetQuadratic());
+		shader->setFloat("pointLights[" + std::to_string(i) + "].constant", light->GetConstant());
+		shader->setFloat("pointLights[" + std::to_string(i) + "].linear", light->GetLinear());
+		shader->setFloat("pointLights[" + std::to_string(i) + "].quadratic", light->GetQuadratic());
 	}
 
 	shader->setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
@@ -56,7 +58,6 @@ void Renderer::DrawEntity(Entity entity)
 	shader.shader->setMat4("ProjectionView", camera.cam->GetProjectionViewMatrix());
 	GetInstance()->BindTexture(shader.shader, TEXTURETYPE::Albedo, material.material->GetAlbedo());
 
-
 	if (entity.HasComponent<SkyBoxComponent>())
 	{
 		glDepthMask(GL_FALSE);
@@ -70,7 +71,12 @@ void Renderer::DrawEntity(Entity entity)
 		return;
 	}
 
-	UpdateLights(shader.shader);
+	shader.shader->setVec3("viewPos", camera.cam->Position);
+	if (entity.HasComponent<PointLightComponent>())
+	{
+		UpdateLights(shader.shader, entity, entity.GetComponent<PointLightComponent>().light);
+		return;
+	}
 
 	shader.shader->setFloat("diffuseStrength", material.material->GetAlbedoStrength());
 	shader.shader->setFloat("specularStrength", material.material->GetSpecularStrength());

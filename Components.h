@@ -9,6 +9,7 @@
 #include "Shader.h"
 #include "Material.h"
 #include "Camera.h"
+#include "PointLight.h"
 
 struct TagComponent
 {
@@ -96,6 +97,16 @@ struct CameraComponent
 	CameraComponent() = default;
 	CameraComponent(Camera* camera) { cam = camera; };
 	CameraComponent(const CameraComponent&) = default;
+};
+
+struct PointLightComponent
+{
+	std::shared_ptr<PointLight> light = nullptr;
+
+	PointLightComponent() = default;
+	PointLightComponent(const PointLightComponent&) = default;
+	PointLightComponent(std::shared_ptr < PointLight> Light)
+		: light(Light) {}
 };
 
 template<typename... Component>
