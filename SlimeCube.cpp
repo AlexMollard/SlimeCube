@@ -4,6 +4,7 @@
 Input* Input::instance = nullptr;
 ImGuiLayer* ImGuiLayer::instance = nullptr;
 std::shared_ptr<Renderer> Renderer::instance = nullptr;
+std::once_flag Renderer::initInstanceFlag;
 
 int main()
 {
@@ -41,7 +42,6 @@ SlimeCube::SlimeCube()
 SlimeCube::~SlimeCube()
 {
 	ImGuiLayer::DeleteInstance();
-	Renderer::GetInstance().~shared_ptr();
 	delete Input::GetInstance();
 }
 

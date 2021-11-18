@@ -2,18 +2,16 @@
 #include "Renderer.h"
 #include "Components.h"
 
-
-
-
 std::shared_ptr<Renderer> Renderer::GetInstance()
 {
-	if (!instance)
-	{
-		instance = std::make_shared<Renderer>();
-		Log::Info(__func__ + std::string(" Instance Created"));
-	}
-
+	std::call_once(initInstanceFlag ,&Renderer::initSingleton);
 	return instance;
+}
+
+void Renderer::initSingleton()
+{
+	instance = std::make_shared<Renderer>();
+	Log::Info("Renderer Instance Created");
 }
 
 void Renderer::UpdateLights(std::shared_ptr<Shader> shader, Entity entity, std::shared_ptr<PointLight> light)
@@ -42,6 +40,8 @@ void Renderer::UpdateLights(std::shared_ptr<Shader> shader, Entity entity, std::
 	shader->setVec3("dirLight.albedo", glm::vec3(1.0, 0.75, 0.5));
 	shader->setVec3("dirLight.specular", glm::vec3(1.0f));
 }
+
+
 
 // This function should add to a buffer and draw when it is full or at the end of the frame
 void Renderer::DrawEntity(Entity entity)

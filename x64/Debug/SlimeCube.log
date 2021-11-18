@@ -1,2 +1,80 @@
-﻿  Renderer.cpp
+﻿  pch.cpp
+  Camera.cpp
+  ContentBrowser.cpp
+C:\Users\alexm\source\repos\SlimeCube\ContentBrowser.cpp(106,48): warning C4312: 'type cast': conversion from 'unsigned int' to 'ImTextureID' of greater size
+C:\Users\alexm\source\repos\SlimeCube\ContentBrowser.cpp(113,49): warning C4312: 'type cast': conversion from 'unsigned int' to 'ImTextureID' of greater size
+  Entity.cpp
+  ImGuiLayer.cpp
+C:\Users\alexm\source\repos\SlimeCube\Math.h(34,16): warning C4101: 'Pdum3': unreferenced local variable
+  Input.cpp
+C:\Users\alexm\source\repos\SlimeCube\Input.cpp(98,19): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Material.cpp
+  MaterialComponentPanel.cpp
+C:\Users\alexm\source\repos\SlimeCube\MaterialComponentPanel.cpp(35,90): warning C4312: 'type cast': conversion from 'unsigned int' to 'ImTextureID' of greater size
+C:\Users\alexm\source\repos\SlimeCube\MaterialComponentPanel.cpp(44,80): warning C4312: 'type cast': conversion from 'unsigned int' to 'ImTextureID' of greater size
+C:\Users\alexm\source\repos\SlimeCube\MaterialComponentPanel.cpp(54,84): warning C4312: 'type cast': conversion from 'unsigned int' to 'ImTextureID' of greater size
+C:\Users\alexm\source\repos\SlimeCube\MaterialComponentPanel.cpp(64,86): warning C4312: 'type cast': conversion from 'unsigned int' to 'ImTextureID' of greater size
+C:\Users\alexm\source\repos\SlimeCube\MaterialComponentPanel.cpp(73,82): warning C4312: 'type cast': conversion from 'unsigned int' to 'ImTextureID' of greater size
+C:\Users\alexm\source\repos\SlimeCube\MaterialComponentPanel.cpp(83,96): warning C4312: 'type cast': conversion from 'unsigned int' to 'ImTextureID' of greater size
+C:\Program Files\Microsoft Visual Studio\2022\Preview\VC\Tools\MSVC\14.31.30818\include\xstring(2590,23): warning C4244: 'argument': conversion from 'wchar_t' to 'const _Elem', possible loss of data
+          with
+          [
+              _Elem=char
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Preview\VC\Tools\MSVC\14.31.30818\include\xstring(2601): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Preview\VC\Tools\MSVC\14.31.30818\include\xstring(2601): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Preview\VC\Tools\MSVC\14.31.30818\include\xstring(2581): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Preview\VC\Tools\MSVC\14.31.30818\include\xstring(2581): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Users\alexm\source\repos\SlimeCube\MaterialComponentPanel.cpp(104): message : see reference to function template instantiation 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)' being compiled
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+C:\Users\alexm\source\repos\SlimeCube\MaterialComponentPanel.cpp(104): message : see reference to function template instantiation 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)' being compiled
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+  Mesh.cpp
+  OBJMesh.cpp
+  PointLightComponentPanel.cpp
+  Primitives.cpp
+  Renderer.cpp
+  Resource.cpp
+  ResourceHub.cpp
+  Scene.cpp
+C:\Users\alexm\source\repos\SlimeCube\Scene.cpp(82,31): warning C4312: 'type cast': conversion from 'GLuint' to 'void *' of greater size
+C:\Users\alexm\source\repos\SlimeCube\Scene.cpp(154,65): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
+C:\Users\alexm\source\repos\SlimeCube\Scene.cpp(154,51): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
+C:\Users\alexm\source\repos\SlimeCube\Scene.cpp(157,85): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
+C:\Users\alexm\source\repos\SlimeCube\Scene.cpp(157,71): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
+C:\Users\alexm\source\repos\SlimeCube\Scene.cpp(162,43): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
+C:\Users\alexm\source\repos\SlimeCube\Scene.cpp(162,29): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
+  Shader.cpp
+  Skybox.cpp
+  SlimeCube.cpp
+  Texture.cpp
+  Window.cpp
+  Generating Code...
+C:\Users\alexm\source\repos\SlimeCube\MaterialComponentPanel.cpp(111): warning C4715: 'MaterialComponentPanel::DragAndDropTexture': not all control paths return a value
   SlimeCube.vcxproj -> C:\Users\alexm\source\repos\SlimeCube\x64\Debug\SlimeCube.exe

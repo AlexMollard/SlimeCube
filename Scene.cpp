@@ -14,14 +14,16 @@ Scene::Scene(Camera* cam, std::shared_ptr<ResourceHub> resHub)
 	skyboxShader = resourceHub->GetShaderManager()->Load("Assets/Shaders/SkyBoxVertex.shader", (void*)"Assets/Shaders/SkyBoxFragment.shader");
 
 	tex = resourceHub->GetTextureManager()->Load("Assets/Images/missingTex.png");
+	auto normalTex = resourceHub->GetTextureManager()->Load("Assets/Images/Normal/Metal.jpg");
 	mesh = resourceHub->GetMeshManager()->Load(std::make_shared<Mesh>("Cube"));
 	mesh->create(Primitives::Cube);
 
 	mat = resourceHub->GetMaterialManager()->Load(std::make_shared<Material>("Basic Material", tex));
 	mat->SetAmbientMap(tex);
+	mat->SetNormalMap(normalTex);
 
 	this->cam = cam;
-	cam->Position = glm::vec3(0.0f,5.0f,15.0f);
+	cam->Position = glm::vec3(0.0f,14.0f,20.0f);
 	
 	// Move most of this into the Skybox class
 	Entity skyBox = CreateEntity("SkyBox");
@@ -33,12 +35,18 @@ Scene::Scene(Camera* cam, std::shared_ptr<ResourceHub> resHub)
 	
 	int cubeCount = 4;
 
-	CreateEntity("PointLight").AddComponent<PointLightComponent>().light = std::make_shared<PointLight>();
-
 	for (int i = -cubeCount; i < cubeCount; i++)
 	{
-		CreateEntity("Testing Cube").GetComponent<TransformComponent>().SetPosition(glm::vec3((i * 3.0f) + 1.5f,0.0f,0.0f));
+		for (int x = -cubeCount; x < cubeCount; x++)
+		{
+			CreateEntity("Testing Cube").GetComponent<TransformComponent>().SetPosition(glm::vec3((i * 3.0f) + 1.5f,0.0f, (x * 3.0f)));
+		}
 	}
+
+	auto light = CreateEntity("PointLight");
+	light.AddComponent<PointLightComponent>().light = std::make_shared<PointLight>();
+	light.GetComponent<TransformComponent>().SetPosition(glm::vec3(0.0f,2.0f,0.0f));
+	light.GetComponent<PointLightComponent>().light->SetStrength(20.0f);
 	
 	cam->UpdateProjectionViewMatrix();
 
