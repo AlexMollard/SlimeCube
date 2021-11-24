@@ -8,9 +8,17 @@ std::once_flag Renderer::initInstanceFlag;
 
 int main()
 {
+	//Start Timer
+	auto start = std::chrono::steady_clock::now();
+	
 	Log::Init();
 	Window* app = new Window(1920, 1080, (char*)"SlimeCore2D");
 	SlimeCube core;
+	
+	//End Timer
+	auto end = std::chrono::steady_clock::now();
+	auto time = std::chrono::duration<double>(end - start).count();
+	Log::Warn("Compile Time: " + std::to_string(time) + " Seconds.");
 
 	while (!app->Window_shouldClose())
 	{

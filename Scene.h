@@ -26,6 +26,7 @@ public:
 	std::shared_ptr < Material> mat = nullptr;
 	std::shared_ptr < Material> skyBoxMat = nullptr;
 	std::shared_ptr < Mesh> mesh = nullptr;
+	std::shared_ptr < Mesh> sceneMesh = nullptr;
 
 	std::string name = "Main Scene";
 	std::shared_ptr < Entity> firstObject;

@@ -18,6 +18,9 @@ Scene::Scene(Camera* cam, std::shared_ptr<ResourceHub> resHub)
 	mesh = resourceHub->GetMeshManager()->Load(std::make_shared<Mesh>("Cube"));
 	mesh->create(Primitives::Cube);
 
+	sceneMesh = resourceHub->GetMeshManager()->Load(std::make_shared<Mesh>("nah"));
+	sceneMesh->load("Assets/Models/sponza/sponza.obj");
+
 	mat = resourceHub->GetMaterialManager()->Load(std::make_shared<Material>("Basic Material", tex));
 	mat->SetAmbientMap(tex);
 	mat->SetNormalMap(normalTex);
@@ -25,6 +28,11 @@ Scene::Scene(Camera* cam, std::shared_ptr<ResourceHub> resHub)
 	this->cam = cam;
 	cam->Position = glm::vec3(0.0f,14.0f,20.0f);
 	
+	auto sponza = CreateEntity("Sponza");
+	sponza.GetComponent<MeshComponent>().mesh = sceneMesh;
+	sponza.GetComponent<TransformComponent>().Scale = glm::vec3(0.1f);
+
+
 	// Move most of this into the Skybox class
 	Entity skyBox = CreateEntity("SkyBox");
 	skyBoxTex = std::make_shared<Skybox>("Assets/Images/SkyBox/");

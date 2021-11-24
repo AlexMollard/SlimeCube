@@ -25,7 +25,6 @@ void Renderer::UpdateLights(std::shared_ptr<Shader> shader)
 	for (int i = 0; i < lights.size(); i++)
 	{
 		auto& light = lights[i];
-		Log::Info("Updating Light for: " + light->GetComponent<TagComponent>().Tag);
 		auto& lightComp = light->GetComponent<PointLightComponent>().light;
 		shader->setVec3("pointLights[" + std::to_string(i) + "].position", light->GetComponent<TransformComponent>().Translation);
 		shader->setVec3("pointLights[" + std::to_string(i) + "].ambient", lightComp->GetAmbient());
