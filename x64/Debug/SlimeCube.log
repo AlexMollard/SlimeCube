@@ -1,2 +1,3 @@
-﻿  PointLightComponentPanel.cpp
+﻿  Renderer.cpp
+C:\Users\alexm\source\repos\SlimeCube\Renderer.cpp(24,49): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   SlimeCube.vcxproj -> C:\Users\alexm\source\repos\SlimeCube\x64\Debug\SlimeCube.exe

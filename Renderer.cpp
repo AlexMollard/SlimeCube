@@ -45,7 +45,7 @@ void Renderer::UpdateLights(std::shared_ptr<Shader> shader)
 	shader->setVec3("dirLight.specular", glm::vec3(1.0f));
 }
 
-void Renderer::AddPointLight(std::shared_ptr<Entity> light)
+void Renderer::AddPointLight(const std::shared_ptr<Entity> light)
 {
 	auto& lightVector = GetInstance()->pointLights;
 
@@ -59,7 +59,7 @@ void Renderer::AddPointLight(std::shared_ptr<Entity> light)
 	UpdateLights(GetInstance()->currentShader);
 }
 
-void Renderer::RemovePointLight(std::shared_ptr<Entity> light)
+void Renderer::RemovePointLight(const std::shared_ptr<Entity> light)
 {
 	auto& lightVector = GetInstance()->pointLights;
 
@@ -69,13 +69,17 @@ void Renderer::RemovePointLight(std::shared_ptr<Entity> light)
 		return;
 	}
 
-	if (std::find(lightVector.begin(), lightVector.end(), light) != lightVector.end())
-	{
-		lightVector.erase(std::find(lightVector.begin(), lightVector.end(), light));
+	auto it = std::find_if(lightVector.begin(), lightVector.end(), [&](std::shared_ptr<Entity> const& p) 
+		{ return *p == *light; });
+	
+	if (it != lightVector.end()) 
+	{ 
+		lightVector.erase(it);
 		Log::Info("Removed a pointLight");
 		UpdateLights(GetInstance()->currentShader);
 		return;
 	}
+
 }
 
 // This function should add to a buffer and draw when it is full or at the end of the frame

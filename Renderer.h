@@ -19,8 +19,8 @@ public:
 	static std::shared_ptr<Renderer> GetInstance();
 
 	static void DrawEntity(Entity entity);
-	static void AddPointLight(std::shared_ptr<Entity> light);
-	static void RemovePointLight(std::shared_ptr<Entity> light);
+	static void AddPointLight(const std::shared_ptr<Entity> light);
+	static void RemovePointLight(const std::shared_ptr<Entity> light);
 
 	Renderer() = default;
 	~Renderer() = default;

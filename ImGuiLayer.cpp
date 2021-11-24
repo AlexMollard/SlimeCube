@@ -164,6 +164,7 @@ void ImGuiLayer::DrawEntityNode(Entity entity)
 	
 	if (entityDeleted)
 	{
+		Renderer::GetInstance()->RemovePointLight(std::make_shared<Entity>(entity));
 		scene->DestroyEntity(entity);
 		if (selectionContext == entity)
 			selectionContext = {};
