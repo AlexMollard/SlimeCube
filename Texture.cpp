@@ -94,15 +94,13 @@ void* Texture::load(std::string dir)
 
 	if (data)
 	{
-		int texType;
+		int texType = GL_RGBA;
 		if (nrChannels == 1)
 			texType = GL_DEPTH_COMPONENT;
-		if (nrChannels == 2)
+		else if (nrChannels == 2)
 			texType = GL_RG;
-		if (nrChannels == 3)
+		else if (nrChannels == 3)
 			texType = GL_RGB;
-		if (nrChannels == 4)
-			texType = GL_RGBA;
 
 		glTexImage2D(GL_TEXTURE_2D, 0, texType, width, height, 0, texType, GL_UNSIGNED_BYTE, data);
 	}

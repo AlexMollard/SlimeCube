@@ -18,7 +18,7 @@ int main()
 	//End Timer
 	auto end = std::chrono::steady_clock::now();
 	auto time = std::chrono::duration<double>(end - start).count();
-	Log::Warn("Compile Time: " + std::to_string(time) + " Seconds.");
+	Log::Warn("StartUp Time: " + std::to_string(time) + " Seconds.");
 
 	while (!app->Window_shouldClose())
 	{

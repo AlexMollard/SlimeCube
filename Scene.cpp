@@ -30,7 +30,13 @@ Scene::Scene(Camera* cam, std::shared_ptr<ResourceHub> resHub)
 	
 	auto sponza = CreateEntity("Sponza");
 	sponza.GetComponent<MeshComponent>().mesh = sceneMesh;
-	sponza.GetComponent<TransformComponent>().Scale = glm::vec3(0.1f);
+	sponza.GetComponent<TransformComponent>().Scale = glm::vec3(0.02f);
+	sponza.GetComponent<TransformComponent>().SetPosition(glm::vec3(0.0f));
+
+	auto Girl = CreateEntity("Girl");
+	Girl.GetComponent<MeshComponent>().mesh = resourceHub->GetMeshManager()->Load(std::make_shared<Mesh>("Girl"));
+	Girl.GetComponent<MeshComponent>().mesh->load("Assets/Models/girl/tiphaine.obj");
+	Girl.GetComponent<TransformComponent>().SetPosition(glm::vec3(0.0f,0.0f,-2.0f));
 
 
 	// Move most of this into the Skybox class
@@ -41,7 +47,7 @@ Scene::Scene(Camera* cam, std::shared_ptr<ResourceHub> resHub)
 	skyBox.GetComponent<MaterialComponent>().material = skyBoxMat;
 	skyBox.GetComponent<ShaderComponent>().shader = skyboxShader;
 	
-	int cubeCount = 4;
+	int cubeCount = 1;
 
 	for (int i = -cubeCount; i < cubeCount; i++)
 	{
@@ -115,6 +121,7 @@ void Scene::AddPointLight(glm::vec3 pos)
 	auto light = CreateEntity("PointLight");
 	light.AddComponent<PointLightComponent>(std::make_shared<PointLight>());
 	light.GetComponent<TransformComponent>().SetPosition(pos);
+	light.GetComponent<TransformComponent>().Scale = glm::vec3(0.1f);
 	light.GetComponent<PointLightComponent>().light->SetStrength(20.0f);
 	Renderer::AddPointLight(std::make_shared<Entity>(light));
 }

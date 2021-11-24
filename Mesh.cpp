@@ -174,7 +174,7 @@ bool Mesh::load(const char* filename, bool loadTextures, bool flipTextureV)
 	std::string error = "";
 
 	std::string file = filename;
-	std::string folder = file.substr(0, file.find_last_of('\\') + 1);
+	std::string folder = file.substr(0, file.find_last_of('/') + 1);
 
 	bool success = tinyobj::LoadObj(shapes, materials, error,
 		filename, folder.c_str());
@@ -264,7 +264,7 @@ bool Mesh::load(const char* filename, bool loadTextures, bool flipTextureV)
 
 			// flip the T / V (might not always be needed, depends on how mesh was made)
 			if (hasTexture)
-				vertices[i].texcoord = glm::vec2(s.mesh.texcoords[i * 2 + 0], flipTextureV ? 1.0f - s.mesh.texcoords[i * 2 + 1] : s.mesh.texcoords[i * 2 + 1]);
+				vertices[i].texcoord = glm::vec2(-1.0f) * glm::vec2(s.mesh.texcoords[i * 2 + 0], flipTextureV ? 1.0f - s.mesh.texcoords[i * 2 + 1] : s.mesh.texcoords[i * 2 + 1]);
 		}
 
 		// calculate for normal mapping

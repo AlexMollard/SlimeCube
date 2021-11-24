@@ -56,7 +56,16 @@ uniform DirectionalLight dirLight;
 
 vec3 getNormalFromMap()
 {
-    vec3 tangentNormal = (texture(normalTexture, TexCoord).xyz) * 2.0 - 1.0;
+    vec3 normalmap = texture(normalTexture, TexCoord).xyz;
+    vec3 tangentNormal;
+    if (normalmap.x == 0.0 && normalmap.y == 0.0 && normalmap.z == 0.0)
+    {
+        tangentNormal = vec3(0.5, 0.5, 1) * 2.0 - 1.0;
+    }
+    else
+    {
+        tangentNormal = (texture(normalTexture, TexCoord).xyz) * 2.0 - 1.0;
+    }
     tangentNormal.z *= normalStrength;
     tangentNormal = normalize(tangentNormal);
 
@@ -139,6 +148,10 @@ vec3 CalculatespotLight(PointLight light, vec3 V, vec3 N, vec3 F0, float roughne
 void main()
 {
     vec3 albedo = pow(texture(diffuseTexture, TexCoord).rgb, vec3(2.2)) * diffuseStrength;
+    vec4 texColor = texture(diffuseTexture, TexCoord);
+    if (texColor.a < 0.1)
+        discard;
+
     float metallic = texture(specularTexture, TexCoord).r * specularStrength;
     float ao = texture(ambientTexture, TexCoord).r * ambientStrength;
     float roughness = texture(roughTexture, TexCoord).r * roughStrength;

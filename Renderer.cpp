@@ -102,7 +102,11 @@ void Renderer::DrawEntity(Entity entity)
 	}
 
 	GetInstance()->BindTexture(shader.shader, TEXTURETYPE::Albedo, material.material->GetAlbedo());
-
+	GetInstance()->BindTexture(shader.shader, TEXTURETYPE::Specular, material.material->GetSpecMap());
+	GetInstance()->BindTexture(shader.shader, TEXTURETYPE::Normal, material.material->GetNormalMap());
+	GetInstance()->BindTexture(shader.shader, TEXTURETYPE::Ambient, material.material->GetAmbientMap());
+	GetInstance()->BindTexture(shader.shader, TEXTURETYPE::Rough, material.material->GetRoughMap());
+	GetInstance()->BindTexture(shader.shader, TEXTURETYPE::Displacement, material.material->GetDisplacementMap());
 	if (entity.HasComponent<SkyBoxComponent>())
 	{
 		glDepthMask(GL_FALSE);
