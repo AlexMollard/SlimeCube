@@ -33,6 +33,8 @@ public:
 	Camera* GetMainCamera();
 
 	std::shared_ptr<ResourceHub> GetResourceHub() { return resourceHub; };
+
+	void AddPointLight(glm::vec3 pos);
 private:
 	void GenerateRenderTexture();
 	void UpdateAndBindRenderTexture();

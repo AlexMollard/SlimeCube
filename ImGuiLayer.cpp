@@ -5,6 +5,7 @@
 #include "Components.h"
 #include "glm.hpp"
 #include "Math.h"
+#include "Renderer.h"
 
 ImGuiLayer* ImGuiLayer::GetInstance()
 {
@@ -390,6 +391,16 @@ void ImGuiLayer::DrawProperties(Entity entity)
 			if (ImGui::MenuItem("Material"))
 			{
 				entity.AddComponent<MaterialComponent>();
+				ImGui::CloseCurrentPopup();
+			}
+		}
+
+		if (!entity.HasComponent<PointLightComponent>())
+		{
+			if (ImGui::MenuItem("PointLight"))
+			{
+				entity.AddComponent<PointLightComponent>(std::make_shared<PointLight>());
+				Renderer::GetInstance()->AddPointLight(std::make_shared<Entity>(entity));
 				ImGui::CloseCurrentPopup();
 			}
 		}

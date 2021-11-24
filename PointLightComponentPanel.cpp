@@ -8,7 +8,7 @@ void PointLightComponentPanel::OnRender(std::shared_ptr<ResourceHub> resHub, Poi
 	ImGui::SameLine();
 
 	float newStrength = component.light->GetStrength();
-	if (ImGui::SliderFloat("##strength", &newStrength, 0.001f, 20.0f))
+	if (ImGui::SliderFloat("##strength", &newStrength, 0.001f, 100.0f))
 		component.light->SetStrength(newStrength);
 
 	ImGui::Text("Colour: ");

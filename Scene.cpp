@@ -42,12 +42,7 @@ Scene::Scene(Camera* cam, std::shared_ptr<ResourceHub> resHub)
 			CreateEntity("Testing Cube").GetComponent<TransformComponent>().SetPosition(glm::vec3((i * 3.0f) + 1.5f,0.0f, (x * 3.0f)));
 		}
 	}
-
-	auto light = CreateEntity("PointLight");
-	light.AddComponent<PointLightComponent>().light = std::make_shared<PointLight>();
-	light.GetComponent<TransformComponent>().SetPosition(glm::vec3(0.0f,2.0f,0.0f));
-	light.GetComponent<PointLightComponent>().light->SetStrength(20.0f);
-	
+	AddPointLight(glm::vec3(0.0f));
 	cam->UpdateProjectionViewMatrix();
 
 	GenerateRenderTexture();
@@ -105,6 +100,15 @@ void Scene::DestroyEntity(Entity entity)
 Camera* Scene::GetMainCamera()
 {
 	return cam;
+}
+
+void Scene::AddPointLight(glm::vec3 pos)
+{
+	auto light = CreateEntity("PointLight");
+	light.AddComponent<PointLightComponent>(std::make_shared<PointLight>());
+	light.GetComponent<TransformComponent>().SetPosition(pos);
+	light.GetComponent<PointLightComponent>().light->SetStrength(20.0f);
+	Renderer::AddPointLight(std::make_shared<Entity>(light));
 }
 
 void Scene::GenerateRenderTexture()

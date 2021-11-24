@@ -19,6 +19,8 @@ public:
 	static std::shared_ptr<Renderer> GetInstance();
 
 	static void DrawEntity(Entity entity);
+	static void AddPointLight(std::shared_ptr<Entity> light);
+	static void RemovePointLight(std::shared_ptr<Entity> light);
 
 	Renderer() = default;
 	~Renderer() = default;
@@ -32,13 +34,15 @@ private:
 
 	void BindTexture(std::shared_ptr<Shader> shader, TEXTURETYPE texType, std::shared_ptr<Texture> texture);
 	void SetIntTexture(std::shared_ptr<Shader> shader,  TEXTURETYPE texType);
-	static void UpdateLights(std::shared_ptr<Shader> shader, Entity entity, std::shared_ptr<PointLight> light);
+	static void UpdateLights(std::shared_ptr<Shader> shader);
 
-	std::vector<std::shared_ptr<PointLightComponent>> pointLights;
 	std::shared_ptr<Texture> currentTexture[6] = { nullptr,nullptr,nullptr,nullptr,nullptr,nullptr };
 	
 	static void initSingleton();
 
 	static std::shared_ptr<Renderer> instance;
 	static std::once_flag initInstanceFlag;
+
+	std::shared_ptr<Shader> currentShader;
+	std::vector<std::shared_ptr<Entity>> pointLights;
 };

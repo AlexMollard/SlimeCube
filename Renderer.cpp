@@ -14,25 +14,29 @@ void Renderer::initSingleton()
 	Log::Info("Renderer Instance Created");
 }
 
-void Renderer::UpdateLights(std::shared_ptr<Shader> shader, Entity entity, std::shared_ptr<PointLight> light)
+void Renderer::UpdateLights(std::shared_ptr<Shader> shader)
 {
-	// Spot Lights
-	if (light == nullptr)
+	if (shader == nullptr)
 		return;
 
-	shader->setInt("pointLightTotal", 1);
-	for (int i = 0; i < 1; i++)
+	auto& lights = GetInstance()->pointLights;
+
+	shader->setInt("pointLightTotal", lights.size());
+	for (int i = 0; i < lights.size(); i++)
 	{
-		shader->setVec3("pointLights[" + std::to_string(i) + "].position", entity.GetComponent<TransformComponent>().Translation);
-		shader->setVec3("pointLights[" + std::to_string(i) + "].ambient", light->GetAmbient());
-		shader->setVec3("pointLights[" + std::to_string(i) + "].albedo", light->GetAlbedo());
-		shader->setVec3("pointLights[" + std::to_string(i) + "].specular", light->GetSpecular());
+		auto& light = lights[i];
+		Log::Info("Updating Light for: " + light->GetComponent<TagComponent>().Tag);
+		auto& lightComp = light->GetComponent<PointLightComponent>().light;
+		shader->setVec3("pointLights[" + std::to_string(i) + "].position", light->GetComponent<TransformComponent>().Translation);
+		shader->setVec3("pointLights[" + std::to_string(i) + "].ambient", lightComp->GetAmbient());
+		shader->setVec3("pointLights[" + std::to_string(i) + "].albedo", lightComp->GetAlbedo());
+		shader->setVec3("pointLights[" + std::to_string(i) + "].specular", lightComp->GetSpecular());
 
-		shader->setFloat("pointLights[" + std::to_string(i) + "].strength", light->GetStrength());
+		shader->setFloat("pointLights[" + std::to_string(i) + "].strength", lightComp->GetStrength());
 
-		shader->setFloat("pointLights[" + std::to_string(i) + "].constant", light->GetConstant());
-		shader->setFloat("pointLights[" + std::to_string(i) + "].linear", light->GetLinear());
-		shader->setFloat("pointLights[" + std::to_string(i) + "].quadratic", light->GetQuadratic());
+		shader->setFloat("pointLights[" + std::to_string(i) + "].constant", lightComp->GetConstant());
+		shader->setFloat("pointLights[" + std::to_string(i) + "].linear", lightComp->GetLinear());
+		shader->setFloat("pointLights[" + std::to_string(i) + "].quadratic", lightComp->GetQuadratic());
 	}
 
 	shader->setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
@@ -41,7 +45,38 @@ void Renderer::UpdateLights(std::shared_ptr<Shader> shader, Entity entity, std::
 	shader->setVec3("dirLight.specular", glm::vec3(1.0f));
 }
 
+void Renderer::AddPointLight(std::shared_ptr<Entity> light)
+{
+	auto& lightVector = GetInstance()->pointLights;
 
+	if (std::find(lightVector.begin(), lightVector.end(),light) != lightVector.end())
+	{
+		Log::Warn("Tried adding point light that is already in renderer");
+		return;
+	}
+	
+	lightVector.push_back(light);
+	UpdateLights(GetInstance()->currentShader);
+}
+
+void Renderer::RemovePointLight(std::shared_ptr<Entity> light)
+{
+	auto& lightVector = GetInstance()->pointLights;
+
+	if (lightVector.size() < 1)
+	{
+		Log::Warn("Cant remove pointlight as there are none");
+		return;
+	}
+
+	if (std::find(lightVector.begin(), lightVector.end(), light) != lightVector.end())
+	{
+		lightVector.erase(std::find(lightVector.begin(), lightVector.end(), light));
+		Log::Info("Removed a pointLight");
+		UpdateLights(GetInstance()->currentShader);
+		return;
+	}
+}
 
 // This function should add to a buffer and draw when it is full or at the end of the frame
 void Renderer::DrawEntity(Entity entity)
@@ -51,11 +86,18 @@ void Renderer::DrawEntity(Entity entity)
 	auto& shader = entity.GetComponent<ShaderComponent>();
 	auto& material = entity.GetComponent<MaterialComponent>();
 	auto& camera = entity.GetComponent<CameraComponent>();
+	
+	if (GetInstance()->currentShader == nullptr || shader.shader != GetInstance()->currentShader)
+	{
+		GetInstance()->currentShader = shader.shader;
+		shader.shader->Use();
+		shader.shader->setFloat("diffuseStrength", 1.0f);
+		shader.shader->setInt("diffuseTexture", 0);
+		shader.shader->setMat4("ProjectionView", camera.cam->GetProjectionViewMatrix());
 
-	shader.shader->Use();
-	shader.shader->setFloat("diffuseStrength", 1.0f);
-	shader.shader->setInt("diffuseTexture", 0);
-	shader.shader->setMat4("ProjectionView", camera.cam->GetProjectionViewMatrix());
+		UpdateLights(shader.shader);
+	}
+
 	GetInstance()->BindTexture(shader.shader, TEXTURETYPE::Albedo, material.material->GetAlbedo());
 
 	if (entity.HasComponent<SkyBoxComponent>())
@@ -72,11 +114,6 @@ void Renderer::DrawEntity(Entity entity)
 	}
 
 	shader.shader->setVec3("viewPos", camera.cam->Position);
-	if (entity.HasComponent<PointLightComponent>())
-	{
-		UpdateLights(shader.shader, entity, entity.GetComponent<PointLightComponent>().light);
-		return;
-	}
 
 	shader.shader->setFloat("diffuseStrength", material.material->GetAlbedoStrength());
 	shader.shader->setFloat("specularStrength", material.material->GetSpecularStrength());
