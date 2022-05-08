@@ -27,12 +27,12 @@ public:
 
     ~Mesh() override;
 
-    void create(Primitives::TYPE type = Primitives::TYPE::Cube, float radius = 0.5f, float halfLength = 0.5f,
+    void Create(Primitives::TYPE type = Primitives::TYPE::Cube, float radius = 0.5f, float halfLength = 0.5f,
                 int slices = 10);
 
-    bool load(const char *filename, bool loadTextures = true, bool flipTextureV = false);
+    bool Load(const char *filename, bool loadTextures = true, bool flipTextureV = false);
 
-    virtual void draw(bool usePatches = false);
+    virtual void Draw(bool usePatches = false);
 
     const std::string& GetName() { return name; };
 

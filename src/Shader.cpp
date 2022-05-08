@@ -1,6 +1,7 @@
 
 #include "Shader.h"
 #include <fstream>
+#include <sstream>
 #include <iostream>
 //#include <bits/stdc++.h>
 
@@ -55,8 +56,9 @@ void *Shader::Create(std::string name, const char *vertexPath, const char *fragm
         }
     }
     catch (std::ifstream::failure e) {
-        std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+        Log::Error("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
     }
+
     const char *vShaderCode = vertexCode.c_str();
     const char *fShaderCode = fragmentCode.c_str();
     // 2. compile shaders
@@ -131,15 +133,18 @@ void Shader::CheckCompileErrors(GLuint shader, std::string type) {
         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
         if (!success) {
             glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-            std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog
-                      << "\n -- --------------------------------------------------- -- " << std::endl;
+            std::string errorMessage = "ERROR::SHADER_COMPILATION_ERROR of type: " + type + "\n" + infoLog
+                      + "\n -- --------------------------------------------------- -- " + "\n";
+            Log::Error(errorMessage);
+
         }
     } else {
         glGetProgramiv(shader, GL_LINK_STATUS, &success);
         if (!success) {
             glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-            std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog
-                      << "\n -- --------------------------------------------------- -- " << std::endl;
+			std::string errorMessage = "ERROR::PROGRAM_LINKING_ERROR of type: " + type + "\n" + infoLog
+				+ "\n -- --------------------------------------------------- -- " + "\n";
+			Log::Error(errorMessage);
         }
     }
 }

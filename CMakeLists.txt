@@ -1,13 +1,7 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.12)
 project(SlimeCube)
 
-set(CMAKE_CXX_STANDARD 20)
-include(FetchContent)
-
-#disable in lining for profiler
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+set (CMAKE_CXX_STANDARD 17)
 
 set(_CRT_FUNCTIONS_REQUIRED 0)
 
@@ -31,7 +25,7 @@ FILE(GLOB FILES_TO_BUILD
         )
 
 # Compiling project
-add_executable(SlimeCube ${FILES_TO_BUILD} src/SlimeMath.cpp)
+add_executable(SlimeCube ${FILES_TO_BUILD})
 
 find_package(OpenGL REQUIRED)
 target_link_libraries(SlimeCube PRIVATE

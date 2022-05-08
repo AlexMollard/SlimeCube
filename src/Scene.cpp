@@ -6,21 +6,27 @@
 #include "imgui_internal.h"
 #include "ImGuiLayer.h"
 #include "Log.h"
+#include "Directories.h"
+
 
 Scene::Scene(Camera *cam, std::shared_ptr<ResourceHub> resHub) {
     resourceHub = resHub;
-    mainShader = resourceHub->GetShaderManager()->Load("../../Assets/Shaders/litVertex.shader",
-                                                       (void *) "../../Assets/Shaders/litFragment.shader");
-    skyboxShader = resourceHub->GetShaderManager()->Load("../../Assets/Shaders/SkyBoxVertex.shader",
-                                                         (void *) "../../Assets/Shaders/SkyBoxFragment.shader");
+    mainShader = resourceHub->GetShaderManager()->Load(
+        Dir::FromAsset("/Shaders/litVertex.shader"),
+        Dir::FromAsset("/Shaders/litFragment.shader"));
 
-    tex = resourceHub->GetTextureManager()->Load("../../Assets/Images/missingTex.png");
-    auto normalTex = resourceHub->GetTextureManager()->Load("../../Assets/Images/Normal/Metal.jpg");
+    skyboxShader = resourceHub->GetShaderManager()->Load(
+        Dir::FromAsset("/Shaders/SkyBoxVertex.shader"),
+        Dir::FromAsset("/Shaders/SkyBoxFragment.shader"));
+
+    tex = resourceHub->GetTextureManager()->Load(Dir::FromAsset("/Images/missingTex.png"));
+
+    auto normalTex = resourceHub->GetTextureManager()->Load(Dir::FromAsset("/Images/Normal/Metal.jpg"));
     mesh = resourceHub->GetMeshManager()->Load(std::make_shared<Mesh>("Cube"));
-    mesh->create(Primitives::Cube);
+    mesh->Create(Primitives::Cube);
 
     sceneMesh = resourceHub->GetMeshManager()->Load(std::make_shared<Mesh>("nah"));
-    sceneMesh->load("../../Assets/Models/sponza/sponza.obj");
+    sceneMesh->Load(Dir::FromAsset("/Models/sponza/sponza.obj").c_str());
 
     mat = resourceHub->GetMaterialManager()->Load(std::make_shared<Material>("Basic Material", tex));
     mat->SetAmbientMap(tex);
@@ -36,13 +42,13 @@ Scene::Scene(Camera *cam, std::shared_ptr<ResourceHub> resHub) {
 
     auto Girl = CreateEntity("Girl");
     Girl.GetComponent<MeshComponent>().mesh = resourceHub->GetMeshManager()->Load(std::make_shared<Mesh>("Girl"));
-    Girl.GetComponent<MeshComponent>().mesh->load("../../Assets/Models/girl/tiphaine.obj");
+    Girl.GetComponent<MeshComponent>().mesh->Load(Dir::FromAsset("/Models/girl/tiphaine.obj").c_str());
     Girl.GetComponent<TransformComponent>().SetPosition(glm::vec3(0.0f, 0.0f, -2.0f));
 
 
     // Move most of this into the Skybox class
     Entity skyBox = CreateEntity("SkyBox");
-    skyBoxTex = std::make_shared<Skybox>("../../Assets/Images/SkyBox/");
+    skyBoxTex = std::make_shared<Skybox>(Dir::FromAsset("/Images/SkyBox/"));
     skyBoxMat = std::make_shared<Material>("Skybox Material", skyBoxTex);
     skyBox.AddComponent<SkyBoxComponent>(cam);
     skyBox.GetComponent<MaterialComponent>().material = skyBoxMat;

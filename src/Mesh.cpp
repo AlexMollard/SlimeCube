@@ -5,7 +5,7 @@ Mesh::Mesh(const char* name, const char* dir)
 	this->name = name;
 
 	if (dir != nullptr)
-		load(dir);
+		Load(dir);
 }
 
 Mesh::~Mesh()
@@ -17,7 +17,7 @@ Mesh::~Mesh()
 	}
 }
 
-void Mesh::create(Primitives::TYPE type, float argOne, float argTwo, int argThree)
+void Mesh::Create(Primitives::TYPE type, float argOne, float argTwo, int argThree)
 {
 	switch (type)
 	{
@@ -161,7 +161,7 @@ void Mesh::create(Primitives::TYPE type, float argOne, float argTwo, int argThre
 	return (void)0;
 }
 
-bool Mesh::load(const char* filename, bool loadTextures, bool flipTextureV)
+bool Mesh::Load(const char* filename, bool loadTextures, bool flipTextureV)
 {
 	if (m_meshChunks.empty() == false) {
 		printf("Mesh already initialised, can't re-initialise!\n");
@@ -203,22 +203,22 @@ bool Mesh::load(const char* filename, bool loadTextures, bool flipTextureV)
 			// textures
 
 			if (m.ambient_texname.size() > 1)
-				m_materials[index].ambientTexture.load((folder + m.ambient_texname).c_str());
+				m_materials[index].ambientTexture.Load((folder + m.ambient_texname).c_str());
 
 			if (m.diffuse_texname.size() > 1)
-				m_materials[index].diffuseTexture.load((folder + m.diffuse_texname).c_str());
+				m_materials[index].diffuseTexture.Load((folder + m.diffuse_texname).c_str());
 
 			if (m.specular_texname.size() > 1)
-				m_materials[index].specularTexture.load((folder + m.specular_texname).c_str());
+				m_materials[index].specularTexture.Load((folder + m.specular_texname).c_str());
 
 			if (m.specular_highlight_texname.size() > 1)
-				m_materials[index].specularHighlightTexture.load((folder + m.specular_highlight_texname).c_str());
+				m_materials[index].specularHighlightTexture.Load((folder + m.specular_highlight_texname).c_str());
 
 			if (m.bump_texname.size() > 1)
-				m_materials[index].normalTexture.load((folder + m.bump_texname).c_str());
+				m_materials[index].normalTexture.Load((folder + m.bump_texname).c_str());
 
 			if (m.displacement_texname.size() > 1)
-				m_materials[index].displacementTexture.load((folder + m.displacement_texname).c_str());
+				m_materials[index].displacementTexture.Load((folder + m.displacement_texname).c_str());
 		}
 		++index;
 	}
@@ -325,7 +325,7 @@ void BindTexture(Texture* texture, int textureIndex)
 	}
 }
 
-void Mesh::draw(bool usePatches) {
+void Mesh::Draw(bool usePatches) {
 	if (m_materials.size() > 1)
 	{
 		int program = -1;

@@ -7,6 +7,11 @@ Skybox::Skybox(std::string facesDIR) {
     CreateSkyBox(facesDIR);
 }
 
+Skybox::Skybox(const char* facesDIR)
+{
+    Skybox(std::string(facesDIR));
+}
+
 Skybox::~Skybox() {
 
 }

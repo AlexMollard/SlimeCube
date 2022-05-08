@@ -1,14 +1,15 @@
 #include <iostream>
 #include "ContentBrowser.h"
+#include "Directories.h"
 
-static const std::filesystem::path assetsPath = "../../Assets";
+static const std::filesystem::path assetsPath = ASSETS_DIR;
 
 ContentBrowser::ContentBrowser() {
     std::cout << std::filesystem::current_path() << std::endl;
     currentDirectory = assetsPath.c_str();
-    directoryIcon = Texture::Create("../../Assets/Images/Icons/Folder.png");
-    fileIcon = Texture::Create("../../Assets/Images/Icons/File.png");
-    pngIcon = Texture::Create("../../Assets/Images/Icons/PNG File.png");
+    directoryIcon = Texture::Create(Dir::FromAsset("/Images/Icons/Folder.png"));
+    fileIcon = Texture::Create(Dir::FromAsset("/Images/Icons/File.png"));
+    pngIcon = Texture::Create(Dir::FromAsset("/Images/Icons/PNG File.png"));
     prevFrameDirectory = "False Directory";
 }
 

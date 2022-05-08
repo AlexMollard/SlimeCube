@@ -103,7 +103,7 @@ void Renderer::DrawEntity(Entity entity) {
         auto &camera = entity.GetComponent<SkyBoxComponent>();
         transform.SetPosition(camera.cam->Position);
         shader.shader->setMat4("Model", transform.GetTransform());
-        newMesh.mesh->draw();
+        newMesh.mesh->Draw();
         glCullFace(GL_BACK);
         glDepthMask(GL_TRUE);
         return;
@@ -126,7 +126,7 @@ void Renderer::DrawEntity(Entity entity) {
 
 
     shader.shader->setMat4("Model", transform.GetTransform());
-    newMesh.mesh->draw();
+    newMesh.mesh->Draw();
 }
 
 void Renderer::BindTexture(std::shared_ptr<Shader> shader, TEXTURETYPE texType, std::shared_ptr<Texture> texture) {

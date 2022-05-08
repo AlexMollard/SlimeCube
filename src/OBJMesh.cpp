@@ -13,7 +13,7 @@ OBJMesh::~OBJMesh() {
     }
 }
 
-bool OBJMesh::load(const char *filename, bool loadTextures /* = true */, bool flipTextureV /* = false */) {
+bool OBJMesh::Load(const char *filename, bool loadTextures /* = true */, bool flipTextureV /* = false */) {
     if (m_meshChunks.empty() == false) {
         printf("Mesh already initialised, can't re-initialise!\n");
         return false;
@@ -151,7 +151,7 @@ bool OBJMesh::load(const char *filename, bool loadTextures /* = true */, bool fl
     return true;
 }
 
-void OBJMesh::draw(bool usePatches /* = false */) {
+void OBJMesh::Draw(bool usePatches /* = false */) {
     int program = -1;
     glGetIntegerv(GL_CURRENT_PROGRAM, &program);
 

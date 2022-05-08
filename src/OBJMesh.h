@@ -49,10 +49,10 @@ public:
     ~OBJMesh();
 
     // will fail if a mesh has already been loaded in to this instance
-    bool load(const char *filename, bool loadTextures = true, bool flipTextureV = false);
+    bool Load(const char *filename, bool loadTextures = true, bool flipTextureV = false);
 
     // allow option to draw as patches for tessellation
-    void draw(bool usePatches = false);
+    void Draw(bool usePatches = false);
 
     // access to the filename that was loaded
     const std::string &getFilename() const { return m_filename; }

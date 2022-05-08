@@ -6,7 +6,8 @@
 
 class Skybox : public Texture {
 public:
-    Skybox(std::string facesDIR);
+	Skybox(std::string facesDIR);
+	Skybox(const char* facesDIR);
 
     ~Skybox();
 

@@ -6,6 +6,7 @@
 #include "SlimeMath.h"
 #include "Renderer.h"
 #include "Log.h"
+#include "Directories.h"
 
 ImGuiLayer *ImGuiLayer::GetInstance() {
     if (!instance) {
@@ -43,8 +44,8 @@ void ImGuiLayer::OnAttach() {
 
     ImGuiIO &io = ImGui::GetIO();
     float fontSize = 18.0f;
-    io.Fonts->AddFontFromFileTTF("../../Assets/Fonts/opensans/OpenSans-Bold.ttf", fontSize);
-    io.FontDefault = io.Fonts->AddFontFromFileTTF("../../Assets/Fonts/opensans/OpenSans-Regular.ttf", fontSize);
+    io.Fonts->AddFontFromFileTTF(Dir::FromAsset("/Fonts/opensans/OpenSans-Bold.ttf").c_str(), fontSize);
+    io.FontDefault = io.Fonts->AddFontFromFileTTF(Dir::FromAsset("/Fonts/opensans/OpenSans-Regular.ttf").c_str(), fontSize);
     ImGui_ImplGlfw_InitForOpenGL(Input::GetInstance()->GetWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 130");
 

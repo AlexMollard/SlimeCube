@@ -50,7 +50,7 @@ Texture::Texture() {
 
 
 Texture::Texture(const std::string& dir, void *args) {
-    load(dir);
+    Load(dir);
 }
 
 Texture::~Texture() {
@@ -74,7 +74,7 @@ void Texture::SetUpTextureID() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-Texture* Texture::load(const std::string& dir) {
+Texture* Texture::Load(const std::string& dir) {
     this->name = dir;
 
     SetUpTextureID();
@@ -106,4 +106,8 @@ Texture* Texture::load(const std::string& dir) {
 
 std::shared_ptr<Texture> Texture::Create(std::string const &dir) {
     return std::make_shared<Texture>(dir, dir);
+}
+
+std::shared_ptr<Texture> Texture::Create(const char* dir) {
+	return std::make_shared<Texture>(dir, dir);
 }
