@@ -25,25 +25,22 @@ Scene::Scene(Camera *cam, std::shared_ptr<ResourceHub> resHub) {
     mesh = resourceHub->GetMeshManager()->Load(std::make_shared<Mesh>("Cube"));
     mesh->Create(Primitives::Cube);
 
-    sceneMesh = resourceHub->GetMeshManager()->Load(std::make_shared<Mesh>("nah"));
-    sceneMesh->Load(Dir::FromAsset("/Models/sponza/sponza.obj").c_str());
-
     mat = resourceHub->GetMaterialManager()->Load(std::make_shared<Material>("Basic Material", tex));
     mat->SetAmbientMap(tex);
     mat->SetNormalMap(normalTex);
 
     this->cam = cam;
-    cam->Position = glm::vec3(0.0f, 14.0f, 20.0f);
+    cam->Position = glm::vec3(0.0f, 7.0f, 10.0f);
 
-    auto sponza = CreateEntity("Sponza");
-    sponza.GetComponent<MeshComponent>().mesh = sceneMesh;
-    sponza.GetComponent<TransformComponent>().Scale = glm::vec3(0.02f);
-    sponza.GetComponent<TransformComponent>().SetPosition(glm::vec3(0.0f));
+	auto testingMesh = CreateEntity("Testing Mesh");
+    testingMesh.GetComponent<MeshComponent>().mesh = resourceHub->GetMeshManager()->Load(std::make_shared<Mesh>("Testing Mesh"));
+    testingMesh.GetComponent<MeshComponent>().mesh->Load(Dir::FromAsset("/Models/test/cornell_box_multimaterial.obj").c_str());
+    testingMesh.GetComponent<TransformComponent>().SetPosition(glm::vec3(0.0f,2.0f,0.0f));
 
-    auto Girl = CreateEntity("Girl");
-    Girl.GetComponent<MeshComponent>().mesh = resourceHub->GetMeshManager()->Load(std::make_shared<Mesh>("Girl"));
-    Girl.GetComponent<MeshComponent>().mesh->Load(Dir::FromAsset("/Models/girl/tiphaine.obj").c_str());
-    Girl.GetComponent<TransformComponent>().SetPosition(glm::vec3(0.0f, 0.0f, -2.0f));
+    //auto Girl = CreateEntity("Girl");
+    //Girl.GetComponent<MeshComponent>().mesh = resourceHub->GetMeshManager()->Load(std::make_shared<Mesh>("Girl"));
+    //Girl.GetComponent<MeshComponent>().mesh->Load(Dir::FromAsset("/Models/girl/tiphaine.obj").c_str());
+    //Girl.GetComponent<TransformComponent>().SetPosition(glm::vec3(0.0f, 0.0f, -2.0f));
 
 
     // Move most of this into the Skybox class

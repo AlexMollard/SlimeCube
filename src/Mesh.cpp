@@ -1,4 +1,8 @@
 #include "Mesh.h"
+#define TINYOBJLOADER_IMPLEMENTATION // define this in only *one* .cc
+// Optional. define TINYOBJLOADER_USE_MAPBOX_EARCUT gives robust trinagulation. Requires C++11
+//#define TINYOBJLOADER_USE_MAPBOX_EARCUT
+#include "objLoader.h"
 
 Mesh::Mesh(const char* name, const char* dir)
 {
@@ -13,7 +17,7 @@ Mesh::~Mesh()
 	for (auto& c : m_meshChunks) {
 		glDeleteVertexArrays(1, &c.vao);
 		glDeleteBuffers(1, &c.vbo);
-		glDeleteBuffers(1, &c.ibo);
+		glDeleteBuffers(1, &c.ibo); 
 	}
 }
 
@@ -163,29 +167,30 @@ void Mesh::Create(Primitives::TYPE type, float argOne, float argTwo, int argThre
 
 bool Mesh::Load(const char* filename, bool loadTextures, bool flipTextureV)
 {
-	if (m_meshChunks.empty() == false) {
-		printf("Mesh already initialised, can't re-initialise!\n");
-		return false;
+	this->fileName = filename;
+	hasIBO = true;
+	std::string inputfile = filename;
+	tinyobj::ObjReaderConfig reader_config;
+
+	tinyobj::ObjReader reader;
+
+	if (!reader.ParseFromFile(inputfile, reader_config)) 
+	{
+		if (!reader.Error().empty()) {
+			Log::Error("TinyObjReader: " + reader.Error());
+		}
+		exit(1);
 	}
 
-	std::vector<tinyobj::shape_t> shapes;
-	std::vector<tinyobj::material_t> materials;
-	std::string error = "";
-
-	std::string file = filename;
-	std::string folder = file.substr(0, file.find_last_of('/') + 1);
-
-	bool success = tinyobj::LoadObj(shapes, materials, error,
-		filename, folder.c_str());
-
-	//std::cout << error << std::endl;
-
-	if (success == false) {
-		printf("%s\n", error.c_str());
-		return false;
+	if (!reader.Warning().empty()) {
+		Log::Warn("TinyObjReader: " + reader.Warning());
 	}
 
-	fileName = filename;
+	auto& attrib = reader.GetAttrib();
+	auto& shapes = reader.GetShapes();
+	auto& materials = reader.GetMaterials();
+
+	std::string folder = fileName.substr(0, fileName.find_last_of('/') + 1);
 
 	// copy materials
 	m_materials.resize(materials.size());
@@ -194,7 +199,7 @@ bool Mesh::Load(const char* filename, bool loadTextures, bool flipTextureV)
 		if (materials.size() > 1)
 		{
 			m_materials[index].ambient = glm::vec3(m.ambient[0], m.ambient[1], m.ambient[2]);
-			m_materials[index].albedo = glm::vec3(m.albedo[0], m.albedo[1], m.albedo[2]);
+			m_materials[index].albedo = glm::vec3(m.diffuse[0], m.diffuse[1], m.diffuse[2]);
 			m_materials[index].specular = glm::vec3(m.specular[0], m.specular[1], m.specular[2]);
 			m_materials[index].emissive = glm::vec3(m.emission[0], m.emission[1], m.emission[2]);
 			m_materials[index].specularPower = m.shininess;
@@ -225,9 +230,60 @@ bool Mesh::Load(const char* filename, bool loadTextures, bool flipTextureV)
 
 	// copy shapes
 	m_meshChunks.reserve(shapes.size());
+	for (auto& shape : shapes)
+	{
+		// Loop over faces(polygon)
+		size_t index_offset = 0;
 
-	for (auto& s : shapes) {
 		MeshChunk chunk;
+
+		// create vertex data
+		std::vector<Vertex> vertices;
+		vertices.resize(shape.mesh.num_face_vertices.size() * 3);
+
+		std::vector<unsigned int> indices;
+		for (size_t f = 0; f < shape.mesh.num_face_vertices.size(); f++) {
+			
+			size_t fv = size_t(shape.mesh.num_face_vertices[f]); // 3
+			indices.push_back(shape.mesh.indices[index_offset].vertex_index);
+
+			// Loop over vertices in the face.
+			for (size_t v = 0; v < fv; v++) {
+				// access to vertex
+				tinyobj::index_t idx = shape.mesh.indices[index_offset + v];
+
+
+				tinyobj::real_t vx = attrib.vertices[3 * size_t(idx.vertex_index) + 0];
+				tinyobj::real_t vy = attrib.vertices[3 * size_t(idx.vertex_index) + 1];
+				tinyobj::real_t vz = attrib.vertices[3 * size_t(idx.vertex_index) + 2];
+
+				vertices[v + f].position = glm::vec3(vx, vy, vz);
+
+				// Check if `normal_index` is zero or positive. negative = no normal data
+				if (idx.normal_index >= 0) {
+					tinyobj::real_t nx = attrib.normals[3 * size_t(idx.normal_index) + 0];
+					tinyobj::real_t ny = attrib.normals[3 * size_t(idx.normal_index) + 1];
+					tinyobj::real_t nz = attrib.normals[3 * size_t(idx.normal_index) + 2];
+
+					vertices[v + f].normal = glm::vec3(nx, ny, nz);
+				}
+
+				// Check if `texcoord_index` is zero or positive. negative = no texcoord data
+				if (idx.texcoord_index >= 0) {
+					tinyobj::real_t tx = attrib.texcoords[2 * size_t(idx.texcoord_index) + 0];
+					tinyobj::real_t ty = attrib.texcoords[2 * size_t(idx.texcoord_index) + 1];
+
+					vertices[v + f].texcoord = glm::vec2(tx, ty); // THIS MIGHT NEED TO BE FLIPPED
+				}
+
+				// Optional: vertex colors
+				tinyobj::real_t red   = attrib.colors[3*size_t(idx.vertex_index)+0];
+				tinyobj::real_t green = attrib.colors[3*size_t(idx.vertex_index)+1];
+				tinyobj::real_t blue  = attrib.colors[3*size_t(idx.vertex_index)+2];
+			}
+			index_offset += fv;
+
+		}
 
 		// generate buffers
 		glGenBuffers(1, &chunk.vbo);
@@ -237,44 +293,20 @@ bool Mesh::Load(const char* filename, bool loadTextures, bool flipTextureV)
 		// bind vertex array aka a mesh wrapper
 		glBindVertexArray(chunk.vao);
 
-		// set the index buffer data
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, chunk.ibo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-			s.mesh.indices.size() * sizeof(unsigned int),
-			s.mesh.indices.data(), GL_STATIC_DRAW);
-
-		// store index count for rendering
-		chunk.indexCount = (unsigned int)s.mesh.indices.size();
-
-		// create vertex data
-		std::vector<Vertex> vertices;
-		vertices.resize(s.mesh.positions.size() / 3);
-		size_t vertCount = vertices.size();
-
-		bool hasPosition = s.mesh.positions.empty() == false;
-		bool hasNormal = s.mesh.normals.empty() == false;
-		bool hasTexture = s.mesh.texcoords.empty() == false;
-
-		for (size_t i = 0; i < vertCount; ++i) {
-			if (hasPosition)
-				vertices[i].position = glm::vec3(s.mesh.positions[i * 3 + 0], s.mesh.positions[i * 3 + 1], s.mesh.positions[i * 3 + 2]);
-			if (hasNormal)
-				vertices[i].normal = glm::vec3(s.mesh.normals[i * 3 + 0], s.mesh.normals[i * 3 + 1], s.mesh.normals[i * 3 + 2]);
-
-			// flip the T / V (might not always be needed, depends on how mesh was made)
-			if (hasTexture)
-				vertices[i].texcoord = glm::vec2(-1.0f) * glm::vec2(s.mesh.texcoords[i * 2 + 0], flipTextureV ? 1.0f - s.mesh.texcoords[i * 2 + 1] : s.mesh.texcoords[i * 2 + 1]);
-		}
-
-		// calculate for normal mapping
-		if (hasNormal && hasTexture)
-			calculateTangents(vertices, s.mesh.indices);
-
 		// bind vertex buffer
 		glBindBuffer(GL_ARRAY_BUFFER, chunk.vbo);
 
 		// fill vertex buffer
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+
+		// set the index buffer data
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, chunk.ibo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+			indices.size() * sizeof(unsigned int),
+			indices.data(), GL_STATIC_DRAW);
+
+		// store index count for rendering
+		chunk.indexCount = (unsigned int)indices.size();
 
 		// Enable first element as position
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 15 * sizeof(float), (void*)0);
@@ -302,9 +334,12 @@ bool Mesh::Load(const char* filename, bool loadTextures, bool flipTextureV)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 		// set chunk material
-		chunk.materialID = s.mesh.material_ids.empty() ? -1 : s.mesh.material_ids[0];
+		chunk.materialID = shape.mesh.material_ids.empty() ? -1 : shape.mesh.material_ids[0];
 
 		m_meshChunks.push_back(chunk);
+
+		// calculate for normal mapping
+		//calculateTangents(vertices, shape.mesh.indices);
 	}
 
 	// load obj
@@ -360,7 +395,6 @@ void Mesh::Draw(bool usePatches) {
 			glUniform1i(dispTexUniform, 5);
 
 		// draw the mesh chunks
-		int count = -1;
 		for (auto& c : m_meshChunks) {
 			if (m_materials[c.materialID].diffuseTexture.GetID() != 0)
 				BindTexture(&m_materials[c.materialID].diffuseTexture, 0);

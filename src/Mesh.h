@@ -5,7 +5,6 @@
 #include "GLFW/glfw3.h"
 #include "ext.hpp"
 #include "Primitives.h"
-#include "objLoader.h"
 #include "Texture.h"
 
 // a vertex structure for obj files
