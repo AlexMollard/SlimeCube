@@ -1,10 +1,10 @@
 #pragma once
 
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+#include <ImGuizmo.h>
 #include "Entity.h"
-#include "ImGuizmo.h"
 #include "ContentBrowser.h"
 #include "ResourceManager.h"
 #include "MaterialComponentPanel.h"

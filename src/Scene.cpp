@@ -37,12 +37,6 @@ Scene::Scene(Camera *cam, std::shared_ptr<ResourceHub> resHub) {
     testingMesh.GetComponent<MeshComponent>().mesh->Load(Dir::FromAsset("/Models/test/cornell_box_multimaterial.obj").c_str());
     testingMesh.GetComponent<TransformComponent>().SetPosition(glm::vec3(0.0f,2.0f,0.0f));
 
-    //auto Girl = CreateEntity("Girl");
-    //Girl.GetComponent<MeshComponent>().mesh = resourceHub->GetMeshManager()->Load(std::make_shared<Mesh>("Girl"));
-    //Girl.GetComponent<MeshComponent>().mesh->Load(Dir::FromAsset("/Models/girl/tiphaine.obj").c_str());
-    //Girl.GetComponent<TransformComponent>().SetPosition(glm::vec3(0.0f, 0.0f, -2.0f));
-
-
     // Move most of this into the Skybox class
     Entity skyBox = CreateEntity("SkyBox");
     skyBoxTex = std::make_shared<Skybox>(Dir::FromAsset("/Images/SkyBox/"));

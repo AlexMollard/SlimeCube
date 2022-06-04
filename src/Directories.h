@@ -2,7 +2,7 @@
 
 // Asset Folder Dir (VisualStudio)
 #ifndef ASSETS_DIR
-#define ASSETS_DIR  "C:/Users/alexm/source/repos/SlimeCube/Assets"
+#define ASSETS_DIR  "E:/Projects/SlimeCube/Assets"
 #endif
 
 namespace Dir

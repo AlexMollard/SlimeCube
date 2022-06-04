@@ -1,6 +1,6 @@
 #pragma once
 
-#include "glm.hpp"
+#include "glm/glm.hpp"
 #include "Skybox.h"
 #include <memory>
 #include <string>

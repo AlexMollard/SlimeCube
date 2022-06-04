@@ -1,6 +1,6 @@
 #pragma once
 
-#include "glew/glew.h"
+#include "gl/glew.h"
 #include "GLFW/glfw3.h"
 #include "Resource.h"
 #include <string>

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "glew/glew.h"
-#include "glm.hpp"
+#include "gl/glew.h"
+#include "glm/glm.hpp"
 #include "GLFW/glfw3.h"
-#include "ext.hpp"
+#include "glm/ext.hpp"
 #include "Primitives.h"
 #include "Texture.h"
 

@@ -2,7 +2,7 @@
 #include "imgui_internal.h"
 #include "Input.h"
 #include "Components.h"
-#include "glm.hpp"
+#include "glm/glm.hpp"
 #include "SlimeMath.h"
 #include "Renderer.h"
 #include "Log.h"

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Camera.h"
-#include "glm.hpp"
+#include "glm/glm.hpp"
 #include "Keycode.h"
 
 class Input {

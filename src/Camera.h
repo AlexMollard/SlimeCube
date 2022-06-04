@@ -1,7 +1,7 @@
 #pragma once
 
-#include "glm.hpp"
-#include "ext.hpp"
+#include "glm/glm.hpp"
+#include "glm/ext.hpp"
 #include <GLFW/glfw3.h>
 
 enum Camera_Movement {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "glm.hpp"
-#include "ext.hpp"
-#include "glew/glew.h"
+#include "glm/glm.hpp"
+#include "glm/ext.hpp"
+#include "gl/glew.h"
 #include "GLFW/glfw3.h"
 #include "Resource.h"
 #include <string>

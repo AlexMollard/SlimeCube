@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/SlimeCube.iml" filepath="$PROJECT_DIR$/.idea/SlimeCube.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/SlimeCube2.iml" filepath="$PROJECT_DIR$/.idea/SlimeCube2.iml" />
     </modules>
   </component>
 </project>
