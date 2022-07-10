@@ -1,0 +1,15 @@
+---
+BasedOnStyle: Google
+AlignAfterOpenBracket: DontAlign
+AlwaysBreakAfterReturnType: None
+AlwaysBreakTemplateDeclarations: 'Yes'
+BreakBeforeBraces: Mozilla
+ColumnLimit: '130'
+CompactNamespaces: 'false'
+FixNamespaceComments: 'false'
+IndentWidth: '1'
+MaxEmptyLinesToKeep: '1'
+Standard: Auto
+TabWidth: '4'
+
+...

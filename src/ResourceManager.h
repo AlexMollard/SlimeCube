@@ -1,90 +1,89 @@
 #pragma once
 
 #include "Material.h"
-#include "Shader.h"
 #include "Mesh.h"
+#include "Shader.h"
 
-template<class T>
-class ResourceManager {
+template <class T>
+class ResourceManager
+{
 private:
-    std::unordered_map<std::string, std::shared_ptr<T>> Map;
-    std::string Name;
+ std::unordered_map<std::string, std::shared_ptr<T>> Map;
+ std::string Name;
 
-    ResourceManager(const ResourceManager &) {};
+ ResourceManager(const ResourceManager &){};
 
-    ResourceManager &operator=(const ResourceManager &) { return *this; };
+ ResourceManager &operator=(const ResourceManager &) { return *this; };
 
-    void ReleaseAll() {
-        Map.clear();
-    }
+ void ReleaseAll() { Map.clear(); }
 
 public:
-    std::shared_ptr<T> Load(const std::string &filename, void *args = nullptr) {
-        if (filename.empty())
-            Log::Warn("Filename cannot be null");
+ std::shared_ptr<T> Load(const std::string &filename, void *args = nullptr)
+ {
+  if (filename.empty()) Log::Warn("Filename cannot be null");
 
-        auto it = Map.find(filename);
+  auto it = Map.find(filename);
 
-        if (it != Map.end()) {
-            return (*it).second;
-        }
+  if (it != Map.end()) {
+   return (*it).second;
+  }
 
-        std::shared_ptr<T> resource = std::make_shared<T>(filename, args);
+  std::shared_ptr<T> resource = std::make_shared<T>(filename, args);
 
-        Map.insert(std::make_pair(filename, resource));
+  Map.insert(std::make_pair(filename, resource));
 
-        return resource;
-    }
+  return resource;
+ }
 
-    //So far only used for shaders
-	std::shared_ptr<T> Load(const std::string& filename, const std::string& secondFileName) {
+ // So far only used for shaders
+ std::shared_ptr<T> Load(const std::string &filename, const std::string &secondFileName)
+ {
+  return Load(std::string(filename), (void *)secondFileName.c_str());
+ }
 
-		return Load(std::string(filename), (void*)secondFileName.c_str());
-	}
+ std::shared_ptr<T> Load(std::shared_ptr<T> resource)
+ {
+  auto it = Map.find(resource->GetName());
 
-    std::shared_ptr<T> Load(std::shared_ptr<T> resource) {
-        auto it = Map.find(resource->GetName());
+  if (it != Map.end()) {
+   return (*it).second;
+  }
 
-        if (it != Map.end()) {
-            return (*it).second;
-        }
+  Map.insert(std::make_pair(resource->GetName(), resource));
 
-        Map.insert(std::make_pair(resource->GetName(), resource));
+  return resource;
+ }
 
-        return resource;
-    }
+ bool Unload(const std::string &filename)
+ {
+  if (filename.empty()) Log::Error("filename cannot be null");
 
-    bool Unload(const std::string &filename) {
-        if (filename.empty())
-            Log::Error("filename cannot be null");
+  std::string FileName = filename;
 
-        std::string FileName = filename;
+  auto it = Map.find(FileName);
 
-        auto it = Map.find(FileName);
+  if (it != Map.end()) {
+   Map.erase(it);
+   return true;
+  }
 
-        if (it != Map.end()) {
-            Map.erase(it);
-            return true;
-        }
+  Log::Error("cannot find " + FileName);
 
-        Log::Error("cannot find " + FileName);
+  return false;
+ }
 
-        return false;
-    }
+ void Initialise(const std::string &name)
+ {
+  if (name.empty()) Log::Error("Null m_name is not allowed");
 
-    void Initialise(const std::string &name) {
-        if (name.empty())
-            Log::Error("Null name is not allowed");
+  Name = name;
+ }
 
-        Name = name;
-    }
+ const std::string &GetName() const { return Name; }
 
-    const std::string &GetName() const { return Name; }
+ const int Size() const { return Map.size(); }
 
-    const int Size() const { return Map.size(); }
+ ResourceManager() {}
 
-    ResourceManager() {}
-
-    ~ResourceManager() { ReleaseAll(); }
+ ~ResourceManager() { ReleaseAll(); }
 };
-

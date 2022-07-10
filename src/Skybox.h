@@ -1,19 +1,18 @@
 #pragma once
 
 #include "Texture.h"
-#include <string>
-#include <vector>
 
-class Skybox : public Texture {
+class Skybox : public Texture
+{
 public:
-	Skybox(std::string facesDIR);
-	Skybox(const char* facesDIR);
+ explicit Skybox(std::string facesDIR);
 
-    ~Skybox();
+ explicit Skybox(const char *facesDIR);
+
+ ~Skybox() override;
 
 private:
-    std::vector<std::string> GetAllFiles(std::string dir);
+ std::vector<std::string> GetAllFiles(std::string dir);
 
-    void CreateSkyBox(std::string facesDIR);
+ void CreateSkyBox(std::string facesDIR);
 };
-

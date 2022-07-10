@@ -1,4 +1,4 @@
-mtllib pbr-mat-ext.mtl
+mtllib pbr-m_testingMaterial-ext.mtl
 
 o floor
 usemtl pbr

@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Skybox.h"
 #include "Camera.h"
-#include "entt/entt.hpp"
 #include "ResourceHub.h"
-#include <iostream>
+#include "Skybox.h"
+#include "entt/entt.hpp"
 
 class Entity;
 
@@ -14,53 +13,54 @@ class Shader;
 
 class Mesh;
 
-class Scene {
+class Scene
+{
 public:
-    Scene(Camera *cam, std::shared_ptr<ResourceHub> resHub);
+ Scene(Camera *cam, std::shared_ptr<ResourceHub> resHub);
 
-    ~Scene();
+ ~Scene() = default;
 
-    void *Render(float deltaTime);
+ void *Render(float deltaTime);
 
-    Entity CreateEntity(const std::string &name);
+ Entity CreateEntity(const std::string &name);
 
-    void DestroyEntity(Entity entity);
+ void DestroyEntity(entt::entity entity);
 
-    entt::registry registry;
+ entt::registry m_registry;
 
-    std::shared_ptr<Shader> mainShader = nullptr;
-    std::shared_ptr<Material> mat = nullptr;
-    std::shared_ptr<Material> skyBoxMat = nullptr;
-    std::shared_ptr<Mesh> mesh = nullptr;
-    std::shared_ptr<Mesh> sceneMesh = nullptr;
+ std::shared_ptr<Shader> m_mainShader = nullptr;
+ std::shared_ptr<Material> m_testingMaterial = nullptr;
+ std::shared_ptr<Material> m_skyBoxMat = nullptr;
+ std::shared_ptr<Mesh> m_testingMesh = nullptr;
+ std::shared_ptr<Mesh> m_sceneMesh = nullptr;
 
-    std::string name = "Main Scene";
-    std::shared_ptr<Entity> firstObject;
+ std::string m_name = "Main Scene";
+ std::shared_ptr<Entity> m_firstObject;
 
-    Camera *GetMainCamera();
+ Camera *GetMainCamera();
 
-    std::shared_ptr<ResourceHub> GetResourceHub() { return resourceHub; };
+ std::shared_ptr<ResourceHub> GetResourceHub() { return m_resourceHub; };
 
-    void AddPointLight(glm::vec3 pos);
+ void AddPointLight(glm::vec3 pos);
 
 private:
-    void GenerateRenderTexture();
+ void GenerateRenderTexture();
 
-    void UpdateAndBindRenderTexture();
+ void UpdateAndBindRenderTexture() const;
 
-    std::shared_ptr<Shader> skyboxShader = nullptr;
-    unsigned int texture = 0;
-    std::shared_ptr<Texture> tex = nullptr;
-    std::shared_ptr<Skybox> skyBoxTex = nullptr;
-    Camera *cam = nullptr;
+ std::shared_ptr<Shader> m_skyboxShader = nullptr;
+ unsigned int texture = 0;
+ std::shared_ptr<Texture> m_texture = nullptr;
+ std::shared_ptr<Skybox> m_skyBoxTex = nullptr;
+ Camera *m_camera = nullptr;
 
-    friend class Entity;
+ friend class Entity;
 
-    // Texture Stuff
-    GLuint FramebufferName = 0;
-    GLuint renderedTexture;
-    GLuint depthrenderbuffer;
-    GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+ // Texture Stuff
+ GLuint m_frameBufferName = 0;
+ GLuint m_renderedTexture = 0;
+ GLuint m_depthRenderBuffer = 0;
+ GLenum m_drawBuffers[1] = {GL_COLOR_ATTACHMENT0};
 
-    std::shared_ptr<ResourceHub> resourceHub;
+ std::shared_ptr<ResourceHub> m_resourceHub = nullptr;
 };

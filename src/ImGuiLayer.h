@@ -1,87 +1,83 @@
 #pragma once
 
+#include <ImGuizmo.h>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
-#include <ImGuizmo.h>
-#include "Entity.h"
+
 #include "ContentBrowser.h"
-#include "ResourceManager.h"
+#include "Entity.h"
 #include "MaterialComponentPanel.h"
 #include "PointLightComponentPanel.h"
+#include "ResourceManager.h"
 
-class ImGuiLayer {
+class ImGuiLayer
+{
 public:
-    static ImGuiLayer *GetInstance();
+ static ImGuiLayer *GetInstance();
 
-    ImGuiLayer(const ImGuiLayer &) = delete;
+ ImGuiLayer(const ImGuiLayer &) = delete;
 
-    ImGuiLayer(ImGuiLayer &&) = delete;
+ ImGuiLayer(ImGuiLayer &&) = delete;
 
-    ImGuiLayer &operator=(const ImGuiLayer &) = delete;
+ ImGuiLayer &operator=(const ImGuiLayer &) = delete;
 
-    ImGuiLayer &operator=(ImGuiLayer &&) = delete;
+ ImGuiLayer &operator=(ImGuiLayer &&) = delete;
 
-    static void Render(void *renderTex);
+ static void Render(void *renderTex);
 
-    static void SetScene(Scene *scene);
+ static void SetScene(Scene *scene);
 
-    static void DeleteInstance();
+ static void DeleteInstance();
 
-    static void StartFrame();
+ static void StartFrame();
 
-    static void EndFrame();
+ static void EndFrame();
 
-    static void SetGizmoState(ImGuizmo::OPERATION newState);
+ static void SetGizmoState(ImGuizmo::OPERATION newState);
 
-    static ImVec2 GetViewPortSize();
-
-    void SetTextureManager(std::shared_ptr<ResourceManager<Texture>> manager);
+ static ImVec2 GetViewPortSize();
 
 private:
-    ImGuiLayer();
+ ImGuiLayer();
 
-    ~ImGuiLayer();
+ ~ImGuiLayer();
 
-    void OnAttach();
+ static void OnAttach();
 
-    void Hierarchy();
+ void Hierarchy();
 
-    void DrawEntityNode(Entity entity);
+ void DrawEntityNode(Entity entity);
 
-    void DrawMenuBar();
+ static void DrawMenuBar();
 
-    void Properties(Entity entity);
+ void Properties(Entity entity) const;
 
-    void DrawProperties(Entity entity);
+ static void DrawProperties(Entity entity);
 
-    void FileExplorer();
+ void FileExplorer();
 
-    void DrawGizmos(Entity entity);
+ void DrawGizmos(Entity entity);
 
-    void DrawViewPort(void *renderTex);
+ void DrawViewPort(void *renderTex);
 
-    void SetDarkThemeColors();
+ static void SetDarkThemeColors();
 
-    ImGuiWindowFlags mainFlags =
-            {
-                    ImGuiWindowFlags_NoResize |
-                    ImGuiWindowFlags_NoMove |
-                    ImGuiWindowFlags_NoCollapse
-            };
+ ImGuiWindowFlags mainFlags = {ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse};
 
-    static ImGuiLayer *instance;
-    ImVec2 screenSize;
-    float columnWidth, rowHeight;
-    Scene *scene = nullptr;
-    Entity selectionContext;
-    glm::vec2 m_ViewportBounds[2];
-    ImVec2 viewPortSize;
-    ImGuizmo::OPERATION gizmoType = ImGuizmo::OPERATION::TRANSLATE;
+ static ImGuiLayer *instance;
+ ImVec2 screenSize = {0, 0};
+ float columnWidth = 0.0f;
+ float rowHeight = 0.0f;
+ Scene *scene = nullptr;
+ Entity selectionContext = {};
+ glm::vec2 m_ViewportBounds[2] = {};
+ ImVec2 viewPortSize = {0, 0};
+ ImGuizmo::OPERATION gizmoType = ImGuizmo::OPERATION::TRANSLATE;
 
-    ContentBrowser contentBrowser;
-    MaterialComponentPanel materialComponentPanel;
-    PointLightComponentPanel pointLightComponentPanel;
+ ContentBrowser contentBrowser = ContentBrowser();
+ MaterialComponentPanel materialComponentPanel = MaterialComponentPanel();
+ PointLightComponentPanel pointLightComponentPanel = PointLightComponentPanel();
 
-    std::shared_ptr<ResourceManager<Texture>> resourceManager;
+ std::shared_ptr<ResourceManager<Texture>> resourceManager;
 };

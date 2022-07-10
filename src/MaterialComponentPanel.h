@@ -1,20 +1,20 @@
 #pragma once
 
-#include "imgui.h"
-#include "ResourceHub.h"
 #include "Components.h"
+#include "ResourceHub.h"
+#include "imgui.h"
 
-class MaterialComponentPanel {
+class MaterialComponentPanel
+{
 public:
-    MaterialComponentPanel() = default;
+ MaterialComponentPanel() = default;
 
-    ~MaterialComponentPanel() = default;
+ ~MaterialComponentPanel() = default;
 
-    void OnRender(std::shared_ptr<ResourceHub> resHub, MaterialComponent &component, ImGuiWindowFlags flags);
+ void OnRender(const std::shared_ptr<ResourceHub> &resHub, MaterialComponent &component, ImGuiWindowFlags flags);
 
 private:
-    std::shared_ptr<Texture> DragAndDropTexture(std::shared_ptr<ResourceHub> resHub, MaterialComponent &component);
+ static std::shared_ptr<Texture> DragAndDropTexture(const std::shared_ptr<ResourceHub> &resHub, MaterialComponent &component);
 
-    ImVec2 imageSize = ImVec2(100, 100);
+ ImVec2 imageSize = ImVec2(100, 100);
 };
-

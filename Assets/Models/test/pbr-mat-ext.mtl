@@ -11,9 +11,9 @@ Pc 0.5
 Pcr 0.6
 aniso 0.7
 anisor 0.8
-map_Pr roughness.tex
-map_Pm metallic.tex
-map_Ps sheen.tex
-map_Ke emissive.tex
-norm normalmap.tex
+map_Pr roughness.m_texture
+map_Pm metallic.m_texture
+map_Ps sheen.m_texture
+map_Ke emissive.m_texture
+norm normalmap.m_texture
 

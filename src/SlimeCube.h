@@ -1,29 +1,30 @@
 #pragma once
 
-#include "Window.h"
-#include "ImGuiLayer.h"
-#include "Entity.h"
-#include "entt/entt.hpp"
 #include "Components.h"
-#include "ResourceHub.h"
-#include "Renderer.h"
+#include "Entity.h"
+#include "ImGuiLayer.h"
 #include "Input.h"
+#include "Renderer.h"
+#include "ResourceHub.h"
+#include "Window.h"
+#include "entt/entt.hpp"
 
-class SlimeCube {
+class SlimeCube
+{
 public:
-    SlimeCube();
+ SlimeCube();
 
-    ~SlimeCube();
+ ~SlimeCube();
 
-    void Update(float deltaTime);
+ void Update(float deltaTime);
 
 private:
-    void ProcessMovement(float deltaTime);
+ void ProcessMovement(float deltaTime);
 
-    Input *inputManager = nullptr;
-    std::unique_ptr<Camera> camera;
-    std::unique_ptr<Scene> scene;
-    std::shared_ptr<ResourceHub> resourceHub;
+ Input *inputManager = nullptr;
+ std::unique_ptr<Camera> camera;
+ std::unique_ptr<Scene> scene;
+ std::shared_ptr<ResourceHub> resourceHub;
 
-    glm::vec2 windowSize = glm::vec2(1920, 1080);
+ glm::vec2 windowSize = glm::vec2(1920, 1080);
 };

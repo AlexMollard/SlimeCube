@@ -7,4 +7,5 @@ vcpkg install spdlog:x64-windows
 vcpkg install glm:x64-windows
 vcpkg install EnTT:x64-windows
 vcpkg install stb:x64-windows
+vcpkg install assimp:x64-windows
 pause
