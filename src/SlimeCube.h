@@ -11,20 +11,20 @@
 
 class SlimeCube
 {
-public:
- SlimeCube();
+  public:
+    SlimeCube();
 
- ~SlimeCube();
+    ~SlimeCube();
 
- void Update(float deltaTime);
+    void Update(float deltaTime);
 
-private:
- void ProcessMovement(float deltaTime);
+  private:
+    void ProcessMovement(float deltaTime);
 
- Input *inputManager = nullptr;
- std::unique_ptr<Camera> camera;
- std::unique_ptr<Scene> scene;
- std::shared_ptr<ResourceHub> resourceHub;
+    Input* inputManager = nullptr;
+    std::unique_ptr<Camera> camera;
+    std::unique_ptr<Scene> scene;
+    std::shared_ptr<ResourceHub> resourceHub;
 
- glm::vec2 windowSize = glm::vec2(1920, 1080);
+    glm::vec2 windowSize = glm::vec2(1920, 1080);
 };

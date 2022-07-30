@@ -5,22 +5,22 @@
 
 class Log
 {
-public:
- static void Init();
+  public:
+    static void Init();
 
- static void Trace(std::string message);
+    static void Trace(std::string message);
 
- static void Info(std::string message);
+    static void Info(std::string message);
 
- static void Warn(std::string message);
+    static void Warn(std::string message);
 
- static void Error(std::string message);
+    static void Error(std::string message);
 
-private:
- inline static std::shared_ptr<spdlog::logger> &GetCoreLogger() { return coreLogger; }
+  private:
+    inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return coreLogger; }
 
- inline static std::shared_ptr<spdlog::logger> &GetClientLogger() { return clientLogger; }
+    inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return clientLogger; }
 
- static std::shared_ptr<spdlog::logger> coreLogger;
- static std::shared_ptr<spdlog::logger> clientLogger;
+    static std::shared_ptr<spdlog::logger> coreLogger;
+    static std::shared_ptr<spdlog::logger> clientLogger;
 };

@@ -9,6 +9,8 @@ endif ()
 
 project(SlimeCube CXX)
 set(CMAKE_CXX_STANDARD 20)
+#set(CMAKE_CXX_FLAGS_RELEASE "/ZI")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 #Include ProjectFolders
 include_directories(src)

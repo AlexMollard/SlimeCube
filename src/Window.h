@@ -4,28 +4,28 @@
 
 class Window
 {
-public:
- Window(int width, int height, char *name);
+  public:
+    Window(int width, int height, char* name);
 
- ~Window();
+    ~Window();
 
- // Window Functions
- int Window_intit(int width, int height, char *name);
+    // Window Functions
+    int Window_intit(int width, int height, char* name);
 
- void Update_Window();
+    void Update_Window();
 
- int Window_shouldClose();
+    int Window_shouldClose();
 
- void Window_destroy();
+    void Window_destroy();
 
- float GetDeltaTime();
+    float GetDeltaTime();
 
-protected:
- // Main Window
- GLFWwindow *window;
+  protected:
+    // Main Window
+    GLFWwindow* window;
 
- // DeltaTime
- double last = 0.0;
- double now = 0.0;
- float delta = 1.0f;
+    // DeltaTime
+    double last = 0.0;
+    double now = 0.0;
+    float delta = 1.0f;
 };

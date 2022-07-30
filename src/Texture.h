@@ -6,38 +6,38 @@
 
 class Texture : private Resource
 {
-public:
- Texture(std::string name, const std::string &dir);
+  public:
+    Texture(std::string name, const std::string& dir);
 
- Texture(std::string name, unsigned int id);
+    Texture(std::string name, unsigned int id);
 
- Texture(std::string name, const unsigned int *id);
+    Texture(std::string name, const unsigned int* id);
 
- Texture(const std::string &dir, void *args);
+    Texture(const std::string& dir, void* args);
 
- explicit Texture(std::string name);
+    explicit Texture(std::string name);
 
- Texture();
+    Texture();
 
- ~Texture();
+    ~Texture();
 
- void SetUpTextureID();
+    void SetUpTextureID();
 
- Texture *Load(const std::string &dir);
+    Texture* Load(const std::string& dir);
 
- void Bind() { glBindTexture(GL_TEXTURE_2D, textureID); };
+    void Bind() { glBindTexture(GL_TEXTURE_2D, textureID); };
 
- unsigned int GetID() const { return textureID; };
+    unsigned int GetID() const { return textureID; };
 
- void SetID(unsigned int newID) { textureID = newID; };
+    void SetID(unsigned int newID) { textureID = newID; };
 
- const std::string &GetName() { return name; };
+    const std::string& GetName() { return name; };
 
- const char *GetNameC() { return name.c_str(); };
+    const char* GetNameC() { return name.c_str(); };
 
- static std::shared_ptr<Texture> Create(std::string const &dir);
+    static std::shared_ptr<Texture> Create(std::string const& dir);
 
- static std::shared_ptr<Texture> Create(const char *dir);
+    static std::shared_ptr<Texture> Create(const char* dir);
 
- uint32_t textureID = 0;
+    uint32_t textureID = 0;
 };

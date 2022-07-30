@@ -6,11 +6,11 @@
 #endif
 
 namespace Dir {
-static std::string FromAsset(const char *file)
+static std::string FromAsset(const char* file)
 {
- std::string dir;
- dir += ASSETS_DIR;
- dir += file;
- return dir;
+    std::string dir;
+    dir += ASSETS_DIR;
+    dir += file;
+    return dir;
 }
 }

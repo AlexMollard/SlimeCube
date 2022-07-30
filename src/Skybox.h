@@ -4,15 +4,15 @@
 
 class Skybox : public Texture
 {
-public:
- explicit Skybox(std::string facesDIR);
+  public:
+    explicit Skybox(std::string facesDIR);
 
- explicit Skybox(const char *facesDIR);
+    explicit Skybox(const char* facesDIR);
 
- ~Skybox() override;
+    ~Skybox() override;
 
-private:
- std::vector<std::string> GetAllFiles(std::string dir);
+  private:
+    std::vector<std::string> GetAllFiles(std::string dir);
 
- void CreateSkyBox(std::string facesDIR);
+    void CreateSkyBox(std::string facesDIR);
 };

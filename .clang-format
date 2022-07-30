@@ -1,5 +1,5 @@
 ---
-BasedOnStyle: Google
+BasedOnStyle: LLVM
 AlignAfterOpenBracket: DontAlign
 AlwaysBreakAfterReturnType: None
 AlwaysBreakTemplateDeclarations: 'Yes'
@@ -7,9 +7,10 @@ BreakBeforeBraces: Mozilla
 ColumnLimit: '130'
 CompactNamespaces: 'false'
 FixNamespaceComments: 'false'
-IndentWidth: '1'
+IndentWidth: '4'
 MaxEmptyLinesToKeep: '1'
 Standard: Auto
 TabWidth: '4'
-
+PointerAlignment: Left
+DerivePointerAlignment: false
 ...

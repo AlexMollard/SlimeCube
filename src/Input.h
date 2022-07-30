@@ -4,63 +4,64 @@
 
 class Input
 {
-public:
- ~Input();
+  public:
+    ~Input();
 
- static Input *GetInstance()
- {
-  if (!instance) instance = new Input;
-  return instance;
- };
+    static Input* GetInstance()
+    {
+        if (!instance)
+            instance = new Input;
+        return instance;
+    };
 
- void Update();
+    void Update();
 
- GLFWwindow *GetWindow();
+    GLFWwindow* GetWindow();
 
- static glm::vec2 GetMousePos();
+    static glm::vec2 GetMousePos();
 
- glm::vec2 GetDeltaMouse();
+    glm::vec2 GetDeltaMouse();
 
- static glm::vec2 GetWindowSize();
+    static glm::vec2 GetWindowSize();
 
- static float GetAspectRatio();
+    static float GetAspectRatio();
 
- static bool GetMouseDown(int button);
+    static bool GetMouseDown(int button);
 
- void SetCamera(Camera *cam);
+    void SetCamera(Camera* cam);
 
- static bool GetKeyPress(Keycode key);
+    static bool GetKeyPress(Keycode key);
 
- static void SetScroll(float newScroll);
+    static void SetScroll(float newScroll);
 
- static float GetScroll();
+    static float GetScroll();
 
- bool GetFocus();
+    bool GetFocus();
 
- void SetFocus(bool focus);
+    void SetFocus(bool focus);
 
- static glm::vec2 GetMouseToWorldPos();
+    static glm::vec2 GetMouseToWorldPos();
 
-private:
- static Input *instance;
+  private:
+    static Input* instance;
 
- Input();
+    Input();
 
- GLFWwindow *window;
+    GLFWwindow* window;
 
- static double mouseXPos;
- static double mouseYPos;
+    static double mouseXPos;
+    static double mouseYPos;
 
- int winWidth = 0;
- int winHeight = 0;
+    int winWidth = 0;
+    int winHeight = 0;
 
- double aspectX = 32;
- double aspectY = 18;
+    double aspectX = 32;
+    double aspectY = 18;
 
- bool IsWindowFocused = true;
+    bool IsWindowFocused = true;
 
- static float scroll;
- glm::vec2 deltaMouse = glm::vec2();
+    static float scroll;
+    glm::vec2 deltaMouse = glm::vec2();
 
- Camera *camera = nullptr;
+    Camera* camera = nullptr;
 };
